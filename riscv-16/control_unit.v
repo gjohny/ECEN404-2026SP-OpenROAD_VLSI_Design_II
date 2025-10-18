@@ -1,198 +1,127 @@
 `timescale 1ns / 1ps
 
-
-
 module Control_Unit(
-      input[6:0] opcode,
-      output reg[1:0] alu_op,
-      output reg jump,beq,bne,mem_read,mem_write,alu_src,reg_dst,mem_to_reg,reg_write    
-    );
+    input  [2:0] opcode,      // primary opcode
+    input  [3:0] func,        // function field (R-type, I-type)
+    input        zero,        // ALU zero flag (for branches)
+    output reg        PCSrc,        // PC source select
+    output reg        ResultSrc,    // result source select
+    output reg        MemWrite,     // memory write enable
+    output reg  [3:0] ALUControl,   // ALU operation select
+    output reg        ALUSrc,       // ALU source select
+    output reg  [1:0] ImmSrc,       // immediate type select
+    output reg        RegWrite      // register file write enable
+);
 
+    always @(*) begin
+        // Default values (NOP-safe)
+        PCSrc      = 1'b0;
+        ResultSrc  = 1'b0;
+        MemWrite   = 1'b0;
+        ALUControl = 4'b0000;
+        ALUSrc     = 1'b0;
+        ImmSrc     = 2'b00;
+        RegWrite   = 1'b0;
 
-always @(*)
-begin
-    case(opcode)
-        4'b0000:  // LW
-            begin
-                reg_dst    = 1'b0;
-                alu_src    = 1'b1;
-                mem_to_reg = 1'b1;
-                reg_write  = 1'b1;
-                mem_read   = 1'b1;
-                mem_write  = 1'b0;
-                beq        = 1'b0;
-                bne        = 1'b0;
-                alu_op     = 2'b10;
-                jump       = 1'b0;
+        case (opcode)
+
+            // ------------------------------------------------
+            // R-type: opcode = 000
+            // ------------------------------------------------
+            3'b000: begin
+                RegWrite   = 1'b1;
+                ALUSrc     = 1'b0;
+                ResultSrc  = 1'b0;
+                ALUControl = func; // func directly controls ALU op
             end
-        4'b0001:  // SW
-            begin
-                reg_dst    = 1'b0;
-                alu_src    = 1'b1;
-                mem_to_reg = 1'b0;
-                reg_write  = 1'b0;
-                mem_read   = 1'b0;
-                mem_write  = 1'b1;
-                beq        = 1'b0;
-                bne        = 1'b0;
-                alu_op     = 2'b10;
-                jump       = 1'b0;
+
+            // ------------------------------------------------
+            // I-type: opcode = 001
+            // (addi/xori/ori/andi/jalr)
+            // ------------------------------------------------
+            3'b001: begin
+                ALUSrc     = 1'b1;
+                RegWrite   = 1'b1;
+                ResultSrc  = 1'b0;
+                ImmSrc     = 2'b00;
+
+                // Decode func field
+                case (func)
+                    4'b0000: ALUControl = 4'b0000; // ADDI
+                    4'b0001: ALUControl = 4'b0010; // XORI
+                    4'b0010: ALUControl = 4'b0011; // ORI
+                    4'b0011: ALUControl = 4'b0100; // ANDI
+                    4'b1101: begin                  // JALR
+                                ALUControl = 4'b0000; // ALU does addition (rs1 + imm)
+                                ImmSrc     = 2'b00;
+                                PCSrc      = 1'b1;
+                            end
+                    default: ALUControl = 4'b0000;
+                endcase
             end
-        4'b0010:  // data_processing
-            begin
-                reg_dst    = 1'b1;
-                alu_src    = 1'b0;
-                mem_to_reg = 1'b0;
-                reg_write  = 1'b1;
-                mem_read   = 1'b0;
-                mem_write  = 1'b0;
-                beq        = 1'b0;
-                bne        = 1'b0;
-                alu_op     = 2'b00;
-                jump       = 1'b0;
+
+            // ------------------------------------------------
+            // LW: opcode = 010
+            // ------------------------------------------------
+            3'b010: begin
+                ALUSrc     = 1'b1;
+                RegWrite   = 1'b1;
+                ResultSrc  = 1'b1; // writeback from memory
+                ALUControl = 4'b0000; // ADD base + offset
+                ImmSrc     = 2'b00;
             end
-        4'b0011:  // data_processing
-            begin
-                reg_dst    = 1'b1;
-                alu_src    = 1'b0;
-                mem_to_reg = 1'b0;
-                reg_write  = 1'b1;
-                mem_read   = 1'b0;
-                mem_write  = 1'b0;
-                beq        = 1'b0;
-                bne        = 1'b0;
-                alu_op     = 2'b00;
-                jump       = 1'b0;
+
+            // ------------------------------------------------
+            // SW: opcode = 011
+            // ------------------------------------------------
+            3'b011: begin
+                ALUSrc     = 1'b1;
+                MemWrite   = 1'b1;
+                ALUControl = 4'b0000; // ADD base + offset
+                ImmSrc     = 2'b00;
             end
-        4'b0100:  // data_processing
-            begin
-                reg_dst    = 1'b1;
-                alu_src    = 1'b0;
-                mem_to_reg = 1'b0;
-                reg_write  = 1'b1;
-                mem_read   = 1'b0;
-                mem_write  = 1'b0;
-                beq        = 1'b0;
-                bne        = 1'b0;
-                alu_op     = 2'b00;
-                jump       = 1'b0;
+
+            // ------------------------------------------------
+            // Branches: opcode = 100
+            // func = 000 (BEQ), 001 (BNE)
+            // ------------------------------------------------
+            3'b100: begin
+                ALUSrc     = 1'b0;
+                ALUControl = 4'b0001; // SUB for comparison
+                ImmSrc     = 2'b01;
+                RegWrite   = 1'b0;
+
+                // Branch condition
+                case (func[0])
+                    1'b0: PCSrc = (zero) ? 1'b1 : 1'b0;  // BEQ
+                    1'b1: PCSrc = (~zero) ? 1'b1 : 1'b0; // BNE
+                endcase
             end
-        4'b0101:  // data_processing
-            begin
-                reg_dst    = 1'b1;
-                alu_src    = 1'b0;
-                mem_to_reg = 1'b0;
-                reg_write  = 1'b1;
-                mem_read   = 1'b0;
-                mem_write  = 1'b0;
-                beq        = 1'b0;
-                bne        = 1'b0;
-                alu_op     = 2'b00;
-                jump       = 1'b0;
+
+            // ------------------------------------------------
+            // JAL: opcode = 101
+            // ------------------------------------------------
+            3'b101: begin
+                PCSrc      = 1'b1;
+                RegWrite   = 1'b1;
+                ALUSrc     = 1'b1;
+                ALUControl = 4'b0000; // Add PC + imm
+                ImmSrc     = 2'b10;
+                ResultSrc  = 1'b0;
             end
-        4'b0110:  // data_processing
-            begin
-                reg_dst    = 1'b1;
-                alu_src    = 1'b0;
-                mem_to_reg = 1'b0;
-                reg_write  = 1'b1;
-                mem_read   = 1'b0;
-                mem_write  = 1'b0;
-                beq        = 1'b0;
-                bne        = 1'b0;
-                alu_op     = 2'b00;
-                jump       = 1'b0;
+
+            // ------------------------------------------------
+            // Default (NOP)
+            // ------------------------------------------------
+            default: begin
+                PCSrc      = 1'b0;
+                ResultSrc  = 1'b0;
+                MemWrite   = 1'b0;
+                ALUControl = 4'b0000;
+                ALUSrc     = 1'b0;
+                ImmSrc     = 2'b00;
+                RegWrite   = 1'b0;
             end
-        4'b0111:  // data_processing
-            begin
-                reg_dst    = 1'b1;
-                alu_src    = 1'b0;
-                mem_to_reg = 1'b0;
-                reg_write  = 1'b1;
-                mem_read   = 1'b0;
-                mem_write  = 1'b0;
-                beq        = 1'b0;
-                bne        = 1'b0;
-                alu_op     = 2'b00;
-                jump       = 1'b0;
-            end
-        4'b1000:  // data_processing
-            begin
-                reg_dst    = 1'b1;
-                alu_src    = 1'b0;
-                mem_to_reg = 1'b0;
-                reg_write  = 1'b1;
-                mem_read   = 1'b0;
-                mem_write  = 1'b0;
-                beq        = 1'b0;
-                bne        = 1'b0;
-                alu_op     = 2'b00;
-                jump       = 1'b0;
-            end
-        4'b1001:  // data_processing
-            begin
-                reg_dst    = 1'b1;
-                alu_src    = 1'b0;
-                mem_to_reg = 1'b0;
-                reg_write  = 1'b1;
-                mem_read   = 1'b0;
-                mem_write  = 1'b0;
-                beq        = 1'b0;
-                bne        = 1'b0;
-                alu_op     = 2'b00;
-                jump       = 1'b0;
-            end
-        4'b1011:  // BEQ
-            begin
-                reg_dst    = 1'b0;
-                alu_src    = 1'b0;
-                mem_to_reg = 1'b0;
-                reg_write  = 1'b0;
-                mem_read   = 1'b0;
-                mem_write  = 1'b0;
-                beq        = 1'b1;
-                bne        = 1'b0;
-                alu_op     = 2'b01;
-                jump       = 1'b0;
-            end
-        4'b1100:  // BNE
-            begin
-                reg_dst    = 1'b0;
-                alu_src    = 1'b0;
-                mem_to_reg = 1'b0;
-                reg_write  = 1'b0;
-                mem_read   = 1'b0;
-                mem_write  = 1'b0;
-                beq        = 1'b0;
-                bne        = 1'b1;
-                alu_op     = 2'b01;
-                jump       = 1'b0;
-            end
-        4'b1101:  // J
-            begin
-                reg_dst    = 1'b0;
-                alu_src    = 1'b0;
-                mem_to_reg = 1'b0;
-                reg_write  = 1'b0;
-                mem_read   = 1'b0;
-                mem_write  = 1'b0;
-                beq        = 1'b0;
-                bne        = 1'b0;
-                alu_op     = 2'b00;
-                jump       = 1'b1;
-            end
-        default:
-            begin
-                reg_dst    = 1'b1;
-                alu_src    = 1'b0;
-                mem_to_reg = 1'b0;
-                reg_write  = 1'b1;
-                mem_read   = 1'b0;
-                mem_write  = 1'b0;
-                beq        = 1'b0;
-                bne        = 1'b0;
-                alu_op     = 2'b00;
-                jump       = 1'b0;
-            end
-    endcase
-end
+        endcase
+    end
+endmodule
