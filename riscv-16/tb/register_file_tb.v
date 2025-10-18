@@ -30,6 +30,11 @@ module register_file_tb;
     initial clk = 0;
     always #5 clk = ~clk;
 
+    initial begin
+        $dumpfile("./waveform/Register_file.vcd");
+        $dumpvars(0, register_file_tb);
+    end
+
     // Test sequence
     initial begin
         $display("-----------------------------------------------------------------------------------------------------");

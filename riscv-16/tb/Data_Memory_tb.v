@@ -21,6 +21,11 @@ module Data_Memory_tb;
   initial clk = 1'b0;
   always #5 clk = ~clk;
 
+    initial begin
+        $dumpfile("./waveform/Data_Memory.vcd");
+        $dumpvars(0, Data_Memory_tb);
+    end
+
   task write_word(input [2:0] idx, input [15:0] data);
   begin
     @(negedge clk);
