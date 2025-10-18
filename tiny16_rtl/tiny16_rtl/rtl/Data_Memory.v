@@ -1,46 +1,43 @@
 `include "Parameter.v"
-// fpga4student.com 
-// FPGA projects, VHDL projects, Verilog projects 
-// Verilog code for RISC Processor 
-// Verilog code for data Memory
-module Data_Memory(
- input clk,
- // address input, shared by read and write port
- input [15:0]   mem_access_addr,
+// Data Memory (compatible with your existing system)
+// Ports unchanged:
+//   clk, mem_access_addr, mem_write_data, mem_write_en, mem_read, mem_read_data
+// Behavior:
+//   - 16-bit words, word-aligned addressing (drop bit0)
+//   - Synchronous write on clk when mem_write_en == 1
+//   - Combinational read when mem_read == 1, else 0
+//   - Write-first on same-cycle read+write (returns mem_write_data)
 
- // write port
- input [15:0]   mem_write_data,
- input     mem_write_en,
- input mem_read,
- // read port
- output [15:0]   mem_read_data
+module Data_Memory(
+  input         clk,
+  input  [15:0] mem_access_addr,  // byte address; internal word index = [ADDR_W:1]
+  input  [15:0] mem_write_data,
+  input         mem_write_en,
+  input         mem_read,
+  output [15:0] mem_read_data
 );
 
-reg [`col - 1:0] memory [`row_d - 1:0];
-integer f;
-wire [2:0] ram_addr=mem_access_addr[2:0];
-initial
- begin
-  $readmemb("./test/test.data", memory);
+  // Depth/width from Parameter.v
+  reg [`col-1:0] memory [`row_d-1:0];
 
-  f = $fopen(`filename);
-  $fmonitor(f, "time = %d\n", $time, 
-  "\tmemory[0] = %b\n", memory[0],   
-  "\tmemory[1] = %b\n", memory[1],
-  "\tmemory[2] = %b\n", memory[2],
-  "\tmemory[3] = %b\n", memory[3],
-  "\tmemory[4] = %b\n", memory[4],
-  "\tmemory[5] = %b\n", memory[5],
-  "\tmemory[6] = %b\n", memory[6],
-  "\tmemory[7] = %b\n", memory[7]);
-  `simulation_time;
-  $fclose(f);
- end
+  // Address width derived from depth
+  localparam integer ADDR_W = (`row_d <= 1) ? 1 : $clog2(`row_d);
 
- always @(posedge clk) begin
-  if (mem_write_en)
-   memory[ram_addr] <= mem_write_data;
- end
- assign mem_read_data = (mem_read==1'b1) ? memory[ram_addr]: 16'd0; 
+  // Word-aligned index (drop bit0)
+  wire [ADDR_W-1:0] addr = mem_access_addr[ADDR_W:1];
+
+  // Synchronous write
+  always @(posedge clk) begin
+    if (mem_write_en)
+      memory[addr] <= mem_write_data;
+  end
+
+  // Combinational read with write-first semantics
+  assign mem_read_data =
+      mem_read
+        ? (mem_write_en ? mem_write_data : memory[addr])
+        : {`col{1'b0}};
 
 endmodule
+
+
