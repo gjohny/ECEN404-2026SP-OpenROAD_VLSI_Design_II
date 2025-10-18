@@ -1,28 +1,22 @@
 `include "Parameter.v"
-// Verilog-2001 SRAM-like Data Memory (flip-flop implementation)
-// Uses Parameter.v: `col = 16, `row_d = 8
 
 module Data_Memory(
   input         clk,
-  input  [15:0] mem_access_addr,  // byte address; word index uses [3:1]
+  input  [15:0] mem_access_addr,  // byte address; word index at [3:1]
   input  [15:0] mem_write_data,
   input         mem_write_en,
   input         mem_read,
   output [15:0] mem_read_data
 );
-  // Memory array: 8 words x 16 bits (from `row_d and `col)
-  reg [`col-1:0] memory [0:`row_d-1];
 
-  // Word-aligned index (drop bit0). With `row_d=8, index width = 3 bits.
+  reg [`col-1:0] memory [0:`row_d-1];
   wire [2:0] addr = mem_access_addr[3:1];
 
-  // Synchronous write
   always @(posedge clk) begin
     if (mem_write_en)
       memory[addr] <= mem_write_data;
   end
 
-  // Combinational read with write-first semantics
   assign mem_read_data =
       mem_read
         ? (mem_write_en ? mem_write_data : memory[addr])
