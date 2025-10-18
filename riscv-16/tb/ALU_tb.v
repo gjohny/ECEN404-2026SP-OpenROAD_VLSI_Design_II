@@ -25,7 +25,7 @@ module ALU_tb;
 
     // For waveform generation
     initial begin
-        $dumpfile("./waveform/ALU_tb.vcd");
+        $dumpfile("./waveform/ALU.vcd");
         $dumpvars(0, ALU_tb);
     end
 
