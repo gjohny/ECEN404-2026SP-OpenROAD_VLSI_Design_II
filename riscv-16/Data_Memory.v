@@ -1,31 +1,20 @@
 `include "Parameter.v"
-// SRAM-like Data Memory (flip-flop implementation)
-// Ports unchanged to match your existing design:
-//   clk, mem_access_addr, mem_write_data, mem_write_en, mem_read, mem_read_data
-// Behavior:
-//   - 16-bit words (from `col`), depth = `row_d`
-//   - Word-aligned addressing (drop bit0)
-//   - Synchronous write on clk when mem_write_en == 1
-//   - Combinational read when mem_read == 1 (else 0)
-//   - Write-first on same-cycle read+write (returns mem_write_data)
+// Verilog-2001 SRAM-like Data Memory (flip-flop implementation)
+// Uses Parameter.v: `col = 16, `row_d = 8
 
 module Data_Memory(
   input         clk,
-  input  [15:0] mem_access_addr,   // byte address; internal word index uses [ADDR_W:1]
+  input  [15:0] mem_access_addr,  // byte address; word index uses [3:1]
   input  [15:0] mem_write_data,
   input         mem_write_en,
   input         mem_read,
   output [15:0] mem_read_data
 );
+  // Memory array: 8 words x 16 bits (from `row_d and `col)
+  reg [`col-1:0] memory [0:`row_d-1];
 
-  // Memory array: `row_d` words × `col` bits
-  reg [`col-1:0] memory [`row_d-1:0];
-
-  // Address width derived from depth
-  localparam integer ADDR_W = (`row_d <= 1) ? 1 : $clog2(`row_d);
-
-  // Word-aligned index (drop bit0)
-  wire [ADDR_W-1:0] addr = mem_access_addr[ADDR_W:1];
+  // Word-aligned index (drop bit0). With `row_d=8, index width = 3 bits.
+  wire [2:0] addr = mem_access_addr[3:1];
 
   // Synchronous write
   always @(posedge clk) begin
@@ -37,6 +26,6 @@ module Data_Memory(
   assign mem_read_data =
       mem_read
         ? (mem_write_en ? mem_write_data : memory[addr])
-        : {`col{1'b0}};
+        : 16'h0000;
 
 endmodule
