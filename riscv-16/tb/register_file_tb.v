@@ -32,9 +32,9 @@ module register_file_tb;
 
     // Test sequence
     initial begin
-        $display("---------------------------------------------------------------------------------------");
-        $display("| Test# | Operation      | A3 | WD3   | RegWrite | A1 | A2 | Expected RD1 | Expected RD2 | Pass? |");
-        $display("---------------------------------------------------------------------------------------");
+        $display("-----------------------------------------------------------------------------------------------------");
+        $display("| Test# | Operation                  | A3 | WD3   | RegWrite | A1 | A2 | Expected RD1 | Expected RD2 | Pass? |");
+        $display("-----------------------------------------------------------------------------------------------------");
 
         // -------------------------
         // Test 1: Write X1 = 100
@@ -42,7 +42,7 @@ module register_file_tb;
         A3 = 3'b001; WD3 = 16'd100; RegWrite = 1'b1;
         A1 = 3'b001; A2 = 3'b010;
         #10; // Wait for posedge clk
-        $display("| %5d | %13s | %2b | %5d | %8b | %2b | %2b | %12d | %12d |  %s  |",
+        $display("| %5d | %25s | %2b | %5d | %8b | %2b | %2b | %12d | %12d |  %s  |",
                  1, "Write X1", A3, WD3, RegWrite, A1, A2, RD1, RD2, 
                  (RD1==100 && RD2==0) ? "YES" : "NO");
 
@@ -52,7 +52,7 @@ module register_file_tb;
         A3 = 3'b010; WD3 = 16'd200; RegWrite = 1'b1;
         A1 = 3'b001; A2 = 3'b010;
         #10;
-        $display("| %5d | %13s | %2b | %5d | %8b | %2b | %2b | %12d | %12d |  %s  |",
+        $display("| %5d | %25s | %2b | %5d | %8b | %2b | %2b | %12d | %12d |  %s  |",
                  2, "Write X2", A3, WD3, RegWrite, A1, A2, RD1, RD2,
                  (RD1==100 && RD2==200) ? "YES" : "NO");
 
@@ -62,7 +62,7 @@ module register_file_tb;
         A3 = 3'b000; WD3 = 16'd999; RegWrite = 1'b1;
         A1 = 3'b000; A2 = 3'b001;
         #10;
-        $display("| %5d | %13s | %2b | %5d | %8b | %2b | %2b | %12d | %12d |  %s  |",
+        $display("| %5d | %25s | %2b | %5d | %8b | %2b | %2b | %12d | %12d |  %s  |",
                  3, "Write X0", A3, WD3, RegWrite, A1, A2, RD1, RD2,
                  (RD1==0 && RD2==100) ? "YES" : "NO");
 
@@ -72,7 +72,7 @@ module register_file_tb;
         A3 = 3'b011; WD3 = 16'd300; RegWrite = 1'b0;
         A1 = 3'b011; A2 = 3'b010;
         #10;
-        $display("| %5d | %13s | %2b | %5d | %8b | %2b | %2b | %12d | %12d |  %s  |",
+        $display("| %5d | %25s | %2b | %5d | %8b | %2b | %2b | %12d | %12d |  %s  |",
                  4, "No write", A3, WD3, RegWrite, A1, A2, RD1, RD2,
                  (RD1==0 && RD2==200) ? "YES" : "NO");
 
@@ -82,7 +82,7 @@ module register_file_tb;
         A3 = 3'b001; WD3 = 16'd111; RegWrite = 1'b1;
         A1 = 3'b001; A2 = 3'b010;
         #10;
-        $display("| %5d | %13s | %2b | %5d | %8b | %2b | %2b | %12d | %12d |  %s  |",
+        $display("| %5d | %25s | %2b | %5d | %8b | %2b | %2b | %12d | %12d |  %s  |",
                  5, "Overwrite X1", A3, WD3, RegWrite, A1, A2, RD1, RD2,
                  (RD1==111 && RD2==200) ? "YES" : "NO");
 
@@ -91,11 +91,34 @@ module register_file_tb;
         // -------------------------
         A1 = 3'b000; A2 = 3'b000; RegWrite = 1'b0;
         #10;
-        $display("| %5d | %13s | %2s | %5s | %8b | %2b | %2b | %12d | %12d |  %s  |",
+        $display("| %5d | %25s | %2s | %5s | %8b | %2b | %2b | %12d | %12d |  %s  |",
                  6, "Read X0", "-", "-", RegWrite, A1, A2, RD1, RD2,
                  (RD1==0 && RD2==0) ? "YES" : "NO");
 
-        $display("---------------------------------------------------------------------------------------");
+        // -------------------------
+        // Test 7: Simultaneous read/write to X2
+        // Write X2 = 555 while reading X2 and X1
+        // -------------------------
+        A3 = 3'b010; WD3 = 16'd555; RegWrite = 1'b1;
+        A1 = 3'b010;  // reading same register being written
+        A2 = 3'b001;  // reading another register
+        #1; // short delay within same cycle
+        $display("| %5d | %25s | %2b | %5d | %8b | %2b | %2b | %12d | %12d |  %s  |",
+                 7, "Simultaneous R/W", A3, WD3, RegWrite, A1, A2, RD1, RD2,
+                 // Synchronous write: RD1 should still show old value (200), RD2 = X1 (111)
+                 (RD1==200 && RD2==111) ? "YES" : "NO");
+        #9; // wait for clock to apply write
+
+        // -------------------------
+        // Test 8: Read after simultaneous write
+        // -------------------------
+        A1 = 3'b010; A2 = 3'b001; RegWrite = 1'b0;
+        #10;
+        $display("| %5d | %25s | %2s | %5s | %8b | %2b | %2b | %12d | %12d |  %s  |",
+                 8, "Read X2 after write", "-", "-", RegWrite, A1, A2, RD1, RD2,
+                 (RD1==555 && RD2==111) ? "YES" : "NO");
+
+        $display("-----------------------------------------------------------------------------------------------------");
         $display("Register File Test Bench Completed.");
         $finish;
     end
