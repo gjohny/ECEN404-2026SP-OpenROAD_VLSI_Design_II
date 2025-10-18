@@ -4,19 +4,19 @@ module pc_counter_16 (
     input              clk,
     input              reset,
     input              pc_en,           // enable (for stalls)
-
+    
     // Branch control (B-type, opcode=011)
     input              branch_taken,
     input signed [6:0] branch_imm,     // signed halfword offset from B-type [2]
-
+    
     // JAL (J-type, opcode=101)
     input              jal_taken,
     input signed [9:0] jal_imm,        // signed halfword offset from J-type [2]
-
+    
     // JALR (I-type, func=1101)
     input              jalr_taken,
     input      [15:0]  jalr_target,    // rs1 + imm (byte address)
-
+    
     output reg [15:0]  pc
 );
     // Convert halfword offsets to byte addresses
@@ -26,7 +26,7 @@ module pc_counter_16 (
             hw_to_bytes = imm_hw << 1;
         end
     endfunction
-
+    
     always @(posedge clk or posedge reset) begin
         if (reset) begin
             pc <= 16'h0000;
@@ -45,5 +45,6 @@ module pc_counter_16 (
                 pc <= pc + 16'd2;
             end
         end
+        // Note: if !pc_en, PC holds its value (no else clause needed)
     end
 endmodule
