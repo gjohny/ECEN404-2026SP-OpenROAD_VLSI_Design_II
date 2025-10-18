@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 
-module tb_Data_Memory;
+module Data_Memory_tb;
 
   // DUT I/O
   reg         clk;
