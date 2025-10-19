@@ -67,7 +67,7 @@ fi
 
 # Optional include check for Parameter.v
 if grep -q '`include "Parameter.v"' "$SRC_FILE" 2>/dev/null || grep -q '`include "Parameter.v"' "$TB_FILE" 2>/dev/null; then
-  if [ ! -f "./Parameter.v" ] && [ ! -f "../Parameter.v" ]; then
+  if [ ! -f "./src/Parameter.v" ] && [ ! -f "../src/Parameter.v" ]; then
     echo "⚠️  Warning: 'Parameter.v' included but not found."
   else
     echo "✅ Found Parameter.v include file."

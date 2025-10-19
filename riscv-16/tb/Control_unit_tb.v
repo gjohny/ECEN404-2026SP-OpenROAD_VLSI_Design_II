@@ -36,7 +36,7 @@ module Control_Unit_tb;
 
     // Waveform dump
     initial begin
-        $dumpfile("./waveform/Control_unit.vcd");
+        $dumpfile("./tb/waveform/Control_unit.vcd");
         $dumpvars(0, Control_Unit_tb);
     end
 

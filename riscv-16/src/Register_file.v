@@ -1,5 +1,5 @@
 `timescale 1ns / 1ps
-module register_file(
+module Register_file(
     input            clk,          // Clock
     // Write port
     input            RegWrite,     // Write enable

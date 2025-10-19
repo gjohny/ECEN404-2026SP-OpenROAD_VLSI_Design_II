@@ -1,2 +1,15 @@
-VCD Error: ./tb/Register_file_tb.v:35: Unable to open ./waveform/Register_file.vcd for output.
+VCD info: dumpfile ./tb/waveform/Register_file.vcd opened for output.
 -----------------------------------------------------------------------------------------------------
+| Test# | Operation                  | A3 | WD3   | RegWrite | A1 | A2 | Expected RD1 | Expected RD2 | Pass? |
+-----------------------------------------------------------------------------------------------------
+|     1 |                  Write X1 | 001 |   100 |        1 | 001 | 010 |          100 |            0 |  YES  |
+|     2 |                  Write X2 | 010 |   200 |        1 | 001 | 010 |          100 |          200 |  YES  |
+|     3 |                  Write X0 | 000 |   999 |        1 | 000 | 001 |            0 |          100 |  YES  |
+|     4 |                  No write | 011 |   300 |        0 | 011 | 010 |            0 |          200 |  YES  |
+|     5 |              Overwrite X1 | 001 |   111 |        1 | 001 | 010 |          111 |          200 |  YES  |
+|     6 |                   Read X0 |  - |     - |        0 | 000 | 000 |            0 |            0 |  YES  |
+|     7 |          Simultaneous R/W | 010 |   555 |        1 | 010 | 001 |          200 |          111 |  YES  |
+|     8 |       Read X2 after write |  - |     - |        0 | 010 | 001 |          555 |          111 |  YES  |
+-----------------------------------------------------------------------------------------------------
+Register File Test Bench Completed.
+./tb/Register_file_tb.v:128: $finish called at 80000 (1ps)

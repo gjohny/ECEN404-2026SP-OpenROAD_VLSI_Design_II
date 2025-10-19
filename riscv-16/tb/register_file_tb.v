@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module register_file_tb;
+module Register_file_tb;
 
     // Inputs
     reg clk;
@@ -15,7 +15,7 @@ module register_file_tb;
     wire [15:0] RD2;
 
     // Instantiate the register file
-    register_file uut (
+    Register_file uut (
         .clk(clk),
         .RegWrite(RegWrite),
         .A3(A3),
@@ -31,8 +31,8 @@ module register_file_tb;
     always #5 clk = ~clk;
 
     initial begin
-        $dumpfile("./waveform/Register_file.vcd");
-        $dumpvars(0, register_file_tb);
+        $dumpfile("./tb/waveform/Register_file.vcd");
+        $dumpvars(0, Register_file_tb);
     end
 
     // Test sequence
