@@ -1,0 +1,84 @@
+WARNING: ./Instruction_memory.v:20: $readmemh(program16.mem): Not enough words in the file for the requested range [0:255].
+VCD info: dumpfile ./tb/waveform/Instruction_memory.vcd opened for output.
+
+========================================
+  Instruction Memory Testbench
+========================================
+
+TEST 1: Sequential Memory Read
++----------+----------+--------------+--------+
+| PC (hex) | Word Idx | Instruction  | Status |
++----------+----------+--------------+--------+
+|   0000   |   0000   |     1234     |   OK   |
+|   0002   |   0001   |     5678     |   OK   |
+|   0004   |   0002   |     9abc     |   OK   |
+|   0006   |   0003   |     def0     |   OK   |
+|   0008   |   0004   |     aaaa     |   OK   |
+|   000a   |   0005   |     5555     |   OK   |
+|   000c   |   0006   |     ffff     |   OK   |
+|   000e   |   0007   |     0000     |   OK   |
+|   0010   |   0008   |     1111     |   OK   |
+|   0012   |   0009   |     2222     |   OK   |
+|   0014   |   000a   |     3333     |   OK   |
+|   0016   |   000b   |     4444     |   OK   |
+|   0018   |   000c   |     beef     |   OK   |
+|   001a   |   000d   |     cafe     |   OK   |
+|   001c   |   000e   |     dead     |   OK   |
+|   001e   |   000f   |     c0de     |   OK   |
++----------+----------+--------------+--------+
+RESULT: PASS (16/16 reads successful)
+
+TEST 2: Random Access
++----------+----------+--------------+--------+
+| PC (hex) | Word Idx | Instruction  | Status |
++----------+----------+--------------+--------+
+|   0010   |   0008   |     1111     |  PASS  |
+|   0050   |   0028   |     0000     |  PASS  |
+|   00a0   |   0050   |     0000     |  PASS  |
+|   00f0   |   0078   |     0000     |  PASS  |
++----------+----------+--------------+--------+
+RESULT: PASS (4/4 random accesses correct)
+
+TEST 3: Boundary Conditions
+  [PASS] First location: PC=0x0000 -> Instr=0x1234
+  [PASS] Last location:  PC=0x01fe -> Instr=0x0000
+RESULT: PASS (2/2 boundary checks)
+
+TEST 4: Alignment Check
+  Even (0x0010): word_index=0008 -> Instr=0x1111
+  Odd  (0x0011): word_index=0008 -> Instr=0x1111
+  [PASS] Both map to same word (LSB ignored)
+RESULT: PASS
+
+TEST 5: First 8 Instructions
++----------+--------------+--------+
+| Address  | Instruction  | Status |
++----------+--------------+--------+
+|   0000   |     1234     |   OK   |
+|   0002   |     5678     |   OK   |
+|   0004   |     9abc     |   OK   |
+|   0006   |     def0     |   OK   |
+|   0008   |     aaaa     |   OK   |
+|   000a   |     5555     |   OK   |
+|   000c   |     ffff     |   OK   |
+|   000e   |     0000     |   OK   |
++----------+--------------+--------+
+RESULT: PASS (8/8 sequential reads)
+
+TEST 6: Out-of-Range Access
+  [PASS] PC=0x0200 (>255 words) -> Instr=0x0000 (bounds check works)
+  [PASS] PC=0x01fe (max valid)   -> Instr=0x0000
+RESULT: PASS (2/2 boundary tests)
+
+========================================
+         FINAL TEST SUMMARY
+========================================
+  Total Tests: 33
+  Passed:      33
+  Failed:      0
+
+  *** ALL TESTS PASSED ***
+  Status: SUCCESS
+========================================
+
+./tb/Instruction_memory_tb.v:180: $finish called at 390000 (1ps)
