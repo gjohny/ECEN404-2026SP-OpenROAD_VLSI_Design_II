@@ -114,6 +114,7 @@ if [ -f "$VCD_FILE" ]; then
   # For WSL, gtkwave must be accessible via PATH and X server must be running
   if command -v gtkwave >/dev/null 2>&1; then\
     echo "✅ GTKWave launched for ${VCD_FILE}."
+    echo "Ctrl+Q (Cmd+Q on MacOS) to exit GTKWave."
     # Run in background so terminal remains usable
     nohup gtkwave "$VCD_FILE" >/dev/null 2>&1 &
   else

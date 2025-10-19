@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module tb_instruction_memory;
+module Instruction_memory;
     reg  [15:0] pc;
     wire [15:0] instruction;
     integer pass_count, fail_count;
@@ -14,8 +14,8 @@ module tb_instruction_memory;
     );
 
     initial begin
-        $dumpfile("tb_instruction_memory.vcd");
-        $dumpvars(0, tb_instruction_memory);
+        $dumpfile("./tb/waveform/Instruction_memory.vcd");
+        $dumpvars(0, Instruction_memory);
         
         pass_count = 0;
         fail_count = 0;
