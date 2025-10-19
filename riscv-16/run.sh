@@ -41,7 +41,7 @@ WAVEFORM_DIR="./tb/waveform"
 mkdir -p "$IVERILOG_DIR" "$WAVEFORM_DIR"
 
 # --- Define file paths ---
-SRC_FILE="./${UNIT}.v"
+SRC_FILE="./src/${UNIT}.v"
 TB_FILE="./tb/${UNIT}_tb.v"
 VVP_FILE="$IVERILOG_DIR/${UNIT}_result.vvp"
 OUT_FILE="$IVERILOG_DIR/${UNIT}_out.txt"
@@ -89,7 +89,7 @@ VCD_FILE="$WAVEFORM_DIR/${UNIT}.vcd"
 
 # ---- Step 1: Compile ----
 echo "[*] Compiling $UNIT..."
-iverilog -o "$VVP_FILE" "./${UNIT}.v" "./tb/${UNIT}_tb.v"
+iverilog -o "$VVP_FILE" "./src/${UNIT}.v" "./tb/${UNIT}_tb.v"
 if [ $? -ne 0 ]; then
   echo "[!] ❌ Compilation failed for $UNIT"
   exit 1
