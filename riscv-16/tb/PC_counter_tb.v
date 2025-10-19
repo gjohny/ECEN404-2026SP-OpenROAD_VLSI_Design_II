@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module tb_pc_counter;
+module PC_counter_tb;
 
     // Inputs
     reg clk;
@@ -72,8 +72,8 @@ module tb_pc_counter;
     // Test sequence
     initial begin
         // Waveform dump
-        $dumpfile("tb_pc_counter.vcd");
-        $dumpvars(0, tb_pc_counter);
+        $dumpfile("./tb/waveform/PC_counter.vcd");
+        $dumpvars(0, PC_counter_tb);
 
         // Initialize all inputs
         reset = 1;

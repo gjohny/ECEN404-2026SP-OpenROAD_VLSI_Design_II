@@ -7,7 +7,7 @@ module Instruction_memory;
 
     Instruction_Memory_16 #(
         .IMEM_WORDS(256),
-        .MEMFILE("program16.mem")
+        .MEMFILE("src/program16.mem")
     ) uut (
         .pc(pc),
         .instruction(instruction)
