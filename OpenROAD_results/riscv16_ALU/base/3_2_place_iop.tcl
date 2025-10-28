@@ -1,0 +1,57 @@
+#Edge: BOTTOM
+place_pin -pin_name ALU_control[1] -layer met2 -location {42.55 0} -force_to_die_boundary
+place_pin -pin_name ALU_control[2] -layer met2 -location {43.47 0} -force_to_die_boundary
+place_pin -pin_name ALU_control[3] -layer met2 -location {44.39 0} -force_to_die_boundary
+place_pin -pin_name ALU_result[0] -layer met2 -location {37.95 0} -force_to_die_boundary
+place_pin -pin_name ALU_result[1] -layer met2 -location {50.83 0} -force_to_die_boundary
+place_pin -pin_name ALU_result[2] -layer met2 -location {56.35 0} -force_to_die_boundary
+place_pin -pin_name ALU_result[3] -layer met2 -location {48.99 0} -force_to_die_boundary
+place_pin -pin_name ALU_result[8] -layer met2 -location {55.43 0} -force_to_die_boundary
+place_pin -pin_name SrcA[0] -layer met2 -location {26.91 0} -force_to_die_boundary
+place_pin -pin_name SrcA[1] -layer met2 -location {21.39 0} -force_to_die_boundary
+place_pin -pin_name SrcB[4] -layer met2 -location {65.55 0} -force_to_die_boundary
+place_pin -pin_name SrcB[5] -layer met2 -location {62.79 0} -force_to_die_boundary
+#Edge: RIGHT
+place_pin -pin_name ALU_result[10] -layer met3 -location {115.87 69.7} -force_to_die_boundary
+place_pin -pin_name ALU_result[11] -layer met3 -location {115.87 77.86} -force_to_die_boundary
+place_pin -pin_name ALU_result[12] -layer met3 -location {115.87 80.58} -force_to_die_boundary
+place_pin -pin_name ALU_result[13] -layer met3 -location {115.87 81.94} -force_to_die_boundary
+place_pin -pin_name ALU_result[14] -layer met3 -location {115.87 73.78} -force_to_die_boundary
+place_pin -pin_name ALU_result[15] -layer met3 -location {115.87 83.3} -force_to_die_boundary
+place_pin -pin_name ALU_result[4] -layer met3 -location {115.87 43.86} -force_to_die_boundary
+place_pin -pin_name ALU_result[5] -layer met3 -location {115.87 41.14} -force_to_die_boundary
+place_pin -pin_name ALU_result[6] -layer met3 -location {115.87 42.5} -force_to_die_boundary
+place_pin -pin_name ALU_result[7] -layer met3 -location {115.87 60.18} -force_to_die_boundary
+place_pin -pin_name ALU_result[9] -layer met3 -location {115.87 68.34} -force_to_die_boundary
+place_pin -pin_name SrcB[10] -layer met3 -location {115.87 66.98} -force_to_die_boundary
+place_pin -pin_name SrcB[6] -layer met3 -location {115.87 45.22} -force_to_die_boundary
+place_pin -pin_name SrcB[7] -layer met3 -location {115.87 53.38} -force_to_die_boundary
+place_pin -pin_name SrcB[8] -layer met3 -location {115.87 54.74} -force_to_die_boundary
+place_pin -pin_name SrcB[9] -layer met3 -location {115.87 65.62} -force_to_die_boundary
+place_pin -pin_name zero -layer met3 -location {115.87 79.22} -force_to_die_boundary
+#Edge: TOP
+place_pin -pin_name ALU_control[0] -layer met2 -location {80.27 115.87} -force_to_die_boundary
+place_pin -pin_name SrcA[11] -layer met2 -location {94.99 115.87} -force_to_die_boundary
+place_pin -pin_name SrcA[13] -layer met2 -location {74.75 115.87} -force_to_die_boundary
+place_pin -pin_name SrcA[14] -layer met2 -location {75.67 115.87} -force_to_die_boundary
+place_pin -pin_name SrcA[15] -layer met2 -location {54.51 115.87} -force_to_die_boundary
+place_pin -pin_name SrcB[11] -layer met2 -location {89.47 115.87} -force_to_die_boundary
+place_pin -pin_name SrcB[12] -layer met2 -location {88.55 115.87} -force_to_die_boundary
+place_pin -pin_name SrcB[13] -layer met2 -location {71.07 115.87} -force_to_die_boundary
+place_pin -pin_name SrcB[14] -layer met2 -location {70.15 115.87} -force_to_die_boundary
+place_pin -pin_name SrcB[15] -layer met2 -location {51.75 115.87} -force_to_die_boundary
+#Edge: LEFT
+place_pin -pin_name SrcA[10] -layer met3 -location {0 83.3} -force_to_die_boundary
+place_pin -pin_name SrcA[12] -layer met3 -location {0 95.54} -force_to_die_boundary
+place_pin -pin_name SrcA[2] -layer met3 -location {0 53.38} -force_to_die_boundary
+place_pin -pin_name SrcA[3] -layer met3 -location {0 54.74} -force_to_die_boundary
+place_pin -pin_name SrcA[4] -layer met3 -location {0 68.34} -force_to_die_boundary
+place_pin -pin_name SrcA[5] -layer met3 -location {0 84.66} -force_to_die_boundary
+place_pin -pin_name SrcA[6] -layer met3 -location {0 80.58} -force_to_die_boundary
+place_pin -pin_name SrcA[7] -layer met3 -location {0 90.1} -force_to_die_boundary
+place_pin -pin_name SrcA[8] -layer met3 -location {0 79.22} -force_to_die_boundary
+place_pin -pin_name SrcA[9] -layer met3 -location {0 92.82} -force_to_die_boundary
+place_pin -pin_name SrcB[0] -layer met3 -location {0 96.9} -force_to_die_boundary
+place_pin -pin_name SrcB[1] -layer met3 -location {0 94.18} -force_to_die_boundary
+place_pin -pin_name SrcB[2] -layer met3 -location {0 91.46} -force_to_die_boundary
+place_pin -pin_name SrcB[3] -layer met3 -location {0 86.02} -force_to_die_boundary
