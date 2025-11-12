@@ -1,0 +1,824 @@
+{
+  "creator": "Yosys 0.57 (git sha1 UNKNOWN, g++ 11.4.0-1ubuntu1~22.04.2 -fPIC -O3)",
+  "modules": {
+    "Control_Unit": {
+      "attributes": {
+        "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:3.1-127.10",
+        "top": "00000000000000000000000000000001",
+        "hdlname": "Control_Unit"
+      },
+      "ports": {
+        "opcode": {
+          "direction": "input",
+          "bits": [ 2, 3, 4 ]
+        },
+        "func": {
+          "direction": "input",
+          "bits": [ 5, 6, 7, 8 ]
+        },
+        "zero": {
+          "direction": "input",
+          "bits": [ 9 ]
+        },
+        "PCSrc": {
+          "direction": "output",
+          "bits": [ 10 ]
+        },
+        "ResultSrc": {
+          "direction": "output",
+          "bits": [ 11 ]
+        },
+        "MemWrite": {
+          "direction": "output",
+          "bits": [ 12 ]
+        },
+        "ALUControl": {
+          "direction": "output",
+          "bits": [ 13, 14, 15, 16 ]
+        },
+        "ALUSrc": {
+          "direction": "output",
+          "bits": [ 17 ]
+        },
+        "ImmSrc": {
+          "direction": "output",
+          "bits": [ 18, 19 ]
+        },
+        "RegWrite": {
+          "direction": "output",
+          "bits": [ 20 ]
+        }
+      },
+      "cells": {
+        "$auto$opt_reduce.cc:131:opt_pmux$5556": {
+          "hide_name": 1,
+          "type": "$reduce_or",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000100",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 21, 22, 23, 24 ],
+            "Y": [ 25 ]
+          }
+        },
+        "$auto$opt_reduce.cc:131:opt_pmux$5558": {
+          "hide_name": 1,
+          "type": "$reduce_or",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000100",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 21, 26, 22, 23 ],
+            "Y": [ 27 ]
+          }
+        },
+        "$procmux$5476": {
+          "hide_name": 1,
+          "type": "$pmux",
+          "parameters": {
+            "S_WIDTH": "00000000000000000000000000000010",
+            "WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:96.56-96.56|/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:95.17-98.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "x" ],
+            "B": [ 28, 29 ],
+            "S": [ 5, 30 ],
+            "Y": [ 31 ]
+          }
+        },
+        "$procmux$5478_CMP0": {
+          "hide_name": 1,
+          "type": "$not",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000001",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:95.31-95.31|/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:95.17-98.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 5 ],
+            "Y": [ 30 ]
+          }
+        },
+        "$procmux$5480_CMP0": {
+          "hide_name": 1,
+          "type": "$eq",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000011",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000011",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:82.16-82.16|/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:26.9-125.16"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 2, 3, 4 ],
+            "B": [ "0", "0", "1" ],
+            "Y": [ 32 ]
+          }
+        },
+        "$procmux$5488": {
+          "hide_name": 1,
+          "type": "$pmux",
+          "parameters": {
+            "S_WIDTH": "00000000000000000000000000000011",
+            "WIDTH": "00000000000000000000000000000011"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:52.51-52.51|/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:49.17-60.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "0", "0", "0" ],
+            "B": [ "0", "0", "1", "1", "1", "0", "0", "1", "0" ],
+            "S": [ 33, 34, 35 ],
+            "Y": [ 36, 37, 38 ]
+          }
+        },
+        "$procmux$5489_CMP0": {
+          "hide_name": 1,
+          "type": "$eq",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000100",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000010",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:52.51-52.51|/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:49.17-60.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 5, 6, 7, 8 ],
+            "B": [ "1", "1" ],
+            "Y": [ 33 ]
+          }
+        },
+        "$procmux$5490_CMP0": {
+          "hide_name": 1,
+          "type": "$eq",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000100",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000010",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:51.51-51.51|/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:49.17-60.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 5, 6, 7, 8 ],
+            "B": [ "0", "1" ],
+            "Y": [ 34 ]
+          }
+        },
+        "$procmux$5491_CMP0": {
+          "hide_name": 1,
+          "type": "$eq",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000100",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000001",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:50.51-50.51|/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:49.17-60.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 5, 6, 7, 8 ],
+            "B": [ "1" ],
+            "Y": [ 35 ]
+          }
+        },
+        "$procmux$5493_CMP0": {
+          "hide_name": 1,
+          "type": "$eq",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000011",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000001",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:36.16-36.16|/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:26.9-125.16"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 2, 3, 4 ],
+            "B": [ "1" ],
+            "Y": [ 21 ]
+          }
+        },
+        "$procmux$5513": {
+          "hide_name": 1,
+          "type": "$mux",
+          "parameters": {
+            "WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:53.51-53.51|/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:49.17-60.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "0" ],
+            "B": [ "1" ],
+            "S": [ 39 ],
+            "Y": [ 40 ]
+          }
+        },
+        "$procmux$5514_CMP0": {
+          "hide_name": 1,
+          "type": "$eq",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000100",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000100",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:53.51-53.51|/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:49.17-60.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 5, 6, 7, 8 ],
+            "B": [ "1", "0", "1", "1" ],
+            "Y": [ 39 ]
+          }
+        },
+        "$procmux$5519": {
+          "hide_name": 1,
+          "type": "$pmux",
+          "parameters": {
+            "S_WIDTH": "00000000000000000000000000000011",
+            "WIDTH": "00000000000000000000000000000100"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:82.16-82.16|/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:26.9-125.16"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "0", "0", "0", "0" ],
+            "B": [ "1", "0", "0", "0", 36, 37, 38, "0", 5, 6, 7, 8 ],
+            "S": [ 32, 21, 26 ],
+            "Y": [ 13, 14, 15, 16 ]
+          }
+        },
+        "$procmux$5522_CMP0": {
+          "hide_name": 1,
+          "type": "$logic_not",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000011",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:26.22-26.22|/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:26.9-125.16"
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 2, 3, 4 ],
+            "Y": [ 26 ]
+          }
+        },
+        "$procmux$5527": {
+          "hide_name": 1,
+          "type": "$mux",
+          "parameters": {
+            "WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:61.16-61.16|/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:26.9-125.16"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "0" ],
+            "B": [ "1" ],
+            "S": [ 22 ],
+            "Y": [ 11 ]
+          }
+        },
+        "$procmux$5528_CMP0": {
+          "hide_name": 1,
+          "type": "$eq",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000011",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000010",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:61.16-61.16|/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:26.9-125.16"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 2, 3, 4 ],
+            "B": [ "0", "1" ],
+            "Y": [ 22 ]
+          }
+        },
+        "$procmux$5530": {
+          "hide_name": 1,
+          "type": "$mux",
+          "parameters": {
+            "WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:99.16-99.16|/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:26.9-125.16"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "0" ],
+            "B": [ "1" ],
+            "S": [ 25 ],
+            "Y": [ 17 ]
+          }
+        },
+        "$procmux$5531_CMP0": {
+          "hide_name": 1,
+          "type": "$eq",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000011",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000011",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:99.16-99.16|/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:26.9-125.16"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 2, 3, 4 ],
+            "B": [ "1", "0", "1" ],
+            "Y": [ 23 ]
+          }
+        },
+        "$procmux$5532_CMP0": {
+          "hide_name": 1,
+          "type": "$eq",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000011",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000010",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:72.16-72.16|/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:26.9-125.16"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 2, 3, 4 ],
+            "B": [ "1", "1" ],
+            "Y": [ 24 ]
+          }
+        },
+        "$procmux$5536": {
+          "hide_name": 1,
+          "type": "$mux",
+          "parameters": {
+            "WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:99.16-99.16|/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:26.9-125.16"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "0" ],
+            "B": [ "1" ],
+            "S": [ 27 ],
+            "Y": [ 20 ]
+          }
+        },
+        "$procmux$5542": {
+          "hide_name": 1,
+          "type": "$pmux",
+          "parameters": {
+            "S_WIDTH": "00000000000000000000000000000010",
+            "WIDTH": "00000000000000000000000000000010"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:99.16-99.16|/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:26.9-125.16"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "0", "0" ],
+            "B": [ "0", "1", "1", "0" ],
+            "S": [ 23, 32 ],
+            "Y": [ 18, 19 ]
+          }
+        },
+        "$procmux$5549": {
+          "hide_name": 1,
+          "type": "$mux",
+          "parameters": {
+            "WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:72.16-72.16|/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:26.9-125.16"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "0" ],
+            "B": [ "1" ],
+            "S": [ 24 ],
+            "Y": [ 12 ]
+          }
+        },
+        "$procmux$5552": {
+          "hide_name": 1,
+          "type": "$pmux",
+          "parameters": {
+            "S_WIDTH": "00000000000000000000000000000011",
+            "WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:99.16-99.16|/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:26.9-125.16"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "0" ],
+            "B": [ "1", 31, 40 ],
+            "S": [ 23, 32, 21 ],
+            "Y": [ 10 ]
+          }
+        },
+        "$ternary$/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:96$5471": {
+          "hide_name": 1,
+          "type": "$mux",
+          "parameters": {
+            "WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:96.35-96.55"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "0" ],
+            "B": [ "1" ],
+            "S": [ 9 ],
+            "Y": [ 29 ]
+          }
+        },
+        "$ternary$/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:97$5473": {
+          "hide_name": 1,
+          "type": "$mux",
+          "parameters": {
+            "WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:97.35-97.56"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "1" ],
+            "B": [ "0" ],
+            "S": [ 9 ],
+            "Y": [ 28 ]
+          }
+        }
+      },
+      "netnames": {
+        "$2\\ALUControl[3:0]": {
+          "hide_name": 1,
+          "bits": [ 36, 37, 38 ],
+          "attributes": {
+          }
+        },
+        "$2\\PCSrc[0:0]": {
+          "hide_name": 1,
+          "bits": [ 40 ],
+          "attributes": {
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:16.5-126.8"
+          }
+        },
+        "$3\\PCSrc[0:0]": {
+          "hide_name": 1,
+          "bits": [ 31 ],
+          "attributes": {
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:16.5-126.8"
+          }
+        },
+        "$auto$opt_reduce.cc:137:opt_pmux$5557": {
+          "hide_name": 1,
+          "bits": [ 25 ],
+          "attributes": {
+          }
+        },
+        "$auto$opt_reduce.cc:137:opt_pmux$5559": {
+          "hide_name": 1,
+          "bits": [ 27 ],
+          "attributes": {
+          }
+        },
+        "$procmux$5478_CMP": {
+          "hide_name": 1,
+          "bits": [ 30 ],
+          "attributes": {
+          }
+        },
+        "$procmux$5480_CMP": {
+          "hide_name": 1,
+          "bits": [ 32 ],
+          "attributes": {
+          }
+        },
+        "$procmux$5489_CMP": {
+          "hide_name": 1,
+          "bits": [ 33 ],
+          "attributes": {
+          }
+        },
+        "$procmux$5490_CMP": {
+          "hide_name": 1,
+          "bits": [ 34 ],
+          "attributes": {
+          }
+        },
+        "$procmux$5491_CMP": {
+          "hide_name": 1,
+          "bits": [ 35 ],
+          "attributes": {
+          }
+        },
+        "$procmux$5493_CMP": {
+          "hide_name": 1,
+          "bits": [ 21 ],
+          "attributes": {
+          }
+        },
+        "$procmux$5514_CMP": {
+          "hide_name": 1,
+          "bits": [ 39 ],
+          "attributes": {
+          }
+        },
+        "$procmux$5522_CMP": {
+          "hide_name": 1,
+          "bits": [ 26 ],
+          "attributes": {
+          }
+        },
+        "$procmux$5528_CMP": {
+          "hide_name": 1,
+          "bits": [ 22 ],
+          "attributes": {
+          }
+        },
+        "$procmux$5531_CMP": {
+          "hide_name": 1,
+          "bits": [ 23 ],
+          "attributes": {
+          }
+        },
+        "$procmux$5532_CMP": {
+          "hide_name": 1,
+          "bits": [ 24 ],
+          "attributes": {
+          }
+        },
+        "$ternary$/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:96$5471_Y": {
+          "hide_name": 1,
+          "bits": [ 29 ],
+          "attributes": {
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:96.35-96.55"
+          }
+        },
+        "$ternary$/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:97$5473_Y": {
+          "hide_name": 1,
+          "bits": [ 28 ],
+          "attributes": {
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:97.35-97.56"
+          }
+        },
+        "ALUControl": {
+          "hide_name": 0,
+          "bits": [ 13, 14, 15, 16 ],
+          "attributes": {
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:10.23-10.33"
+          }
+        },
+        "ALUSrc": {
+          "hide_name": 0,
+          "bits": [ 17 ],
+          "attributes": {
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:11.23-11.29"
+          }
+        },
+        "ImmSrc": {
+          "hide_name": 0,
+          "bits": [ 18, 19 ],
+          "attributes": {
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:12.23-12.29"
+          }
+        },
+        "MemWrite": {
+          "hide_name": 0,
+          "bits": [ 12 ],
+          "attributes": {
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:9.23-9.31"
+          }
+        },
+        "PCSrc": {
+          "hide_name": 0,
+          "bits": [ 10 ],
+          "attributes": {
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:7.23-7.28"
+          }
+        },
+        "RegWrite": {
+          "hide_name": 0,
+          "bits": [ 20 ],
+          "attributes": {
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:13.23-13.31"
+          }
+        },
+        "ResultSrc": {
+          "hide_name": 0,
+          "bits": [ 11 ],
+          "attributes": {
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:8.23-8.32"
+          }
+        },
+        "func": {
+          "hide_name": 0,
+          "bits": [ 5, 6, 7, 8 ],
+          "attributes": {
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:5.18-5.22"
+          }
+        },
+        "opcode": {
+          "hide_name": 0,
+          "bits": [ 2, 3, 4 ],
+          "attributes": {
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:4.18-4.24"
+          }
+        },
+        "zero": {
+          "hide_name": 0,
+          "bits": [ 9 ],
+          "attributes": {
+            "src": "/OpenROAD-flow-scripts/flow/designs/src/riscv16_ControlUnit/Control_unit.v:6.18-6.22"
+          }
+        }
+      }
+    }
+  }
+}
