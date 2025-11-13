@@ -1,0 +1,55 @@
+#Edge: BOTTOM
+place_pin -pin_name mem_access_addr[0] -layer met2 -location {2.07 0} -force_to_die_boundary
+place_pin -pin_name mem_access_addr[10] -layer met2 -location {2.99 0} -force_to_die_boundary
+place_pin -pin_name mem_access_addr[11] -layer met2 -location {3.91 0} -force_to_die_boundary
+place_pin -pin_name mem_access_addr[12] -layer met2 -location {4.83 0} -force_to_die_boundary
+place_pin -pin_name mem_access_addr[13] -layer met2 -location {5.75 0} -force_to_die_boundary
+place_pin -pin_name mem_access_addr[14] -layer met2 -location {6.67 0} -force_to_die_boundary
+place_pin -pin_name mem_access_addr[15] -layer met2 -location {7.59 0} -force_to_die_boundary
+place_pin -pin_name mem_access_addr[4] -layer met2 -location {8.51 0} -force_to_die_boundary
+place_pin -pin_name mem_access_addr[5] -layer met2 -location {9.43 0} -force_to_die_boundary
+place_pin -pin_name mem_access_addr[6] -layer met2 -location {10.35 0} -force_to_die_boundary
+place_pin -pin_name mem_access_addr[7] -layer met2 -location {11.27 0} -force_to_die_boundary
+place_pin -pin_name mem_access_addr[8] -layer met2 -location {12.19 0} -force_to_die_boundary
+place_pin -pin_name mem_access_addr[9] -layer met2 -location {13.11 0} -force_to_die_boundary
+place_pin -pin_name mem_read_data[0] -layer met2 -location {90.39 0} -force_to_die_boundary
+place_pin -pin_name mem_read_data[15] -layer met2 -location {66.47 0} -force_to_die_boundary
+place_pin -pin_name mem_read_data[2] -layer met2 -location {47.15 0} -force_to_die_boundary
+place_pin -pin_name mem_write_data[0] -layer met2 -location {79.35 0} -force_to_die_boundary
+place_pin -pin_name mem_write_data[12] -layer met2 -location {54.51 0} -force_to_die_boundary
+place_pin -pin_name mem_write_data[15] -layer met2 -location {52.67 0} -force_to_die_boundary
+place_pin -pin_name mem_write_data[2] -layer met2 -location {34.27 0} -force_to_die_boundary
+#Edge: RIGHT
+place_pin -pin_name mem_read_data[12] -layer met3 -location {123.845 60.18} -force_to_die_boundary
+place_pin -pin_name mem_read_data[4] -layer met3 -location {123.845 81.94} -force_to_die_boundary
+place_pin -pin_name mem_read_data[5] -layer met3 -location {123.845 43.86} -force_to_die_boundary
+place_pin -pin_name mem_read_data[9] -layer met3 -location {123.845 62.9} -force_to_die_boundary
+place_pin -pin_name mem_write_data[4] -layer met3 -location {123.845 77.86} -force_to_die_boundary
+place_pin -pin_name mem_write_data[5] -layer met3 -location {123.845 38.42} -force_to_die_boundary
+place_pin -pin_name mem_write_data[9] -layer met3 -location {123.845 57.46} -force_to_die_boundary
+#Edge: TOP
+place_pin -pin_name mem_access_addr[2] -layer met2 -location {66.47 123.845} -force_to_die_boundary
+place_pin -pin_name mem_access_addr[3] -layer met2 -location {67.39 123.845} -force_to_die_boundary
+place_pin -pin_name mem_read_data[1] -layer met2 -location {90.39 123.845} -force_to_die_boundary
+place_pin -pin_name mem_read_data[3] -layer met2 -location {47.15 123.845} -force_to_die_boundary
+place_pin -pin_name mem_read_data[7] -layer met2 -location {69.23 123.845} -force_to_die_boundary
+place_pin -pin_name mem_write_data[1] -layer met2 -location {95.91 123.845} -force_to_die_boundary
+place_pin -pin_name mem_write_data[3] -layer met2 -location {45.31 123.845} -force_to_die_boundary
+place_pin -pin_name mem_write_data[7] -layer met2 -location {65.55 123.845} -force_to_die_boundary
+#Edge: LEFT
+place_pin -pin_name clk -layer met3 -location {0 106.42} -force_to_die_boundary
+place_pin -pin_name mem_access_addr[1] -layer met3 -location {0 105.06} -force_to_die_boundary
+place_pin -pin_name mem_read -layer met3 -location {0 95.54} -force_to_die_boundary
+place_pin -pin_name mem_read_data[10] -layer met3 -location {0 84.66} -force_to_die_boundary
+place_pin -pin_name mem_read_data[11] -layer met3 -location {0 65.62} -force_to_die_boundary
+place_pin -pin_name mem_read_data[13] -layer met3 -location {0 31.62} -force_to_die_boundary
+place_pin -pin_name mem_read_data[14] -layer met3 -location {0 96.9} -force_to_die_boundary
+place_pin -pin_name mem_read_data[6] -layer met3 -location {0 66.98} -force_to_die_boundary
+place_pin -pin_name mem_read_data[8] -layer met3 -location {0 47.94} -force_to_die_boundary
+place_pin -pin_name mem_write_data[10] -layer met3 -location {0 87.38} -force_to_die_boundary
+place_pin -pin_name mem_write_data[11] -layer met3 -location {0 76.5} -force_to_die_boundary
+place_pin -pin_name mem_write_data[13] -layer met3 -location {0 32.98} -force_to_die_boundary
+place_pin -pin_name mem_write_data[14] -layer met3 -location {0 103.7} -force_to_die_boundary
+place_pin -pin_name mem_write_data[6] -layer met3 -location {0 69.7} -force_to_die_boundary
+place_pin -pin_name mem_write_data[8] -layer met3 -location {0 50.66} -force_to_die_boundary
+place_pin -pin_name mem_write_en -layer met3 -location {0 94.18} -force_to_die_boundary
