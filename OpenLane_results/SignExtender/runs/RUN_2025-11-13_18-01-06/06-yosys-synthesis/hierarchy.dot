@@ -1,0 +1,22 @@
+digraph "Sign_Extender" {
+label="Sign_Extender";
+rankdir="LR";
+remincross=true;
+n3 [ shape=octagon, label="ImmExt", color="black", fontcolor="black"];
+n4 [ shape=octagon, label="ImmSrc", color="black", fontcolor="black"];
+n5 [ shape=octagon, label="instr", color="black", fontcolor="black"];
+x1 [ shape=record, style=rounded, label="<s1> 15:6 - 15:6 |0 -&gt; 5:0 ", color="black", fontcolor="black" ];
+x2 [ shape=record, style=rounded, label="<s9> 9x 15:15 - 15:7 |<s0> 15:9 - 6:0 ", color="black", fontcolor="black" ];
+x3 [ shape=record, style=rounded, label="<s13> 13x 15:15 - 15:3 |<s0> 15:13 - 2:0 ", color="black", fontcolor="black" ];
+p0 [shape=box, style=rounded, label="PROC $1\n/Users/talhaibrahim/my_designs/SignExtender/sign_extender.v:8.1-16.4", ];
+p0:e -> n3:w [color="black", fontcolor="black", style="setlinewidth(3)", label=""];
+n4:e -> p0:w [color="black", fontcolor="black", style="setlinewidth(3)", label=""];
+n5:e -> x1:s1:w [color="black", fontcolor="black", style="setlinewidth(3)", label=""];
+n5:e -> x2:s0:w [color="black", fontcolor="black", style="setlinewidth(3)", label=""];
+n5:e -> x2:s9:w [color="black", fontcolor="black", style="setlinewidth(3)", label=""];
+n5:e -> x3:s0:w [color="black", fontcolor="black", style="setlinewidth(3)", label=""];
+n5:e -> x3:s13:w [color="black", fontcolor="black", style="setlinewidth(3)", label=""];
+x1:e -> p0:w [color="black", fontcolor="black", style="setlinewidth(3)", label=""];
+x2:e -> p0:w [color="black", fontcolor="black", style="setlinewidth(3)", label=""];
+x3:e -> p0:w [color="black", fontcolor="black", style="setlinewidth(3)", label=""];
+}

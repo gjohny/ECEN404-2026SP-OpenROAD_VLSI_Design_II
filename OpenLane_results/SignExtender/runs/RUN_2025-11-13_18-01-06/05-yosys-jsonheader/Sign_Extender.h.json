@@ -1,0 +1,195 @@
+{
+  "creator": "Yosys 0.46 (git sha1 e97731b9dda91fa5fa53ed87df7c34163ba59a41, clang++ 16.0.6 -fPIC -O3)",
+  "modules": {
+    "Sign_Extender": {
+      "attributes": {
+        "hdlname": "Sign_Extender",
+        "top": "00000000000000000000000000000001",
+        "src": "/Users/talhaibrahim/my_designs/SignExtender/sign_extender.v:2.1-18.10"
+      },
+      "ports": {
+        "instr": {
+          "direction": "input",
+          "bits": [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 ]
+        },
+        "ImmSrc": {
+          "direction": "input",
+          "bits": [ 18, 19 ]
+        },
+        "ImmExt": {
+          "direction": "output",
+          "bits": [ 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35 ]
+        }
+      },
+      "cells": {
+        "$procmux$2": {
+          "hide_name": 1,
+          "type": "$pmux",
+          "parameters": {
+            "S_WIDTH": "00000000000000000000000000000100",
+            "WIDTH": "00000000000000000000000000010000"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/Users/talhaibrahim/my_designs/SignExtender/sign_extender.v:0.0-0.0|/Users/talhaibrahim/my_designs/SignExtender/sign_extender.v:9.5-15.12"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "S": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x", "x" ],
+            "B": [ 11, 12, 13, 14, 15, 16, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, "0", "0", "0", "0", "0", "0", 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 11, 12, 13, 14, 15, 16, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 15, 16, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17 ],
+            "S": [ 36, 37, 38, 39 ],
+            "Y": [ 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35 ]
+          }
+        },
+        "$procmux$3_CMP0": {
+          "hide_name": 1,
+          "type": "$eq",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000010",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000010",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/Users/talhaibrahim/my_designs/SignExtender/sign_extender.v:0.0-0.0|/Users/talhaibrahim/my_designs/SignExtender/sign_extender.v:9.5-15.12"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 18, 19 ],
+            "B": [ "1", "1" ],
+            "Y": [ 36 ]
+          }
+        },
+        "$procmux$4_CMP0": {
+          "hide_name": 1,
+          "type": "$eq",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000010",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000010",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/Users/talhaibrahim/my_designs/SignExtender/sign_extender.v:0.0-0.0|/Users/talhaibrahim/my_designs/SignExtender/sign_extender.v:9.5-15.12"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 18, 19 ],
+            "B": [ "0", "1" ],
+            "Y": [ 37 ]
+          }
+        },
+        "$procmux$5_CMP0": {
+          "hide_name": 1,
+          "type": "$eq",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000010",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000010",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/Users/talhaibrahim/my_designs/SignExtender/sign_extender.v:0.0-0.0|/Users/talhaibrahim/my_designs/SignExtender/sign_extender.v:9.5-15.12"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 18, 19 ],
+            "B": [ "1", "0" ],
+            "Y": [ 38 ]
+          }
+        },
+        "$procmux$6_CMP0": {
+          "hide_name": 1,
+          "type": "$logic_not",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000010",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "full_case": "00000000000000000000000000000001",
+            "src": "/Users/talhaibrahim/my_designs/SignExtender/sign_extender.v:0.0-0.0|/Users/talhaibrahim/my_designs/SignExtender/sign_extender.v:9.5-15.12"
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 18, 19 ],
+            "Y": [ 39 ]
+          }
+        }
+      },
+      "netnames": {
+        "$procmux$3_CMP": {
+          "hide_name": 1,
+          "bits": [ 36 ],
+          "attributes": {
+          }
+        },
+        "$procmux$4_CMP": {
+          "hide_name": 1,
+          "bits": [ 37 ],
+          "attributes": {
+          }
+        },
+        "$procmux$5_CMP": {
+          "hide_name": 1,
+          "bits": [ 38 ],
+          "attributes": {
+          }
+        },
+        "$procmux$6_CMP": {
+          "hide_name": 1,
+          "bits": [ 39 ],
+          "attributes": {
+          }
+        },
+        "ImmExt": {
+          "hide_name": 0,
+          "bits": [ 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35 ],
+          "attributes": {
+            "src": "/Users/talhaibrahim/my_designs/SignExtender/sign_extender.v:5.24-5.30"
+          }
+        },
+        "ImmSrc": {
+          "hide_name": 0,
+          "bits": [ 18, 19 ],
+          "attributes": {
+            "src": "/Users/talhaibrahim/my_designs/SignExtender/sign_extender.v:4.23-4.29"
+          }
+        },
+        "instr": {
+          "hide_name": 0,
+          "bits": [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 ],
+          "attributes": {
+            "src": "/Users/talhaibrahim/my_designs/SignExtender/sign_extender.v:3.24-3.29"
+          }
+        }
+      }
+    }
+  }
+}

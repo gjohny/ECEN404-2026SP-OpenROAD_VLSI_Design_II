@@ -1,0 +1,119 @@
+
+===========================================================================
+report_checks -unconstrained
+===========================================================================
+======================= nom_tt_025C_1v80 Corner ===================================
+
+Startpoint: ImmSrc[0] (input port clocked by __VIRTUAL_CLK__)
+Endpoint: ImmExt[10] (output port clocked by __VIRTUAL_CLK__)
+Path Group: __VIRTUAL_CLK__
+Path Type: max
+
+Fanout         Cap        Slew       Delay        Time   Description
+---------------------------------------------------------------------------------------------
+                      0.000000    0.000000    0.000000   clock __VIRTUAL_CLK__ (rise edge)
+                                  0.000000    0.000000   clock network delay (ideal)
+                                  5.000000    5.000000 ^ input external delay
+    12    0.027098    0.129277    0.087629    5.087629 ^ ImmSrc[0] (in)
+                                                         ImmSrc[0] (net)
+                      0.129277    0.000000    5.087629 ^ _15_/A_N (sky130_fd_sc_hd__nand2b_2)
+     9    0.029486    0.170355    0.231430    5.319059 ^ _15_/Y (sky130_fd_sc_hd__nand2b_2)
+                                                         _03_ (net)
+                      0.170355    0.000000    5.319059 ^ _20_/S (sky130_fd_sc_hd__mux2_1)
+     1    0.033442    0.188768    0.485753    5.804812 v _20_/X (sky130_fd_sc_hd__mux2_1)
+                                                         ImmExt[10] (net)
+                      0.188768    0.000000    5.804812 v ImmExt[10] (out)
+                                              5.804812   data arrival time
+
+                      0.000000   25.000000   25.000000   clock __VIRTUAL_CLK__ (rise edge)
+                                  0.000000   25.000000   clock network delay (ideal)
+                                 -0.250000   24.750000   clock uncertainty
+                                  0.000000   24.750000   clock reconvergence pessimism
+                                 -5.000000   19.750000   output external delay
+                                             19.750000   data required time
+---------------------------------------------------------------------------------------------
+                                             19.750000   data required time
+                                             -5.804812   data arrival time
+---------------------------------------------------------------------------------------------
+                                             13.945187   slack (MET)
+
+
+
+
+===========================================================================
+report_checks --slack_max -0.01
+============================================================================
+======================= nom_tt_025C_1v80 Corner ===================================
+
+No paths found.
+
+
+===========================================================================
+ report_check_types -max_slew -max_cap -max_fanout -violators
+============================================================================
+======================= nom_tt_025C_1v80 Corner ===================================
+
+max fanout
+
+Pin                                   Limit Fanout  Slack
+---------------------------------------------------------
+ImmSrc[0]                                10     12     -2 (VIOLATED)
+instr[15]                                10     11        (VIOLATED)
+
+
+
+===========================================================================
+report_parasitic_annotation -report_unannotated
+============================================================================
+Found 40 unannotated drivers.
+ ImmSrc[0]
+ ImmSrc[1]
+ instr[0]
+ instr[10]
+ instr[11]
+ instr[12]
+ instr[13]
+ instr[14]
+ instr[15]
+ instr[1]
+ instr[2]
+ instr[3]
+ instr[4]
+ instr[5]
+ instr[6]
+ instr[7]
+ instr[8]
+ instr[9]
+ _06_/X
+ _07_/X
+ _08_/X
+ _09_/X
+ _10_/Y
+ _11_/X
+ _12_/X
+ _13_/X
+ _14_/X
+ _15_/Y
+ _16_/X
+ _17_/X
+ _18_/X
+ _19_/X
+ _20_/X
+ _21_/X
+ _22_/X
+ _23_/X
+ _24_/X
+ _25_/X
+ _26_/X
+ _27_/X
+Found 0 partially unannotated drivers.
+
+===========================================================================
+max slew violation count 0
+max fanout violation count 2
+max cap violation count 0
+============================================================================
+
+===========================================================================
+check_setup -verbose -unconstrained_endpoints -multiple_clock -no_clock -no_input_delay -loops -generated_clocks
+===========================================================================
