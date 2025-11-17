@@ -1,0 +1,1025 @@
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2024  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.46 (git sha1 e97731b9dda91fa5fa53ed87df7c34163ba59a41, clang++ 17.0.6 -fPIC -O3)
+Loaded SDC plugin
+
+1. Executing Liberty frontend: /home/giovani/.volare/volare/sky130/versions/0fe599b2afb6708d281543108caf8310912f54af/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+Imported 428 cell types from liberty file.
+[INFO] Using SDC file '/home/giovani/my_designs/data_memory/src/runs/RUN_2025-11-17_14-31-38/06-yosys-synthesis/synthesis.abc.sdc' for ABC…
+
+2. Executing Verilog-2005 frontend: /home/giovani/my_designs/data_memory/src/Data_Memory.v
+Parsing SystemVerilog input from `/home/giovani/my_designs/data_memory/src/Data_Memory.v' to AST representation.
+Storing AST representation for module `$abstract\Data_Memory'.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: /home/giovani/my_designs/data_memory/src/Parameter.v
+Parsing SystemVerilog input from `/home/giovani/my_designs/data_memory/src/Parameter.v' to AST representation.
+Successfully finished Verilog frontend.
+
+4. Executing HIERARCHY pass (managing design hierarchy).
+
+5. Executing AST frontend in derive mode using pre-parsed AST for module `\Data_Memory'.
+Generating RTLIL representation for module `\Data_Memory'.
+
+5.1. Analyzing design hierarchy..
+Top module:  \Data_Memory
+
+5.2. Analyzing design hierarchy..
+Top module:  \Data_Memory
+Removing unused module `$abstract\Data_Memory'.
+Removed 1 unused modules.
+Renaming module Data_Memory to Data_Memory.
+
+6. Generating Graphviz representation of design.
+Writing dot description to `/home/giovani/my_designs/data_memory/src/runs/RUN_2025-11-17_14-31-38/06-yosys-synthesis/hierarchy.dot'.
+Dumping module Data_Memory to page 1.
+
+7. Executing TRIBUF pass.
+
+8. Executing HIERARCHY pass (managing design hierarchy).
+
+8.1. Analyzing design hierarchy..
+Top module:  \Data_Memory
+
+8.2. Analyzing design hierarchy..
+Top module:  \Data_Memory
+Removed 0 unused modules.
+
+9. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+10. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 1 switch rules as full_case in process $proc$/home/giovani/my_designs/data_memory/src/Data_Memory.v:16$2 in module Data_Memory.
+Removed a total of 0 dead cases.
+
+11. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 0 redundant assignments.
+Promoted 3 assignments to connections.
+
+12. Executing PROC_INIT pass (extract init attributes).
+
+13. Executing PROC_ARST pass (detect async resets in processes).
+
+14. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+<suppressed ~1 debug messages>
+
+15. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\Data_Memory.$proc$/home/giovani/my_designs/data_memory/src/Data_Memory.v:16$2'.
+     1/3: $1$memwr$\memory$/home/giovani/my_designs/data_memory/src/Data_Memory.v:18$1_EN[15:0]$8
+     2/3: $1$memwr$\memory$/home/giovani/my_designs/data_memory/src/Data_Memory.v:18$1_DATA[15:0]$7
+     3/3: $1$memwr$\memory$/home/giovani/my_designs/data_memory/src/Data_Memory.v:18$1_ADDR[2:0]$6
+
+16. Executing PROC_DLATCH pass (convert process syncs to latches).
+
+17. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\Data_Memory.$memwr$\memory$/home/giovani/my_designs/data_memory/src/Data_Memory.v:18$1_ADDR' using process `\Data_Memory.$proc$/home/giovani/my_designs/data_memory/src/Data_Memory.v:16$2'.
+  created $dff cell `$procdff$21' with positive edge clock.
+Creating register for signal `\Data_Memory.$memwr$\memory$/home/giovani/my_designs/data_memory/src/Data_Memory.v:18$1_DATA' using process `\Data_Memory.$proc$/home/giovani/my_designs/data_memory/src/Data_Memory.v:16$2'.
+  created $dff cell `$procdff$22' with positive edge clock.
+Creating register for signal `\Data_Memory.$memwr$\memory$/home/giovani/my_designs/data_memory/src/Data_Memory.v:18$1_EN' using process `\Data_Memory.$proc$/home/giovani/my_designs/data_memory/src/Data_Memory.v:16$2'.
+  created $dff cell `$procdff$23' with positive edge clock.
+
+18. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+19. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 1 empty switch in `\Data_Memory.$proc$/home/giovani/my_designs/data_memory/src/Data_Memory.v:16$2'.
+Removing empty process `Data_Memory.$proc$/home/giovani/my_designs/data_memory/src/Data_Memory.v:16$2'.
+Cleaned up 1 empty switch.
+
+20. Executing CHECK pass (checking for obvious problems).
+Checking module Data_Memory...
+Found and reported 0 problems.
+
+21. Executing OPT_EXPR pass (perform const folding).
+Optimizing module Data_Memory.
+
+22. Executing FLATTEN pass (flatten design).
+
+23. Executing OPT_EXPR pass (perform const folding).
+Optimizing module Data_Memory.
+
+24. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \Data_Memory..
+Removed 3 unused cells and 13 unused wires.
+<suppressed ~4 debug messages>
+
+25. Executing OPT_EXPR pass (perform const folding).
+Optimizing module Data_Memory.
+
+26. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\Data_Memory'.
+Removed a total of 0 cells.
+
+27. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \Data_Memory..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~4 debug messages>
+
+28. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \Data_Memory.
+    Consolidated identical input bits for $mux cell $procmux$13:
+      Old ports: A=16'0000000000000000, B=16'1111111111111111, Y=$0$memwr$\memory$/home/giovani/my_designs/data_memory/src/Data_Memory.v:18$1_EN[15:0]$5
+      New ports: A=1'0, B=1'1, Y=$0$memwr$\memory$/home/giovani/my_designs/data_memory/src/Data_Memory.v:18$1_EN[15:0]$5 [0]
+      New connections: $0$memwr$\memory$/home/giovani/my_designs/data_memory/src/Data_Memory.v:18$1_EN[15:0]$5 [15:1] = { $0$memwr$\memory$/home/giovani/my_designs/data_memory/src/Data_Memory.v:18$1_EN[15:0]$5 [0] $0$memwr$\memory$/home/giovani/my_designs/data_memory/src/Data_Memory.v:18$1_EN[15:0]$5 [0] $0$memwr$\memory$/home/giovani/my_designs/data_memory/src/Data_Memory.v:18$1_EN[15:0]$5 [0] $0$memwr$\memory$/home/giovani/my_designs/data_memory/src/Data_Memory.v:18$1_EN[15:0]$5 [0] $0$memwr$\memory$/home/giovani/my_designs/data_memory/src/Data_Memory.v:18$1_EN[15:0]$5 [0] $0$memwr$\memory$/home/giovani/my_designs/data_memory/src/Data_Memory.v:18$1_EN[15:0]$5 [0] $0$memwr$\memory$/home/giovani/my_designs/data_memory/src/Data_Memory.v:18$1_EN[15:0]$5 [0] $0$memwr$\memory$/home/giovani/my_designs/data_memory/src/Data_Memory.v:18$1_EN[15:0]$5 [0] $0$memwr$\memory$/home/giovani/my_designs/data_memory/src/Data_Memory.v:18$1_EN[15:0]$5 [0] $0$memwr$\memory$/home/giovani/my_designs/data_memory/src/Data_Memory.v:18$1_EN[15:0]$5 [0] $0$memwr$\memory$/home/giovani/my_designs/data_memory/src/Data_Memory.v:18$1_EN[15:0]$5 [0] $0$memwr$\memory$/home/giovani/my_designs/data_memory/src/Data_Memory.v:18$1_EN[15:0]$5 [0] $0$memwr$\memory$/home/giovani/my_designs/data_memory/src/Data_Memory.v:18$1_EN[15:0]$5 [0] $0$memwr$\memory$/home/giovani/my_designs/data_memory/src/Data_Memory.v:18$1_EN[15:0]$5 [0] $0$memwr$\memory$/home/giovani/my_designs/data_memory/src/Data_Memory.v:18$1_EN[15:0]$5 [0] }
+  Optimizing cells in module \Data_Memory.
+Performed a total of 1 changes.
+
+29. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\Data_Memory'.
+Removed a total of 0 cells.
+
+30. Executing OPT_DFF pass (perform DFF optimizations).
+
+31. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \Data_Memory..
+
+32. Executing OPT_EXPR pass (perform const folding).
+Optimizing module Data_Memory.
+
+33. Rerunning OPT passes. (Maybe there is more to do…)
+
+34. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \Data_Memory..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~4 debug messages>
+
+35. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \Data_Memory.
+Performed a total of 0 changes.
+
+36. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\Data_Memory'.
+Removed a total of 0 cells.
+
+37. Executing OPT_DFF pass (perform DFF optimizations).
+
+38. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \Data_Memory..
+
+39. Executing OPT_EXPR pass (perform const folding).
+Optimizing module Data_Memory.
+
+40. Executing FSM pass (extract and optimize FSM).
+
+40.1. Executing FSM_DETECT pass (finding FSMs in design).
+
+40.2. Executing FSM_EXTRACT pass (extracting FSM from design).
+
+40.3. Executing FSM_OPT pass (simple optimizations of FSMs).
+
+40.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \Data_Memory..
+
+40.5. Executing FSM_OPT pass (simple optimizations of FSMs).
+
+40.6. Executing FSM_RECODE pass (re-assigning FSM state encoding).
+
+40.7. Executing FSM_INFO pass (dumping all available information on FSM cells).
+
+40.8. Executing FSM_MAP pass (mapping FSMs to basic logic).
+
+41. Executing OPT_EXPR pass (perform const folding).
+Optimizing module Data_Memory.
+
+42. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\Data_Memory'.
+Removed a total of 0 cells.
+
+43. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \Data_Memory..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~4 debug messages>
+
+44. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \Data_Memory.
+Performed a total of 0 changes.
+
+45. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\Data_Memory'.
+Removed a total of 0 cells.
+
+46. Executing OPT_DFF pass (perform DFF optimizations).
+
+47. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \Data_Memory..
+
+48. Executing OPT_EXPR pass (perform const folding).
+Optimizing module Data_Memory.
+
+49. Executing WREDUCE pass (reducing word size of cells).
+
+50. Executing PEEPOPT pass (run peephole optimizers).
+
+51. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \Data_Memory..
+
+52. Executing ALUMACC pass (create $alu and $macc cells).
+Extracting $alu and $macc cells in module Data_Memory:
+  created 0 $alu and 0 $macc cells.
+
+53. Executing SHARE pass (SAT-based resource sharing).
+
+54. Executing OPT_EXPR pass (perform const folding).
+Optimizing module Data_Memory.
+
+55. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\Data_Memory'.
+Removed a total of 0 cells.
+
+56. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \Data_Memory..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~4 debug messages>
+
+57. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \Data_Memory.
+Performed a total of 0 changes.
+
+58. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\Data_Memory'.
+Removed a total of 0 cells.
+
+59. Executing OPT_DFF pass (perform DFF optimizations).
+
+60. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \Data_Memory..
+
+61. Executing OPT_EXPR pass (perform const folding).
+Optimizing module Data_Memory.
+
+62. Executing MEMORY pass.
+
+62.1. Executing OPT_MEM pass (optimize memories).
+Performed a total of 0 transformations.
+
+62.2. Executing OPT_MEM_PRIORITY pass (removing unnecessary memory write priority relations).
+Performed a total of 0 transformations.
+
+62.3. Executing OPT_MEM_FEEDBACK pass (finding memory read-to-write feedback paths).
+  Analyzing Data_Memory.memory write port 0.
+
+62.4. Executing MEMORY_BMUX2ROM pass (converting muxes to ROMs).
+
+62.5. Executing MEMORY_DFF pass (merging $dff cells to $memrd).
+Checking read port `\memory'[0] in module `\Data_Memory': no output FF found.
+Checking read port address `\memory'[0] in module `\Data_Memory': no address FF found.
+
+62.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \Data_Memory..
+
+62.7. Executing MEMORY_SHARE pass (consolidating $memrd/$memwr cells).
+
+62.8. Executing OPT_MEM_WIDEN pass (optimize memories where all ports are wide).
+Performed a total of 0 transformations.
+
+62.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \Data_Memory..
+
+62.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+63. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \Data_Memory..
+
+64. Executing OPT_EXPR pass (perform const folding).
+Optimizing module Data_Memory.
+<suppressed ~3 debug messages>
+
+65. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\Data_Memory'.
+Removed a total of 0 cells.
+
+66. Executing OPT_DFF pass (perform DFF optimizations).
+
+67. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \Data_Memory..
+Removed 0 unused cells and 3 unused wires.
+<suppressed ~1 debug messages>
+
+68. Executing MEMORY_MAP pass (converting memories to logic and flip-flops).
+Mapping memory \memory in module \Data_Memory:
+  created 8 $dff cells and 0 static cells of width 16.
+  read interface: 0 $dff and 7 $mux cells.
+  write interface: 8 write mux blocks.
+
+69. Executing OPT_EXPR pass (perform const folding).
+Optimizing module Data_Memory.
+<suppressed ~6 debug messages>
+
+70. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\Data_Memory'.
+Removed a total of 0 cells.
+
+71. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \Data_Memory..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~9 debug messages>
+
+72. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \Data_Memory.
+Performed a total of 0 changes.
+
+73. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\Data_Memory'.
+Removed a total of 0 cells.
+
+74. Executing OPT_SHARE pass.
+
+75. Executing OPT_DFF pass (perform DFF optimizations).
+
+76. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \Data_Memory..
+Removed 0 unused cells and 19 unused wires.
+<suppressed ~1 debug messages>
+
+77. Executing OPT_EXPR pass (perform const folding).
+Optimizing module Data_Memory.
+
+78. Rerunning OPT passes. (Maybe there is more to do…)
+
+79. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \Data_Memory..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~9 debug messages>
+
+80. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \Data_Memory.
+Performed a total of 0 changes.
+
+81. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\Data_Memory'.
+Removed a total of 0 cells.
+
+82. Executing OPT_SHARE pass.
+
+83. Executing OPT_DFF pass (perform DFF optimizations).
+Adding EN signal on $memory\memory[7]$41 ($dff) from module Data_Memory (D = \mem_write_data, Q = \memory[7]).
+Adding EN signal on $memory\memory[6]$39 ($dff) from module Data_Memory (D = \mem_write_data, Q = \memory[6]).
+Adding EN signal on $memory\memory[5]$37 ($dff) from module Data_Memory (D = \mem_write_data, Q = \memory[5]).
+Adding EN signal on $memory\memory[4]$35 ($dff) from module Data_Memory (D = \mem_write_data, Q = \memory[4]).
+Adding EN signal on $memory\memory[3]$33 ($dff) from module Data_Memory (D = \mem_write_data, Q = \memory[3]).
+Adding EN signal on $memory\memory[2]$31 ($dff) from module Data_Memory (D = \mem_write_data, Q = \memory[2]).
+Adding EN signal on $memory\memory[1]$29 ($dff) from module Data_Memory (D = \mem_write_data, Q = \memory[1]).
+Adding EN signal on $memory\memory[0]$27 ($dff) from module Data_Memory (D = \mem_write_data, Q = \memory[0]).
+
+84. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \Data_Memory..
+Removed 8 unused cells and 8 unused wires.
+<suppressed ~9 debug messages>
+
+85. Executing OPT_EXPR pass (perform const folding).
+Optimizing module Data_Memory.
+
+86. Rerunning OPT passes. (Maybe there is more to do…)
+
+87. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \Data_Memory..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~1 debug messages>
+
+88. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \Data_Memory.
+Performed a total of 0 changes.
+
+89. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\Data_Memory'.
+Removed a total of 0 cells.
+
+90. Executing OPT_SHARE pass.
+
+91. Executing OPT_DFF pass (perform DFF optimizations).
+
+92. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \Data_Memory..
+
+93. Executing OPT_EXPR pass (perform const folding).
+Optimizing module Data_Memory.
+
+94. Executing TECHMAP pass (map to technology primitives).
+
+94.1. Executing Verilog-2005 frontend: /nix/store/9r0bh7sp051dpm8km8bqlb028anpd3v3-yosys/bin/../share/yosys/techmap.v
+Parsing Verilog input from `/nix/store/9r0bh7sp051dpm8km8bqlb028anpd3v3-yosys/bin/../share/yosys/techmap.v' to AST representation.
+Generating RTLIL representation for module `\_90_simplemap_bool_ops'.
+Generating RTLIL representation for module `\_90_simplemap_reduce_ops'.
+Generating RTLIL representation for module `\_90_simplemap_logic_ops'.
+Generating RTLIL representation for module `\_90_simplemap_compare_ops'.
+Generating RTLIL representation for module `\_90_simplemap_various'.
+Generating RTLIL representation for module `\_90_simplemap_registers'.
+Generating RTLIL representation for module `\_90_shift_ops_shr_shl_sshl_sshr'.
+Generating RTLIL representation for module `\_90_shift_shiftx'.
+Generating RTLIL representation for module `\_90_fa'.
+Generating RTLIL representation for module `\_90_lcu_brent_kung'.
+Generating RTLIL representation for module `\_90_alu'.
+Generating RTLIL representation for module `\_90_macc'.
+Generating RTLIL representation for module `\_90_alumacc'.
+Generating RTLIL representation for module `\$__div_mod_u'.
+Generating RTLIL representation for module `\$__div_mod_trunc'.
+Generating RTLIL representation for module `\_90_div'.
+Generating RTLIL representation for module `\_90_mod'.
+Generating RTLIL representation for module `\$__div_mod_floor'.
+Generating RTLIL representation for module `\_90_divfloor'.
+Generating RTLIL representation for module `\_90_modfloor'.
+Generating RTLIL representation for module `\_90_pow'.
+Generating RTLIL representation for module `\_90_pmux'.
+Generating RTLIL representation for module `\_90_demux'.
+Generating RTLIL representation for module `\_90_lut'.
+Successfully finished Verilog frontend.
+
+94.2. Continuing TECHMAP pass.
+Using extmapper simplemap for cells of type $dffe.
+Using extmapper simplemap for cells of type $mux.
+Using extmapper simplemap for cells of type $not.
+Using extmapper simplemap for cells of type $and.
+No more expansions possible.
+<suppressed ~113 debug messages>
+
+95. Executing OPT_EXPR pass (perform const folding).
+Optimizing module Data_Memory.
+
+96. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\Data_Memory'.
+Removed a total of 0 cells.
+
+97. Executing OPT_DFF pass (perform DFF optimizations).
+
+98. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \Data_Memory..
+
+99. Executing OPT_EXPR pass (perform const folding).
+Optimizing module Data_Memory.
+
+100. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\Data_Memory'.
+Removed a total of 0 cells.
+
+101. Executing OPT_DFF pass (perform DFF optimizations).
+
+102. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \Data_Memory..
+
+103. Executing ABC pass (technology mapping using ABC).
+
+103.1. Extracting gate netlist of module `\Data_Memory' to `<abc-temp-dir>/input.blif'..
+Extracted 167 gates and 317 wires to a netlist network with 149 inputs and 24 outputs.
+
+103.1.1. Executing ABC.
+Running ABC command: "/nix/store/6l3aj1gi4lja8z5s4lan2k2cfz9mqkrz-yosys-abc/bin/abc" -s -f <abc-temp-dir>/abc.script 2>&1
+ABC: ABC command line: "source <abc-temp-dir>/abc.script".
+ABC: 
+ABC: + read_blif <abc-temp-dir>/input.blif 
+ABC: + read_library <abc-temp-dir>/stdcells.genlib 
+ABC: Entered genlib library with 13 gates from file "<abc-temp-dir>/stdcells.genlib".
+ABC: + strash 
+ABC: + dretime 
+ABC: + map 
+ABC: + write_blif <abc-temp-dir>/output.blif 
+
+103.1.2. Re-integrating ABC results.
+ABC RESULTS:               MUX cells:      128
+ABC RESULTS:               NOT cells:        4
+ABC RESULTS:             ORNOT cells:        2
+ABC RESULTS:              NAND cells:        1
+ABC RESULTS:                OR cells:        9
+ABC RESULTS:            ANDNOT cells:       24
+ABC RESULTS:        internal signals:      144
+ABC RESULTS:           input signals:      149
+ABC RESULTS:          output signals:       24
+Removing temp directory.
+
+104. Executing OPT pass (performing simple optimizations).
+
+104.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module Data_Memory.
+<suppressed ~48 debug messages>
+
+104.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\Data_Memory'.
+Removed a total of 0 cells.
+
+104.3. Executing OPT_DFF pass (perform DFF optimizations).
+
+104.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \Data_Memory..
+Removed 2 unused cells and 198 unused wires.
+<suppressed ~3 debug messages>
+
+104.5. Finished fast OPT passes.
+
+105. Executing HIERARCHY pass (managing design hierarchy).
+
+105.1. Analyzing design hierarchy..
+Top module:  \Data_Memory
+
+105.2. Analyzing design hierarchy..
+Top module:  \Data_Memory
+Removed 0 unused modules.
+
+106. Executing CHECK pass (checking for obvious problems).
+Checking module Data_Memory...
+Found and reported 0 problems.
+
+107. Printing statistics.
+
+=== Data_Memory ===
+
+   Number of wires:                165
+   Number of wire bits:            332
+   Number of public wires:          15
+   Number of public wire bits:     182
+   Number of ports:                  6
+   Number of port bits:             51
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                294
+     $_ANDNOT_                      24
+     $_DFFE_PP_                    128
+     $_MUX_                        128
+     $_NAND_                         1
+     $_NOT_                          2
+     $_ORNOT_                        2
+     $_OR_                           9
+
+108. Generating Graphviz representation of design.
+Writing dot description to `/home/giovani/my_designs/data_memory/src/runs/RUN_2025-11-17_14-31-38/06-yosys-synthesis/primitive_techmap.dot'.
+Dumping module Data_Memory to page 1.
+
+109. Executing OPT pass (performing simple optimizations).
+
+109.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module Data_Memory.
+
+109.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\Data_Memory'.
+Removed a total of 0 cells.
+
+109.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \Data_Memory..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+
+109.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \Data_Memory.
+Performed a total of 0 changes.
+
+109.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\Data_Memory'.
+Removed a total of 0 cells.
+
+109.6. Executing OPT_DFF pass (perform DFF optimizations).
+
+109.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \Data_Memory..
+
+109.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module Data_Memory.
+
+109.9. Finished OPT passes. (There is nothing left to do.)
+
+110. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \Data_Memory..
+Removed 0 unused cells and 1 unused wires.
+<suppressed ~1 debug messages>
+{
+   "creator": "Yosys 0.46 (git sha1 e97731b9dda91fa5fa53ed87df7c34163ba59a41, clang++ 17.0.6 -fPIC -O3)",
+   "invocation": "stat -json -liberty /home/giovani/my_designs/data_memory/src/runs/RUN_2025-11-17_14-31-38/tmp/ac4d897610554053b3b990cf652cca25.lib ",
+   "modules": {
+      "\\Data_Memory": {
+         "num_wires":         164,
+         "num_wire_bits":     329,
+         "num_pub_wires":     14,
+         "num_pub_wire_bits": 179,
+         "num_ports":         6,
+         "num_port_bits":     51,
+         "num_memories":      0,
+         "num_memory_bits":   0,
+         "num_processes":     0,
+         "num_cells":         294,
+         "num_cells_by_type": {
+            "$_ANDNOT_": 24,
+            "$_DFFE_PP_": 128,
+            "$_MUX_": 128,
+            "$_NAND_": 1,
+            "$_NOT_": 2,
+            "$_ORNOT_": 2,
+            "$_OR_": 9
+         }
+      }
+   },
+      "design": {
+         "num_wires":         164,
+         "num_wire_bits":     329,
+         "num_pub_wires":     14,
+         "num_pub_wire_bits": 179,
+         "num_ports":         6,
+         "num_port_bits":     51,
+         "num_memories":      0,
+         "num_memory_bits":   0,
+         "num_processes":     0,
+         "num_cells":         294,
+         "num_cells_by_type": {
+            "$_ANDNOT_": 24,
+            "$_DFFE_PP_": 128,
+            "$_MUX_": 128,
+            "$_NAND_": 1,
+            "$_NOT_": 2,
+            "$_ORNOT_": 2,
+            "$_OR_": 9
+         }
+      }
+}
+
+111. Printing statistics.
+
+=== Data_Memory ===
+
+   Number of wires:                164
+   Number of wire bits:            329
+   Number of public wires:          14
+   Number of public wire bits:     179
+   Number of ports:                  6
+   Number of port bits:             51
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                294
+     $_ANDNOT_                      24
+     $_DFFE_PP_                    128
+     $_MUX_                        128
+     $_NAND_                         1
+     $_NOT_                          2
+     $_ORNOT_                        2
+     $_OR_                           9
+
+   Area for cell type $_NOT_ is unknown!
+   Area for cell type $_NAND_ is unknown!
+   Area for cell type $_OR_ is unknown!
+   Area for cell type $_ANDNOT_ is unknown!
+   Area for cell type $_ORNOT_ is unknown!
+   Area for cell type $_MUX_ is unknown!
+   Area for cell type $_DFFE_PP_ is unknown!
+
+[INFO] Applying tri-state buffer mapping from '/home/giovani/.volare/volare/sky130/versions/0fe599b2afb6708d281543108caf8310912f54af/sky130A/libs.tech/openlane/sky130_fd_sc_hd/tribuff_map.v'…
+
+112. Executing TECHMAP pass (map to technology primitives).
+
+112.1. Executing Verilog-2005 frontend: /home/giovani/.volare/volare/sky130/versions/0fe599b2afb6708d281543108caf8310912f54af/sky130A/libs.tech/openlane/sky130_fd_sc_hd/tribuff_map.v
+Parsing Verilog input from `/home/giovani/.volare/volare/sky130/versions/0fe599b2afb6708d281543108caf8310912f54af/sky130A/libs.tech/openlane/sky130_fd_sc_hd/tribuff_map.v' to AST representation.
+Generating RTLIL representation for module `\$_TBUF_'.
+Successfully finished Verilog frontend.
+
+112.2. Continuing TECHMAP pass.
+No more expansions possible.
+<suppressed ~3 debug messages>
+
+113. Executing SIMPLEMAP pass (map simple cells to gate primitives).
+[INFO] Applying latch mapping from '/home/giovani/.volare/volare/sky130/versions/0fe599b2afb6708d281543108caf8310912f54af/sky130A/libs.tech/openlane/sky130_fd_sc_hd/latch_map.v'…
+
+114. Executing TECHMAP pass (map to technology primitives).
+
+114.1. Executing Verilog-2005 frontend: /home/giovani/.volare/volare/sky130/versions/0fe599b2afb6708d281543108caf8310912f54af/sky130A/libs.tech/openlane/sky130_fd_sc_hd/latch_map.v
+Parsing Verilog input from `/home/giovani/.volare/volare/sky130/versions/0fe599b2afb6708d281543108caf8310912f54af/sky130A/libs.tech/openlane/sky130_fd_sc_hd/latch_map.v' to AST representation.
+Generating RTLIL representation for module `\$_DLATCH_P_'.
+Generating RTLIL representation for module `\$_DLATCH_N_'.
+Successfully finished Verilog frontend.
+
+114.2. Continuing TECHMAP pass.
+No more expansions possible.
+<suppressed ~4 debug messages>
+
+115. Executing SIMPLEMAP pass (map simple cells to gate primitives).
+
+116. Executing DFFLIBMAP pass (mapping DFF cells to sequential cells from liberty file).
+  cell sky130_fd_sc_hd__dfxtp_2 (noninv, pins=3, area=21.27) is a direct match for cell type $_DFF_P_.
+  cell sky130_fd_sc_hd__dfrtp_2 (noninv, pins=4, area=26.28) is a direct match for cell type $_DFF_PN0_.
+  cell sky130_fd_sc_hd__dfstp_2 (noninv, pins=4, area=26.28) is a direct match for cell type $_DFF_PN1_.
+  cell sky130_fd_sc_hd__dfbbn_2 (noninv, pins=6, area=35.03) is a direct match for cell type $_DFFSR_NNN_.
+  final dff cell mappings:
+    unmapped dff cell: $_DFF_N_
+    \sky130_fd_sc_hd__dfxtp_2 _DFF_P_ (.CLK( C), .D( D), .Q( Q));
+    unmapped dff cell: $_DFF_NN0_
+    unmapped dff cell: $_DFF_NN1_
+    unmapped dff cell: $_DFF_NP0_
+    unmapped dff cell: $_DFF_NP1_
+    \sky130_fd_sc_hd__dfrtp_2 _DFF_PN0_ (.CLK( C), .D( D), .Q( Q), .RESET_B( R));
+    \sky130_fd_sc_hd__dfstp_2 _DFF_PN1_ (.CLK( C), .D( D), .Q( Q), .SET_B( R));
+    unmapped dff cell: $_DFF_PP0_
+    unmapped dff cell: $_DFF_PP1_
+    \sky130_fd_sc_hd__dfbbn_2 _DFFSR_NNN_ (.CLK_N( C), .D( D), .Q( Q), .Q_N(~Q), .RESET_B( R), .SET_B( S));
+    unmapped dff cell: $_DFFSR_NNP_
+    unmapped dff cell: $_DFFSR_NPN_
+    unmapped dff cell: $_DFFSR_NPP_
+    unmapped dff cell: $_DFFSR_PNN_
+    unmapped dff cell: $_DFFSR_PNP_
+    unmapped dff cell: $_DFFSR_PPN_
+    unmapped dff cell: $_DFFSR_PPP_
+
+116.1. Executing DFFLEGALIZE pass (convert FFs to types supported by the target).
+Mapping DFF cells in module `\Data_Memory':
+  mapped 128 $_DFF_P_ cells to \sky130_fd_sc_hd__dfxtp_2 cells.
+{
+   "creator": "Yosys 0.46 (git sha1 e97731b9dda91fa5fa53ed87df7c34163ba59a41, clang++ 17.0.6 -fPIC -O3)",
+   "invocation": "stat -json -liberty /home/giovani/my_designs/data_memory/src/runs/RUN_2025-11-17_14-31-38/tmp/ac4d897610554053b3b990cf652cca25.lib ",
+   "modules": {
+      "\\Data_Memory": {
+         "num_wires":         292,
+         "num_wire_bits":     457,
+         "num_pub_wires":     14,
+         "num_pub_wire_bits": 179,
+         "num_ports":         6,
+         "num_port_bits":     51,
+         "num_memories":      0,
+         "num_memory_bits":   0,
+         "num_processes":     0,
+         "num_cells":         422,
+         "area":              2722.611200,
+         "num_cells_by_type": {
+            "$_ANDNOT_": 24,
+            "$_MUX_": 256,
+            "$_NAND_": 1,
+            "$_NOT_": 2,
+            "$_ORNOT_": 2,
+            "$_OR_": 9,
+            "sky130_fd_sc_hd__dfxtp_2": 128
+         }
+      }
+   },
+      "design": {
+         "num_wires":         292,
+         "num_wire_bits":     457,
+         "num_pub_wires":     14,
+         "num_pub_wire_bits": 179,
+         "num_ports":         6,
+         "num_port_bits":     51,
+         "num_memories":      0,
+         "num_memory_bits":   0,
+         "num_processes":     0,
+         "num_cells":         422,
+         "area":              2722.611200,
+         "num_cells_by_type": {
+            "$_ANDNOT_": 24,
+            "$_MUX_": 256,
+            "$_NAND_": 1,
+            "$_NOT_": 2,
+            "$_ORNOT_": 2,
+            "$_OR_": 9,
+            "sky130_fd_sc_hd__dfxtp_2": 128
+         }
+      }
+}
+
+117. Printing statistics.
+
+=== Data_Memory ===
+
+   Number of wires:                292
+   Number of wire bits:            457
+   Number of public wires:          14
+   Number of public wire bits:     179
+   Number of ports:                  6
+   Number of port bits:             51
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                422
+     $_ANDNOT_                      24
+     $_MUX_                        256
+     $_NAND_                         1
+     $_NOT_                          2
+     $_ORNOT_                        2
+     $_OR_                           9
+     sky130_fd_sc_hd__dfxtp_2      128
+
+   Area for cell type $_NOT_ is unknown!
+   Area for cell type $_NAND_ is unknown!
+   Area for cell type $_OR_ is unknown!
+   Area for cell type $_ANDNOT_ is unknown!
+   Area for cell type $_ORNOT_ is unknown!
+   Area for cell type $_MUX_ is unknown!
+
+   Chip area for module '\Data_Memory': 2722.611200
+     of which used for sequential elements: 2722.611200 (100.00%)
+
+[INFO] Using generated ABC script '/home/giovani/my_designs/data_memory/src/runs/RUN_2025-11-17_14-31-38/06-yosys-synthesis/AREA_0.abc'…
+
+118. Executing ABC pass (technology mapping using ABC).
+
+118.1. Extracting gate netlist of module `\Data_Memory' to `/tmp/yosys-abc-m5o79A/input.blif'..
+Extracted 294 gates and 443 wires to a netlist network with 149 inputs and 144 outputs.
+
+118.1.1. Executing ABC.
+Running ABC command: "/nix/store/6l3aj1gi4lja8z5s4lan2k2cfz9mqkrz-yosys-abc/bin/abc" -s -f /tmp/yosys-abc-m5o79A/abc.script 2>&1
+ABC: ABC command line: "source /tmp/yosys-abc-m5o79A/abc.script".
+ABC: 
+ABC: + read_blif /tmp/yosys-abc-m5o79A/input.blif 
+ABC: + read_lib -w /home/giovani/my_designs/data_memory/src/runs/RUN_2025-11-17_14-31-38/tmp/ac4d897610554053b3b990cf652cca25.lib 
+ABC: Parsing finished successfully.  Parsing time =     0.03 sec
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "sky130_fd_sc_hd__dfbbn_2".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "sky130_fd_sc_hd__dfrbp_2".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "sky130_fd_sc_hd__dfrtp_2".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "sky130_fd_sc_hd__dfrtp_4".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "sky130_fd_sc_hd__dfsbp_2".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "sky130_fd_sc_hd__dfstp_2".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "sky130_fd_sc_hd__dfstp_4".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "sky130_fd_sc_hd__dfxbp_2".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "sky130_fd_sc_hd__dfxtp_2".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "sky130_fd_sc_hd__dfxtp_4".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "sky130_fd_sc_hd__dlxtn_1".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "sky130_fd_sc_hd__dlxtn_2".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "sky130_fd_sc_hd__dlxtn_4".
+ABC: Scl_LibertyReadGenlib() skipped sequential cell "sky130_fd_sc_hd__dlxtp_1".
+ABC: Scl_LibertyReadGenlib() skipped three-state cell "sky130_fd_sc_hd__ebufn_2".
+ABC: Scl_LibertyReadGenlib() skipped three-state cell "sky130_fd_sc_hd__ebufn_4".
+ABC: Scl_LibertyReadGenlib() skipped three-state cell "sky130_fd_sc_hd__ebufn_8".
+ABC: Library "sky130_fd_sc_hd__tt_025C_1v80" from "/home/giovani/my_designs/data_memory/src/runs/RUN_2025-11-17_14-31-38/tmp/ac4d897610554053b3b990cf652cca25.lib" has 175 cells (17 skipped: 14 seq; 3 tri-state; 0 no func; 0 dont_use).  Time =     0.04 sec
+ABC: Memory =    9.54 MB. Time =     0.04 sec
+ABC: Warning: Detected 2 multi-output gates (for example, "sky130_fd_sc_hd__fa_1").
+ABC: + read_constr -v /home/giovani/my_designs/data_memory/src/runs/RUN_2025-11-17_14-31-38/06-yosys-synthesis/synthesis.abc.sdc 
+ABC: Setting driving cell to be "sky130_fd_sc_hd__inv_2/Y".
+ABC: Setting output load to be 33.442001.
+ABC: + source /home/giovani/my_designs/data_memory/src/runs/RUN_2025-11-17_14-31-38/06-yosys-synthesis/AREA_0.abc 
+ABC: Error: The network is combinational.
+ABC: Cannot find the default PI driving cell (sky130_fd_sc_hd__inv_2/Y) in the library.
+ABC: WireLoad = "none"  Gates =    283 (  0.4 %)   Cap = 15.6 ff ( 17.0 %)   Area =     2971.60 ( 31.8 %)   Delay =  1524.20 ps  (  6.4 %)               
+ABC: Path  0 --       7 : 0    4 pi                      A =   0.00  Df =   0.0   -0.0 ps  S =   0.0 ps  Cin =  0.0 ff  Cout =   9.4 ff  Cmax =   0.0 ff  G =    0  
+ABC: Path  1 --     303 : 2   18 sky130_fd_sc_hd__nor2_2 A =   6.26  Df = 352.2 -277.9 ps  S = 449.4 ps  Cin =  4.4 ff  Cout =  40.7 ff  Cmax = 141.9 ff  G =  873  
+ABC: Path  2 --     509 : 3   16 sky130_fd_sc_hd__or3b_2 A =   8.76  Df =1012.8 -525.2 ps  S = 324.3 ps  Cin =  1.5 ff  Cout =  56.3 ff  Cmax = 269.2 ff  G = 3610  
+ABC: Path  3 --     510 : 3    1 sky130_fd_sc_hd__mux2_1 A =  11.26  Df =1524.2 -543.1 ps  S = 300.4 ps  Cin =  2.3 ff  Cout =  33.4 ff  Cmax = 173.0 ff  G = 1465  
+ABC: Start-point = pi6 (\mem_access_addr [2]).  End-point = po80 ($auto$rtlil.cc:2739:MuxGate$811).
+ABC: netlist                       : i/o =  149/  144  lat =    0  nd =   283  edge =    863  area =2971.57  delay = 3.00  lev = 3
+ABC: + write_blif /tmp/yosys-abc-m5o79A/output.blif 
+
+118.1.2. Re-integrating ABC results.
+ABC RESULTS:   sky130_fd_sc_hd__inv_2 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__and2b_2 cells:        2
+ABC RESULTS:   sky130_fd_sc_hd__nor2_2 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__or2_2 cells:        2
+ABC RESULTS:   sky130_fd_sc_hd__o311a_2 cells:        2
+ABC RESULTS:   sky130_fd_sc_hd__a221o_2 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__o221a_2 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__and2_2 cells:       16
+ABC RESULTS:   sky130_fd_sc_hd__a21o_2 cells:       15
+ABC RESULTS:   sky130_fd_sc_hd__a22o_2 cells:       16
+ABC RESULTS:   sky130_fd_sc_hd__o21a_2 cells:       13
+ABC RESULTS:   sky130_fd_sc_hd__o31a_2 cells:       13
+ABC RESULTS:   sky130_fd_sc_hd__or3b_2 cells:        1
+ABC RESULTS:   sky130_fd_sc_hd__and3b_2 cells:        3
+ABC RESULTS:   sky130_fd_sc_hd__and3_2 cells:        4
+ABC RESULTS:   sky130_fd_sc_hd__mux2_1 cells:      192
+ABC RESULTS:        internal signals:      150
+ABC RESULTS:           input signals:      149
+ABC RESULTS:          output signals:      144
+Removing temp directory.
+
+119. Executing SETUNDEF pass (replace undef values with defined constants).
+
+120. Executing HILOMAP pass (mapping to constant drivers).
+
+121. Executing SPLITNETS pass (splitting up multi-bit signals).
+
+122. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \Data_Memory..
+Removed 0 unused cells and 443 unused wires.
+<suppressed ~1 debug messages>
+
+123. Executing INSBUF pass (insert buffer cells for connected wires).
+
+124. Executing CHECK pass (checking for obvious problems).
+Checking module Data_Memory...
+Found and reported 0 problems.
+{
+   "creator": "Yosys 0.46 (git sha1 e97731b9dda91fa5fa53ed87df7c34163ba59a41, clang++ 17.0.6 -fPIC -O3)",
+   "invocation": "stat -json -liberty /home/giovani/my_designs/data_memory/src/runs/RUN_2025-11-17_14-31-38/tmp/ac4d897610554053b3b990cf652cca25.lib ",
+   "modules": {
+      "\\Data_Memory": {
+         "num_wires":         401,
+         "num_wire_bits":     446,
+         "num_pub_wires":     134,
+         "num_pub_wire_bits": 179,
+         "num_ports":         6,
+         "num_port_bits":     51,
+         "num_memories":      0,
+         "num_memory_bits":   0,
+         "num_processes":     0,
+         "num_cells":         411,
+         "area":              5694.211200,
+         "num_cells_by_type": {
+            "sky130_fd_sc_hd__a21o_2": 15,
+            "sky130_fd_sc_hd__a221o_2": 1,
+            "sky130_fd_sc_hd__a22o_2": 16,
+            "sky130_fd_sc_hd__and2_2": 16,
+            "sky130_fd_sc_hd__and2b_2": 2,
+            "sky130_fd_sc_hd__and3_2": 4,
+            "sky130_fd_sc_hd__and3b_2": 3,
+            "sky130_fd_sc_hd__dfxtp_2": 128,
+            "sky130_fd_sc_hd__inv_2": 1,
+            "sky130_fd_sc_hd__mux2_1": 192,
+            "sky130_fd_sc_hd__nor2_2": 1,
+            "sky130_fd_sc_hd__o21a_2": 13,
+            "sky130_fd_sc_hd__o221a_2": 1,
+            "sky130_fd_sc_hd__o311a_2": 2,
+            "sky130_fd_sc_hd__o31a_2": 13,
+            "sky130_fd_sc_hd__or2_2": 2,
+            "sky130_fd_sc_hd__or3b_2": 1
+         }
+      }
+   },
+      "design": {
+         "num_wires":         401,
+         "num_wire_bits":     446,
+         "num_pub_wires":     134,
+         "num_pub_wire_bits": 179,
+         "num_ports":         6,
+         "num_port_bits":     51,
+         "num_memories":      0,
+         "num_memory_bits":   0,
+         "num_processes":     0,
+         "num_cells":         411,
+         "area":              5694.211200,
+         "num_cells_by_type": {
+            "sky130_fd_sc_hd__a21o_2": 15,
+            "sky130_fd_sc_hd__a221o_2": 1,
+            "sky130_fd_sc_hd__a22o_2": 16,
+            "sky130_fd_sc_hd__and2_2": 16,
+            "sky130_fd_sc_hd__and2b_2": 2,
+            "sky130_fd_sc_hd__and3_2": 4,
+            "sky130_fd_sc_hd__and3b_2": 3,
+            "sky130_fd_sc_hd__dfxtp_2": 128,
+            "sky130_fd_sc_hd__inv_2": 1,
+            "sky130_fd_sc_hd__mux2_1": 192,
+            "sky130_fd_sc_hd__nor2_2": 1,
+            "sky130_fd_sc_hd__o21a_2": 13,
+            "sky130_fd_sc_hd__o221a_2": 1,
+            "sky130_fd_sc_hd__o311a_2": 2,
+            "sky130_fd_sc_hd__o31a_2": 13,
+            "sky130_fd_sc_hd__or2_2": 2,
+            "sky130_fd_sc_hd__or3b_2": 1
+         }
+      }
+}
+
+125. Printing statistics.
+
+=== Data_Memory ===
+
+   Number of wires:                401
+   Number of wire bits:            446
+   Number of public wires:         134
+   Number of public wire bits:     179
+   Number of ports:                  6
+   Number of port bits:             51
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                411
+     sky130_fd_sc_hd__a21o_2        15
+     sky130_fd_sc_hd__a221o_2        1
+     sky130_fd_sc_hd__a22o_2        16
+     sky130_fd_sc_hd__and2_2        16
+     sky130_fd_sc_hd__and2b_2        2
+     sky130_fd_sc_hd__and3_2         4
+     sky130_fd_sc_hd__and3b_2        3
+     sky130_fd_sc_hd__dfxtp_2      128
+     sky130_fd_sc_hd__inv_2          1
+     sky130_fd_sc_hd__mux2_1       192
+     sky130_fd_sc_hd__nor2_2         1
+     sky130_fd_sc_hd__o21a_2        13
+     sky130_fd_sc_hd__o221a_2        1
+     sky130_fd_sc_hd__o311a_2        2
+     sky130_fd_sc_hd__o31a_2        13
+     sky130_fd_sc_hd__or2_2          2
+     sky130_fd_sc_hd__or3b_2         1
+
+   Chip area for module '\Data_Memory': 5694.211200
+     of which used for sequential elements: 2722.611200 (47.81%)
+
+126. Executing Verilog backend.
+Dumping module `\Data_Memory'.
+
+127. Executing JSON backend.
