@@ -1,0 +1,20 @@
+digraph "Instruction_Memory_16" {
+label="Instruction_Memory_16";
+rankdir="LR";
+remincross=true;
+n4 [ shape=diamond, label="rom_out", color="black", fontcolor="black"];
+n5 [ shape=diamond, label="word_index", color="black", fontcolor="black"];
+n6 [ shape=octagon, label="instruction", color="black", fontcolor="black"];
+n7 [ shape=octagon, label="pc", color="black", fontcolor="black"];
+n8 [ shape=octagon, label="clk", color="black", fontcolor="black"];
+p0 [shape=box, style=rounded, label="PROC $2\nInstructionmemory.v:48.1-50.4", ];
+p1 [shape=box, style=rounded, label="PROC $1\nInstructionmemory.v:14.1-45.4", ];
+x2 [ shape=record, style=rounded, label="0 -&gt; 15:15 |<s0> 15:1 - 14:0 ", color="black", fontcolor="black" ];
+p1:e -> n4:w [color="black", fontcolor="black", style="setlinewidth(3)", label=""];
+n4:e -> p0:w [color="black", fontcolor="black", style="setlinewidth(3)", label=""];
+x2:e -> n5:w [color="black", fontcolor="black", style="setlinewidth(3)", label=""];
+n5:e -> p1:w [color="black", fontcolor="black", style="setlinewidth(3)", label=""];
+p0:e -> n6:w [color="black", fontcolor="black", style="setlinewidth(3)", label=""];
+n7:e -> x2:s0:w [color="black", fontcolor="black", style="setlinewidth(3)", label=""];
+n8:e -> p0:w [color="black", fontcolor="black", label=""];
+}
