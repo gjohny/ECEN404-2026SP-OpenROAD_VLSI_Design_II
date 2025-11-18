@@ -1,4 +1,4 @@
-`include "src/Parameter.v"
+`include "Parameter.v"
 
 module Data_Memory(
   input         clk,
