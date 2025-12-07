@@ -1,32 +1,37 @@
 `timescale 1ns/1ps
 
-module Instruction_Memory_16 #(
+module Instruction_memory #(
     parameter IMEM_WORDS = 256,
-    parameter MEMFILE    = "program16.mem"
+    parameter MEMFILE    = ""          // Optional memory file
 )(
+    input      clk,
     input      [15:0] pc,
     output reg [15:0] instruction
 );
+
+    // Memory array
     reg [15:0] memory [0:IMEM_WORDS-1];
     integer i;
 
+    // Initialize memory
     initial begin
-        // Initialize all memory to zero first
         for (i = 0; i < IMEM_WORDS; i = i + 1)
             memory[i] = 16'h0000;
-        
-        // Load program file if specified (overwrites zeros)
+
+        // Load memory from file if specified
         if (MEMFILE != "")
             $readmemh(MEMFILE, memory);
     end
 
-    // Bounds-checked read
+    // Word-aligned index
     wire [15:0] word_index = pc[15:1];
-    
-    always @(*) begin
+
+    // Read memory on every clock
+    always @(posedge clk) begin
         if (word_index < IMEM_WORDS)
-            instruction = memory[word_index];
+            instruction <= memory[word_index];
         else
-            instruction = 16'h0000;  // Return 0 for out-of-bounds
+            instruction <= 16'h0000; // Return 0 if out-of-bounds
     end
+
 endmodule
