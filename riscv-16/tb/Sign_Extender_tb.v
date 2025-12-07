@@ -12,10 +12,10 @@ module Sign_Extender_tb;
     );
 
     // For waveform generation
-    initial begin
-        $dumpfile("./tb/waveform/Sign_Extender.vcd");
-        $dumpvars(0, Sign_Extender_tb);
-    end
+    // initial begin
+    //     $dumpfile("./tb/waveform/Sign_Extender.vcd");
+    //     $dumpvars(0, Sign_Extender_tb);
+    // end
 
     reg [15:0] expected;
     reg [8*8-1:0] instr_type; 
