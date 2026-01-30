@@ -3,10 +3,14 @@ VCD info: dumpfile ./tb/waveform/ALU.vcd opened for output.
 | Instr  |   SrcA   |   SrcB   | ALU Ctrl | Expected  | ALU Result | Zero | Zero Correct? | Pass? |
 -----------------------------------------------------------------------------------------------
 | ADD    |       10 |        5 |   0000    |       15 |         15 |   0  |      YES      |  YES  |
-| SUB    |       10 |        5 |   0001    |        5 |          5 |   0  |      YES      |  YES  |
-| XOR    |       10 |        5 |   0010    |       15 |         15 |   0  |      YES      |  YES  |
-| OR     |       10 |        5 |   0011    |       15 |         15 |   0  |      YES      |  YES  |
-| AND    |       10 |        5 |   0100    |        0 |          0 |   1  |      YES      |  YES  |
+| ADD_W  |     ffff |     0001 |   0000    |     0000 |       0000 |   1  |      YES      |  YES  |
+| ADD_SO |     7fff |     0001 |   0000    |     8000 |       8000 |   0  |      YES      |  YES  |
+| ADD_NO |     8000 |     8000 |   0000    |     0000 |       0000 |   1  |      YES      |  YES  |
+| ADD_X  |     8000 |     7fff |   0000    |     ffff |       ffff |   0  |      YES      |  YES  |
+| SUB    |    32768 |    32767 |   0001    |        1 |          1 |   0  |      YES      |  YES  |
+| XOR    |    32768 |    32767 |   0010    |       15 |      65535 |   0  |      YES      |   NO  |
+| OR     |    32768 |    32767 |   0011    |       15 |      65535 |   0  |      YES      |   NO  |
+| AND    |    32768 |    32767 |   0100    |        0 |          0 |   1  |      YES      |  YES  |
 | SLL    |       26 |        3 |   0101    |      208 |        208 |   0  |      YES      |  YES  |
 | SRL    |    49167 |        4 |   0110    |     3072 |       3072 |   0  |      YES      |  YES  |
 | SRA    |   -32753 |        4 |   0111    |    -2048 |      -2048 |   0  |      YES      |  YES  |
@@ -15,4 +19,4 @@ VCD info: dumpfile ./tb/waveform/ALU.vcd opened for output.
 | SUB0   |       15 |       15 |   0001    |        0 |          0 |   1  |      YES      |  YES  |
 -----------------------------------------------------------------------------------------------
 ALU Test Bench Completed.
-./tb/ALU_tb.v:116: $finish called at 110000 (1ps)
+./tb/ALU_tb.v:152: $finish called at 150000 (1ps)

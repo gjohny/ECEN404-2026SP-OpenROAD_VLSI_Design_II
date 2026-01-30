@@ -41,6 +41,42 @@ module ALU_tb;
                      (zero == (expected == 0)) ? "YES" : "NO",
                      (ALU_result == expected) ? "YES" : "NO");
 
+                             // =====================
+        // ADD edge: wraparound (0xFFFF + 1)
+        // =====================
+        SrcA = 16'hFFFF; SrcB = 16'h0001; ALU_control = 4'b0000; expected = 16'h0000;
+        #10 $display("| ADD_W  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+            SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+            (zero == 1'b1) ? "YES" : "NO",
+            (ALU_result == expected) ? "YES" : "NO");
+
+        // =====================
+        // ADD edge: signed overflow (+32767 + 1)
+        // =====================
+        SrcA = 16'h7FFF; SrcB = 16'h0001; ALU_control = 4'b0000; expected = 16'h8000;
+        #10 $display("| ADD_SO | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+            SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+            (zero == (expected == 0)) ? "YES" : "NO",
+            (ALU_result == expected) ? "YES" : "NO");
+
+        // =====================
+        // ADD edge: negative overflow (-32768 + -32768)
+        // =====================
+        SrcA = 16'h8000; SrcB = 16'h8000; ALU_control = 4'b0000; expected = 16'h0000;
+        #10 $display("| ADD_NO | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+            SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+            (zero == 1'b1) ? "YES" : "NO",
+            (ALU_result == expected) ? "YES" : "NO");
+
+        // =====================
+        // ADD edge: cross-sign cancel
+        // =====================
+        SrcA = 16'h8000; SrcB = 16'h7FFF; ALU_control = 4'b0000; expected = 16'hFFFF;
+        #10 $display("| ADD_X  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+            SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+            (zero == (expected == 0)) ? "YES" : "NO",
+            (ALU_result == expected) ? "YES" : "NO");
+
         // SUB
         ALU_control = 4'b0001; expected = 10 - 5;
         #10 $display("| SUB    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
