@@ -199,7 +199,7 @@ module ALU_tb;
         // OR_PASS: 0000 | FFFF = FFFF (pass-through)
         SrcA = 16'h0000; SrcB = 16'hFFFF;
         ALU_control = 4'b0011; expected = 16'hFFFF;
-        #10 $display("| OR_PASS_THROUGH| %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+        #10 $display("| OR_PASS| %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
                     SrcA, SrcB, ALU_control, expected, ALU_result, zero,
                     (zero == (expected == 16'h0000)) ? "YES" : "NO",
                     (ALU_result == expected) ? "YES" : "NO");
@@ -207,7 +207,7 @@ module ALU_tb;
         // OR_FF: FFFF | FFFF = FFFF (saturation)
         SrcA = 16'hFFFF; SrcB = 16'hFFFF;
         ALU_control = 4'b0011; expected = 16'hFFFF;
-        #10 $display("| OR_SATURATION  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+        #10 $display("| OR_SAT  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
                     SrcA, SrcB, ALU_control, expected, ALU_result, zero,
                     (zero == (expected == 16'h0000)) ? "YES" : "NO",
                     (ALU_result == expected) ? "YES" : "NO");
@@ -215,7 +215,7 @@ module ALU_tb;
         // OR_ALT: AAAA | 5555 = FFFF (alternating bits)
         SrcA = 16'hAAAA; SrcB = 16'h5555;
         ALU_control = 4'b0011; expected = 16'hFFFF;
-        #10 $display("| OR_ALT_BITS | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+        #10 $display("| OR_ALT | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
                     SrcA, SrcB, ALU_control, expected, ALU_result, zero,
                     (zero == (expected == 16'h0000)) ? "YES" : "NO",
                     (ALU_result == expected) ? "YES" : "NO");
