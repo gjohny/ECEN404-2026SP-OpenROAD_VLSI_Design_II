@@ -54,9 +54,32 @@ module Sign_Extender_tb;
 
 
         
-        // ----------------------  I-TYPE (positive)  ----------------------
+        // ---------------------- I-TYPE EDGE CASES ----------------------
+
+        // All zeros → 000
+        instr = 16'b0000000000000000; ImmSrc = 3'b001; instr_type = "I-TYPE"; expected = 16'b0000000000000000; #10;
+        $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+
+        // Max positive 3-bit immediate → 011
         instr = 16'b0110000000000000; ImmSrc = 3'b001; instr_type = "I-TYPE"; expected = 16'b0000000000000011; #10;
         $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+
+        // Min negative 3-bit immediate → 100 (-4)
+        instr = 16'b1000000000000000; ImmSrc = 3'b001; instr_type = "I-TYPE"; expected = 16'b1111111111111100; #10;
+        $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+
+        // -1 → 111
+        instr = 16'b1110000000000000; ImmSrc = 3'b001; instr_type = "I-TYPE"; expected = 16'b1111111111111111; #10;
+        $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+
+        // Mid-range negative → 101 (-3)
+        instr = 16'b1010000000000000; ImmSrc = 3'b001; instr_type = "I-TYPE"; expected = 16'b1111111111111101; #10;
+        $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+
+        // Mid-range positive → 010 (2)
+        instr = 16'b0100000000000000; ImmSrc = 3'b001; instr_type = "I-TYPE"; expected = 16'b0000000000000010; #10;
+        $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+
 
         // ----------------------  I-TYPE (negative). ----------------------
         instr = 16'b1010000000000000; ImmSrc = 3'b001; instr_type = "I-TYPE"; expected = 16'b1111111111111101; #10;
