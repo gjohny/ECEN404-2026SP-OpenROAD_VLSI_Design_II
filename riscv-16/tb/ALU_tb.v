@@ -131,12 +131,58 @@ module ALU_tb;
 
 
 
-        // XOR
-        ALU_control = 4'b0010; expected = 10 ^ 5;
-        #10 $display("| XOR    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
-                     SrcA, SrcB, ALU_control, expected, ALU_result, zero,
-                     (zero == (expected == 0)) ? "YES" : "NO",
-                     (ALU_result == expected) ? "YES" : "NO");
+        // -------------------
+        // XOR TEST CASES
+        // -------------------
+
+        // XOR - normal small numbers
+        SrcA = 16'd10; SrcB = 16'd5; ALU_control = 4'b0010;
+        expected = (SrcA ^ SrcB) & 16'hFFFF;
+        #10 $display("| XOR    | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 0)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // XOR - XOR with zero
+        SrcA = 16'h1234; SrcB = 16'h0000; ALU_control = 4'b0010;
+        expected = (SrcA ^ SrcB) & 16'hFFFF;
+        #10 $display("| XOR_Z  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 0)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // XOR - XOR with all ones (bit flip)
+        SrcA = 16'hAAAA; SrcB = 16'hFFFF; ALU_control = 4'b0010;
+        expected = (SrcA ^ SrcB) & 16'hFFFF;
+        #10 $display("| XOR_F  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 0)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // XOR - XOR two identical numbers (should be zero)
+        SrcA = 16'h55AA; SrcB = 16'h55AA; ALU_control = 4'b0010;
+        expected = (SrcA ^ SrcB) & 16'hFFFF;
+        #10 $display("| XOR_0  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 0)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // XOR - large numbers
+        SrcA = 16'hFFFF; SrcB = 16'h8000; ALU_control = 4'b0010;
+        expected = (SrcA ^ SrcB) & 16'hFFFF;
+        #10 $display("| XOR_L  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 0)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // XOR - alternating bit patterns
+        SrcA = 16'hAAAA; SrcB = 16'h5555; ALU_control = 4'b0010;
+        expected = (SrcA ^ SrcB) & 16'hFFFF;
+        #10 $display("| XOR_X  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 0)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
 
         // OR
         ALU_control = 4'b0011; expected = 10 | 5;
