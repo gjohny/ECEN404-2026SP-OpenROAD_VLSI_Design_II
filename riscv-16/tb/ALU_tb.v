@@ -184,12 +184,59 @@ module ALU_tb;
                     (ALU_result == expected) ? "YES" : "NO");
 
 
-        // OR
-        ALU_control = 4'b0011; expected = 10 | 5;
-        #10 $display("| OR     | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
-                     SrcA, SrcB, ALU_control, expected, ALU_result, zero,
-                     (zero == (expected == 0)) ? "YES" : "NO",
-                     (ALU_result == expected) ? "YES" : "NO");
+// =========================
+// OR edge cases
+// =========================
+
+// OR0: 0000 | 0000 = 0000 (identity, zero flag must assert)
+SrcA = 16'h0000; SrcB = 16'h0000;
+ALU_control = 4'b0011; expected = 16'h0000;
+#10 $display("| OR0    | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+             SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+             (zero == (expected == 16'h0000)) ? "YES" : "NO",
+             (ALU_result == expected) ? "YES" : "NO");
+
+// OR_PASS: 0000 | FFFF = FFFF (pass-through)
+SrcA = 16'h0000; SrcB = 16'hFFFF;
+ALU_control = 4'b0011; expected = 16'hFFFF;
+#10 $display("| OR_PASS_THROUGH| %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+             SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+             (zero == (expected == 16'h0000)) ? "YES" : "NO",
+             (ALU_result == expected) ? "YES" : "NO");
+
+// OR_FF: FFFF | FFFF = FFFF (saturation)
+SrcA = 16'hFFFF; SrcB = 16'hFFFF;
+ALU_control = 4'b0011; expected = 16'hFFFF;
+#10 $display("| OR_SATURATION  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+             SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+             (zero == (expected == 16'h0000)) ? "YES" : "NO",
+             (ALU_result == expected) ? "YES" : "NO");
+
+// OR_ALT: AAAA | 5555 = FFFF (alternating bits)
+SrcA = 16'hAAAA; SrcB = 16'h5555;
+ALU_control = 4'b0011; expected = 16'hFFFF;
+#10 $display("| OR_ALT_BITS | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+             SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+             (zero == (expected == 16'h0000)) ? "YES" : "NO",
+             (ALU_result == expected) ? "YES" : "NO");
+
+// OR_MSB: 8000 | 0000 = 8000 (sign bit only)
+SrcA = 16'h8000; SrcB = 16'h0000;
+ALU_control = 4'b0011; expected = 16'h8000;
+#10 $display("| OR_MSB | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+             SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+             (zero == (expected == 16'h0000)) ? "YES" : "NO",
+             (ALU_result == expected) ? "YES" : "NO");
+
+// OR_LSB: 0001 | 0000 = 0001 (lowest bit)
+SrcA = 16'h0001; SrcB = 16'h0000;
+ALU_control = 4'b0011; expected = 16'h0001;
+#10 $display("| OR_LSB | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+             SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+             (zero == (expected == 16'h0000)) ? "YES" : "NO",
+             (ALU_result == expected) ? "YES" : "NO");
+
+
 
         // AND
         ALU_control = 4'b0100; expected = 10 & 5;
