@@ -410,12 +410,45 @@ module ALU_tb;
                      (ALU_result == expected) ? "YES" : "NO");
 
 
-        // SRA
-        SrcA = 16'b1000_0000_0000_1111; SrcB = 16'd4; ALU_control = 4'b0111; expected = $signed(SrcA) >>> 4;
-        #10 $display("| SRA    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
-                     $signed(SrcA), SrcB, ALU_control, $signed(expected), $signed(ALU_result), zero,
-                     (zero == (expected == 0)) ? "YES" : "NO",
-                     ($signed(ALU_result) == $signed(expected)) ? "YES" : "NO");
+// =========================
+// SRA edge cases
+// =========================
+
+// SRA0: 0 >>> anything = 0
+SrcA = 16'h0000; SrcB = 16'd4; ALU_control = 4'b0111; expected = $signed(SrcA) >>> SrcB;
+#10 $display("| SRA0      | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
+             $signed(SrcA), SrcB, ALU_control, $signed(expected), $signed(ALU_result), zero,
+             (zero == (expected == 0)) ? "YES" : "NO",
+             ($signed(ALU_result) == $signed(expected)) ? "YES" : "NO");
+
+// SRA_MSB: 8000 >>> 4 = F800 (sign extension)
+SrcA = 16'h8000; SrcB = 16'd4; ALU_control = 4'b0111; expected = $signed(SrcA) >>> SrcB;
+#10 $display("| SRA_MSB  | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
+             $signed(SrcA), SrcB, ALU_control, $signed(expected), $signed(ALU_result), zero,
+             (zero == (expected == 0)) ? "YES" : "NO",
+             ($signed(ALU_result) == $signed(expected)) ? "YES" : "NO");
+
+// SRA_LSB: 0001 >>> 1 = 0
+SrcA = 16'h0001; SrcB = 16'd1; ALU_control = 4'b0111; expected = $signed(SrcA) >>> SrcB;
+#10 $display("| SRA_LSB  | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
+             $signed(SrcA), SrcB, ALU_control, $signed(expected), $signed(ALU_result), zero,
+             (zero == (expected == 0)) ? "YES" : "NO",
+             ($signed(ALU_result) == $signed(expected)) ? "YES" : "NO");
+
+// SRA_NEG: FFFF >>> 4 = FFFF (all ones, sign extension)
+SrcA = 16'hFFFF; SrcB = 16'd4; ALU_control = 4'b0111; expected = $signed(SrcA) >>> SrcB;
+#10 $display("| SRA_NEG  | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
+             $signed(SrcA), SrcB, ALU_control, $signed(expected), $signed(ALU_result), zero,
+             (zero == (expected == 0)) ? "YES" : "NO",
+             ($signed(ALU_result) == $signed(expected)) ? "YES" : "NO");
+
+// SRA_ALT: AAAA >>> 1 = D555 (alternating bits, signed)
+SrcA = 16'hAAAA; SrcB = 16'd1; ALU_control = 4'b0111; expected = $signed(SrcA) >>> SrcB;
+#10 $display("| SRA_ALT  | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
+             $signed(SrcA), SrcB, ALU_control, $signed(expected), $signed(ALU_result), zero,
+             (zero == (expected == 0)) ? "YES" : "NO",
+             ($signed(ALU_result) == $signed(expected)) ? "YES" : "NO");
+
 
         // JAL
         SrcA = 16'd100; ALU_control = 4'b1000; expected = 100 + 2;
