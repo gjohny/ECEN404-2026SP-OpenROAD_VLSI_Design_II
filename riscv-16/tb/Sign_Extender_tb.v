@@ -26,9 +26,32 @@ module Sign_Extender_tb;
         $display("-------------------------------------------------------------------------------------------");
 
         
-        // ----------------------   R-TYPE  ----------------------
+// ---------------------- R-TYPE EDGE CASES ----------------------
+
+        // All zeros 
         instr = 16'b0000000000000000; ImmSrc = 3'b000; instr_type = "R-TYPE"; expected = 16'b0; #10;
         $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+
+        // All ones
+        instr = 16'b1111111111111111; ImmSrc = 3'b000; instr_type = "R-TYPE"; expected = 16'b0; #10;
+        $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+
+        // Alternating bits 1010...
+        instr = 16'b1010101010101010; ImmSrc = 3'b000; instr_type = "R-TYPE"; expected = 16'b0; #10;
+        $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+
+        // Alternating bits 0101...
+        instr = 16'b0101010101010101; ImmSrc = 3'b000; instr_type = "R-TYPE"; expected = 16'b0; #10;
+        $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+
+        // Max positive 15-bit number in lower bits - Sign Extension check
+        instr = 16'b0000111111111111; ImmSrc = 3'b000; instr_type = "R-TYPE"; expected = 16'b0; #10;
+        $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+
+        // Max negative 16-bit number
+        instr = 16'b1000000000000000; ImmSrc = 3'b000; instr_type = "R-TYPE"; expected = 16'b0; #10;
+        $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+
 
         
         // ----------------------  I-TYPE (positive)  ----------------------
