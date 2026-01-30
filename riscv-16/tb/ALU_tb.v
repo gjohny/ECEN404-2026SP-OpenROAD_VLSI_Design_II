@@ -299,19 +299,116 @@ module ALU_tb;
                     (ALU_result == expected) ? "YES" : "NO");
 
 
-        // SLL
-        SrcA = 16'd26; SrcB = 16'd3; ALU_control = 4'b0101; expected = 26 << 3;
-        #10 $display("| SLL    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
-                     SrcA, SrcB, ALU_control, expected, ALU_result, zero,
-                     (zero == (expected == 0)) ? "YES" : "NO",
-                     (ALU_result == expected) ? "YES" : "NO");
+        // =========================
+        // SLL edge cases
+        // =========================
 
-        // SRL
+        // SLL0: shift by 0 (identity)
+        SrcA = 16'h1234; SrcB = 16'd0;
+        ALU_control = 4'b0101; expected = 16'h1234;
+        #10 $display("| SLL0   | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 16'h0000)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // SLL1: shift by 1
+        SrcA = 16'h0001; SrcB = 16'd1;
+        ALU_control = 4'b0101; expected = 16'h0002;
+        #10 $display("| SLL1   | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 16'h0000)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // SLL_MSB: shift into sign bit
+        SrcA = 16'h0001; SrcB = 16'd15;
+        ALU_control = 4'b0101; expected = 16'h8000;
+        #10 $display("| SLL_M  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 16'h0000)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // SLL_OV: bits shifted out (overflow wrap discarded)
+        SrcA = 16'h8000; SrcB = 16'd1;
+        ALU_control = 4'b0101; expected = 16'h0000;
+        #10 $display("| SLL_OV | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == 1'b1) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // SLL_MAX: max legal shift (15)
+        SrcA = 16'h00FF; SrcB = 16'd15;
+        ALU_control = 4'b0101; expected = 16'h8000;
+        #10 $display("| SLL15  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 16'h0000)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // SLL_Z: zero input
+        SrcA = 16'h0000; SrcB = 16'd7;
+        ALU_control = 4'b0101; expected = 16'h0000;
+        #10 $display("| SLL_Z  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == 1'b1) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // SLL_LSB: propagate LSB through shift
+        SrcA = 16'h0003; SrcB = 16'd4;
+        ALU_control = 4'b0101; expected = 16'h0030;
+        #10 $display("| SLL_L  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 16'h0000)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+
+        // SRL — basic example (you already have)
         SrcA = 16'b1100_0000_0000_1111; SrcB = 16'd4; ALU_control = 4'b0110; expected = SrcA >> 4;
         #10 $display("| SRL    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
                      SrcA, SrcB, ALU_control, expected, ALU_result, zero,
                      (zero == (expected == 0)) ? "YES" : "NO",
                      (ALU_result == expected) ? "YES" : "NO");
+
+        // SRL edge case: shift by 0 (no change)
+        SrcA = 16'd12345; SrcB = 16'd0; ALU_control = 4'b0110; expected = SrcA >> 0;
+        #10 $display("| SRL    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
+                     SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                     (zero == (expected == 0)) ? "YES" : "NO",
+                     (ALU_result == expected) ? "YES" : "NO");
+
+        // SRL edge case: shift by 1
+        SrcA = 16'b1000_0000_0000_0001; SrcB = 16'd1; ALU_control = 4'b0110; expected = SrcA >> 1;
+        #10 $display("| SRL    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
+                     SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                     (zero == (expected == 0)) ? "YES" : "NO",
+                     (ALU_result == expected) ? "YES" : "NO");
+
+        // SRL edge case: shift resulting in zero
+        SrcA = 16'd1; SrcB = 16'd4; ALU_control = 4'b0110; expected = SrcA >> 4;
+        #10 $display("| SRL    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
+                     SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                     (zero == (expected == 0)) ? "YES" : "NO",
+                     (ALU_result == expected) ? "YES" : "NO");
+
+        // SRL edge case: input is zero
+        SrcA = 16'd0; SrcB = 16'd7; ALU_control = 4'b0110; expected = SrcA >> 7;
+        #10 $display("| SRL    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
+                     SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                     (zero == (expected == 0)) ? "YES" : "NO",
+                     (ALU_result == expected) ? "YES" : "NO");
+
+        // SRL edge case: all ones (checks zero-fill, not sign-extend)
+        SrcA = 16'hFFFF; SrcB = 16'd4; ALU_control = 4'b0110; expected = SrcA >> 4;
+        #10 $display("| SRL    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
+                     SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                     (zero == (expected == 0)) ? "YES" : "NO",
+                     (ALU_result == expected) ? "YES" : "NO");
+
+        // SRL edge case: max shift amount (15 for 16-bit)
+        SrcA = 16'h8000; SrcB = 16'd15; ALU_control = 4'b0110; expected = SrcA >> 15;
+        #10 $display("| SRL    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
+                     SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                     (zero == (expected == 0)) ? "YES" : "NO",
+                     (ALU_result == expected) ? "YES" : "NO");
+
 
         // SRA
         SrcA = 16'b1000_0000_0000_1111; SrcB = 16'd4; ALU_control = 4'b0111; expected = $signed(SrcA) >>> 4;
