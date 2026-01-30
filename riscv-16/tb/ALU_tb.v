@@ -77,12 +77,59 @@ module ALU_tb;
             (zero == (expected == 0)) ? "YES" : "NO",
             (ALU_result == expected) ? "YES" : "NO");
 
-        // SUB
-        ALU_control = 4'b0001; expected = 10 - 5;
-        #10 $display("| SUB    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
-                     SrcA, SrcB, ALU_control, expected, ALU_result, zero,
-                     (zero == (expected == 0)) ? "YES" : "NO",
-                     (ALU_result == expected) ? "YES" : "NO");
+        // -------------------
+        // SUB TEST CASES (aligned like ADD table)
+        // -------------------
+
+        // SUB - normal
+        SrcA = 16'd10; SrcB = 16'd5; ALU_control = 4'b0001; 
+        expected = (SrcA - SrcB) & 16'hFFFF; 
+        #10 $display("| SUB    | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 0)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // SUB - zero result
+        SrcA = 16'd15; SrcB = 16'd15; ALU_control = 4'b0001;
+        expected = (SrcA - SrcB) & 16'hFFFF;
+        #10 $display("| SUB0   | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 0)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // SUB - underflow / wraparound
+        SrcA = 16'd0; SrcB = 16'd1; ALU_control = 4'b0001;
+        expected = (SrcA - SrcB) & 16'hFFFF; 
+        #10 $display("| SUB_UF | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 0)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // SUB - large numbers
+        SrcA = 16'h8000; SrcB = 16'h7FFF; ALU_control = 4'b0001;
+        expected = (SrcA - SrcB) & 16'hFFFF;
+        #10 $display("| SUB_L  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 0)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // SUB - max value minus zero
+        SrcA = 16'hFFFF; SrcB = 16'h0000; ALU_control = 4'b0001;
+        expected = (SrcA - SrcB) & 16'hFFFF;
+        #10 $display("| SUB_M0 | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 0)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // SUB - zero minus max value (wraparound)
+        SrcA = 16'h0000; SrcB = 16'hFFFF; ALU_control = 4'b0001;
+        expected = (SrcA - SrcB) & 16'hFFFF;
+        #10 $display("| SUB_0M | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 0)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+
 
         // XOR
         ALU_control = 4'b0010; expected = 10 ^ 5;
