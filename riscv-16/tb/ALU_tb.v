@@ -360,7 +360,7 @@ module ALU_tb;
                     (ALU_result == expected) ? "YES" : "NO");
 
 
-        // SRL — basic example (you already have)
+        // SRL — basic example 
         SrcA = 16'b1100_0000_0000_1111; SrcB = 16'd4; ALU_control = 4'b0110; expected = SrcA >> 4;
         #10 $display("| SRL    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
                      SrcA, SrcB, ALU_control, expected, ALU_result, zero,
