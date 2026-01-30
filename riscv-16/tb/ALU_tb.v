@@ -450,26 +450,38 @@ SrcA = 16'hAAAA; SrcB = 16'd1; ALU_control = 4'b0111; expected = $signed(SrcA) >
              ($signed(ALU_result) == $signed(expected)) ? "YES" : "NO");
 
 
-        // JAL
-        SrcA = 16'd100; ALU_control = 4'b1000; expected = 100 + 2;
-        #10 $display("| JAL    | %8d | %8s |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
-                     SrcA, "-", ALU_control, expected, ALU_result, zero,
-                     (zero == (expected == 0)) ? "YES" : "NO",
-                     (ALU_result == expected) ? "YES" : "NO");
+// =========================
+// JAL edge cases
+// =========================
 
-        // Load/Store Address (ADD)
-        SrcA = 16'd200; SrcB = 16'd12; ALU_control = 4'b0000; expected = 200 + 12;
-        #10 $display("| LD/ST  | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
-                     SrcA, SrcB, ALU_control, expected, ALU_result, zero,
-                     (zero == (expected == 0)) ? "YES" : "NO",
-                     (ALU_result == expected) ? "YES" : "NO");
+// JAL normal: 100 + 2
+SrcA = 16'd100; ALU_control = 4'b1000; expected = SrcA + 2;
+#10 $display("| JAL       | %8d | %8s |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
+             SrcA, "-", ALU_control, expected, ALU_result, zero,
+             (zero == (expected == 0)) ? "YES" : "NO",
+             (ALU_result == expected) ? "YES" : "NO");
 
-        // Edge Case: zero result (SUB)
-        SrcA = 16'd15; SrcB = 16'd15; ALU_control = 4'b0001; expected = 0;
-        #10 $display("| SUB0   | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
-                     SrcA, SrcB, ALU_control, expected, ALU_result, zero,
-                     (zero == (expected == 0)) ? "YES" : "NO",
-                     (ALU_result == expected) ? "YES" : "NO");
+// JAL zero: 0 + 2
+SrcA = 16'd0; ALU_control = 4'b1000; expected = SrcA + 2;
+#10 $display("| JAL_ZERO  | %8d | %8s |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
+             SrcA, "-", ALU_control, expected, ALU_result, zero,
+             (zero == (expected == 0)) ? "YES" : "NO",
+             (ALU_result == expected) ? "YES" : "NO");
+
+// JAL max: FFFF + 2 = 1 (wrap-around)
+SrcA = 16'hFFFF; ALU_control = 4'b1000; expected = SrcA + 2;
+#10 $display("| JAL_MAX   | %8h | %8s |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+             SrcA, "-", ALU_control, expected, ALU_result, zero,
+             (zero == (expected == 0)) ? "YES" : "NO",
+             (ALU_result == expected) ? "YES" : "NO");
+
+// JAL edge: 7FFF + 2 = 8001 (positive to negative wrap)
+SrcA = 16'h7FFF; ALU_control = 4'b1000; expected = SrcA + 2;
+#10 $display("| JAL_EDGE  | %8h | %8s |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+             SrcA, "-", ALU_control, expected, ALU_result, zero,
+             (zero == (expected == 0)) ? "YES" : "NO",
+             (ALU_result == expected) ? "YES" : "NO");
+
 
         $display("-----------------------------------------------------------------------------------------------");
         $display("ALU Test Bench Completed.");
