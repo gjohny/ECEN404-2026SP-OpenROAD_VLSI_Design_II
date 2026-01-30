@@ -149,13 +149,30 @@ module Sign_Extender_tb;
 
 
         
-        //----------------------  J-TYPE (positive)  ----------------------
-        instr = 16'b0001111000010000; ImmSrc = 3'b101; instr_type = "J-TYPE"; expected = 16'b0001111000000000; #10;
-        $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+ // ---------------------- J-TYPE (all zeros) ----------------------
+instr = 16'b0000000000000000; ImmSrc = 3'b101; instr_type = "J-TYPE"; expected = 16'b0000000000000000; #10;
+$display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
 
-        // ---------------------- J-TYPE (negative). ----------------------
-        instr = 16'b1001111000010000; ImmSrc = 3'b101; instr_type = "J-TYPE"; expected = 16'b1001111000000000; #10;
-        $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+instr = 16'b0000001111111111; ImmSrc = 3'b101; instr_type = "J-TYPE"; expected = 16'b0000001111000000; #10;
+$display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+
+
+// ---------------------- J-TYPE (MSB set, others zero) ----------------------
+instr = 16'b1000000000000000; ImmSrc = 3'b101; instr_type = "J-TYPE"; expected = 16'b1000000000000000; #10;
+$display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+
+// ---------------------- J-TYPE (all ones) ----------------------
+instr = 16'b1111111111111111; ImmSrc = 3'b101; instr_type = "J-TYPE"; expected = 16'b1111111111000000; #10;
+$display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+
+// ---------------------- J-TYPE (single middle bit set) ----------------------
+instr = 16'b0001000000000000; ImmSrc = 3'b101; instr_type = "J-TYPE"; expected = 16'b0001000000000000; #10;
+$display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+
+// ---------------------- J-TYPE (mixed pattern) ----------------------
+instr = 16'b1010101010101010; ImmSrc = 3'b101; instr_type = "J-TYPE"; expected = 16'b1010101010000000; #10;
+$display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+
 
         
         //  ---------------------- INVALID / default  ----------------------
