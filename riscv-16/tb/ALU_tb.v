@@ -78,7 +78,7 @@ module ALU_tb;
             (ALU_result == expected) ? "YES" : "NO");
 
         // -------------------
-        // SUB TEST CASES (aligned like ADD table)
+        // SUB TEST CASES 
         // -------------------
 
         // SUB - normal
