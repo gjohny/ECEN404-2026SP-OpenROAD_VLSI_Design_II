@@ -107,22 +107,46 @@ module Sign_Extender_tb;
 
 
         
-        // ----------------------  B-TYPE (positive)  ----------------------
-        instr = 16'b0010101000000000; ImmSrc = 3'b011; instr_type = "B-TYPE"; expected = 16'b0000000000010101; #10;
+        // ----------------------  B-TYPE (positive and negative / edge cases) ----------------------
+        instr = 16'b0111111000000000; ImmSrc = 3'b011; instr_type = "B-TYPE"; expected = 16'b0000000001111110; #10;
         $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
 
-        //  ----------------------  B-TYPE (negative) ----------------------
-        instr = 16'b1010101000000000; ImmSrc = 3'b011; instr_type = "B-TYPE"; expected = 16'b1111111111010101; #10;
+        instr = 16'b0000001000000000; ImmSrc = 3'b011; instr_type = "B-TYPE"; expected = 16'b0000000000000010; #10;
         $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
 
-         
-        // ----------------------  U-TYPE (positive). ----------------------
-        instr = 16'b0001100011110000; ImmSrc = 3'b100; instr_type = "U-TYPE"; expected = 16'b0001100011110000; #10;
+
+        instr = 16'b0010101000000000; ImmSrc = 3'b011; instr_type = "B-TYPE"; expected = 16'b0000000000101010; #10;
         $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
 
-        // ----------------------  U-TYPE (negative). ----------------------
-        instr = 16'b1001100011110000; ImmSrc = 3'b100; instr_type = "U-TYPE"; expected = 16'b1001100011110000; #10;
+        instr = 16'b1000000000000000; ImmSrc = 3'b011; instr_type = "B-TYPE"; expected = 16'b1111111110000000; #10;
         $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+
+        instr = 16'b1000001000000000; ImmSrc = 3'b011; instr_type = "B-TYPE"; expected = 16'b1111111110000010; #10;
+        $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+
+        instr = 16'b1010101000000000; ImmSrc = 3'b011; instr_type = "B-TYPE"; expected = 16'b1111111110101010; #10;
+        $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+
+
+                
+        // ----------------------  U-TYPE (positive / upper bits small) ----------------------
+        instr = 16'b0000000000000000; ImmSrc = 3'b100; instr_type = "U-TYPE"; expected = 16'b0000000000000000; #10;
+        $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+
+        instr = 16'b0000000011111000; ImmSrc = 3'b100; instr_type = "U-TYPE"; expected = 16'b0000000011111000; #10;
+        $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+
+        // ----------------------  U-TYPE (positive / upper bits max) ----------------------
+        instr = 16'b0111111111111000; ImmSrc = 3'b100; instr_type = "U-TYPE"; expected = 16'b0111111111111000; #10;
+        $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+
+        // ----------------------  U-TYPE (negative / sign bit set) ----------------------
+        instr = 16'b1000000000000000; ImmSrc = 3'b100; instr_type = "U-TYPE"; expected = 16'b1000000000000000; #10;
+        $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+
+        instr = 16'b1111111111111000; ImmSrc = 3'b100; instr_type = "U-TYPE"; expected = 16'b1111111111111000; #10;
+        $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+
 
         
         //----------------------  J-TYPE (positive)  ----------------------
