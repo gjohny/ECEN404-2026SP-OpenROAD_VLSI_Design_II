@@ -84,13 +84,27 @@ module Sign_Extender_tb;
 
 
         
-        // ----------------------  S-TYPE (positive)  ----------------------
+        // ----------------------  S-TYPE (positive and negative edge cases) ----------------------
+        // Case 1: largest positive number
+        instr = 16'b0111111000000000; ImmSrc = 3'b010; instr_type = "S-TYPE"; expected = 16'b0000000000111111; #10;
+        $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+
+        // Case 2: largest negative number
+        instr = 16'b1000000000000000; ImmSrc = 3'b010; instr_type = "S-TYPE"; expected = 16'b1111111111000000; #10;
+        $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+
+        // Case 3: smallest positive number
+        instr = 16'b0000001000000000; ImmSrc = 3'b010; instr_type = "S-TYPE"; expected = 16'b0000000000000001; #10;
+        $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+
+        // Case 4: small negative number
+        instr = 16'b1000001000000000; ImmSrc = 3'b010; instr_type = "S-TYPE"; expected = 16'b1111111111000001; #10;
+        $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+
+        // Case 5: typical middle value
         instr = 16'b0010101000000000; ImmSrc = 3'b010; instr_type = "S-TYPE"; expected = 16'b0000000000010101; #10;
         $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
 
-        //   ----------------------  S-TYPE (negative)  ----------------------
-        instr = 16'b1010101000000000; ImmSrc = 3'b010; instr_type = "S-TYPE"; expected = 16'b1111111111010101; #10;
-        $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
 
         
         // ----------------------  B-TYPE (positive)  ----------------------
