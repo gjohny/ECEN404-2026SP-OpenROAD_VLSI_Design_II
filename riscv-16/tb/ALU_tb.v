@@ -41,75 +41,447 @@ module ALU_tb;
                      (zero == (expected == 0)) ? "YES" : "NO",
                      (ALU_result == expected) ? "YES" : "NO");
 
-        // SUB
-        ALU_control = 4'b0001; expected = 10 - 5;
-        #10 $display("| SUB    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
-                     SrcA, SrcB, ALU_control, expected, ALU_result, zero,
-                     (zero == (expected == 0)) ? "YES" : "NO",
-                     (ALU_result == expected) ? "YES" : "NO");
+                             // =====================
+        // ADD edge: wraparound (0xFFFF + 1)
+        // =====================
+        SrcA = 16'hFFFF; SrcB = 16'h0001; ALU_control = 4'b0000; expected = 16'h0000;
+        #10 $display("| ADD_W  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+            SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+            (zero == 1'b1) ? "YES" : "NO",
+            (ALU_result == expected) ? "YES" : "NO");
 
-        // XOR
-        ALU_control = 4'b0010; expected = 10 ^ 5;
-        #10 $display("| XOR    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
-                     SrcA, SrcB, ALU_control, expected, ALU_result, zero,
-                     (zero == (expected == 0)) ? "YES" : "NO",
-                     (ALU_result == expected) ? "YES" : "NO");
+        // =====================
+        // ADD edge: signed overflow (+32767 + 1)
+        // =====================
+        SrcA = 16'h7FFF; SrcB = 16'h0001; ALU_control = 4'b0000; expected = 16'h8000;
+        #10 $display("| ADD_SO | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+            SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+            (zero == (expected == 0)) ? "YES" : "NO",
+            (ALU_result == expected) ? "YES" : "NO");
 
-        // OR
-        ALU_control = 4'b0011; expected = 10 | 5;
-        #10 $display("| OR     | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
-                     SrcA, SrcB, ALU_control, expected, ALU_result, zero,
-                     (zero == (expected == 0)) ? "YES" : "NO",
-                     (ALU_result == expected) ? "YES" : "NO");
+        // =====================
+        // ADD edge: negative overflow (-32768 + -32768)
+        // =====================
+        SrcA = 16'h8000; SrcB = 16'h8000; ALU_control = 4'b0000; expected = 16'h0000;
+        #10 $display("| ADD_NO | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+            SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+            (zero == 1'b1) ? "YES" : "NO",
+            (ALU_result == expected) ? "YES" : "NO");
 
-        // AND
-        ALU_control = 4'b0100; expected = 10 & 5;
-        #10 $display("| AND    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
-                     SrcA, SrcB, ALU_control, expected, ALU_result, zero,
-                     (zero == (expected == 0)) ? "YES" : "NO",
-                     (ALU_result == expected) ? "YES" : "NO");
+        // =====================
+        // ADD edge: cross-sign cancel
+        // =====================
+        SrcA = 16'h8000; SrcB = 16'h7FFF; ALU_control = 4'b0000; expected = 16'hFFFF;
+        #10 $display("| ADD_X  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+            SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+            (zero == (expected == 0)) ? "YES" : "NO",
+            (ALU_result == expected) ? "YES" : "NO");
 
-        // SLL
-        SrcA = 16'd26; SrcB = 16'd3; ALU_control = 4'b0101; expected = 26 << 3;
-        #10 $display("| SLL    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
-                     SrcA, SrcB, ALU_control, expected, ALU_result, zero,
-                     (zero == (expected == 0)) ? "YES" : "NO",
-                     (ALU_result == expected) ? "YES" : "NO");
+        // -------------------
+        // SUB TEST CASES 
+        // -------------------
 
-        // SRL
+        // SUB - normal
+        SrcA = 16'd10; SrcB = 16'd5; ALU_control = 4'b0001; 
+        expected = (SrcA - SrcB) & 16'hFFFF; 
+        #10 $display("| SUB    | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 0)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // SUB - zero result
+        SrcA = 16'd15; SrcB = 16'd15; ALU_control = 4'b0001;
+        expected = (SrcA - SrcB) & 16'hFFFF;
+        #10 $display("| SUB0   | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 0)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // SUB - underflow / wraparound
+        SrcA = 16'd0; SrcB = 16'd1; ALU_control = 4'b0001;
+        expected = (SrcA - SrcB) & 16'hFFFF; 
+        #10 $display("| SUB_UF | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 0)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // SUB - large numbers
+        SrcA = 16'h8000; SrcB = 16'h7FFF; ALU_control = 4'b0001;
+        expected = (SrcA - SrcB) & 16'hFFFF;
+        #10 $display("| SUB_L  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 0)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // SUB - max value minus zero
+        SrcA = 16'hFFFF; SrcB = 16'h0000; ALU_control = 4'b0001;
+        expected = (SrcA - SrcB) & 16'hFFFF;
+        #10 $display("| SUB_M0 | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 0)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // SUB - zero minus max value (wraparound)
+        SrcA = 16'h0000; SrcB = 16'hFFFF; ALU_control = 4'b0001;
+        expected = (SrcA - SrcB) & 16'hFFFF;
+        #10 $display("| SUB_0M | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 0)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+
+
+        // -------------------
+        // XOR TEST CASES
+        // -------------------
+
+        // XOR - normal small numbers
+        SrcA = 16'd10; SrcB = 16'd5; ALU_control = 4'b0010;
+        expected = (SrcA ^ SrcB) & 16'hFFFF;
+        #10 $display("| XOR    | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 0)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // XOR - XOR with zero
+        SrcA = 16'h1234; SrcB = 16'h0000; ALU_control = 4'b0010;
+        expected = (SrcA ^ SrcB) & 16'hFFFF;
+        #10 $display("| XOR_Z  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 0)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // XOR - XOR with all ones (bit flip)
+        SrcA = 16'hAAAA; SrcB = 16'hFFFF; ALU_control = 4'b0010;
+        expected = (SrcA ^ SrcB) & 16'hFFFF;
+        #10 $display("| XOR_F  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 0)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // XOR - XOR two identical numbers (should be zero)
+        SrcA = 16'h55AA; SrcB = 16'h55AA; ALU_control = 4'b0010;
+        expected = (SrcA ^ SrcB) & 16'hFFFF;
+        #10 $display("| XOR_0  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 0)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // XOR - large numbers
+        SrcA = 16'hFFFF; SrcB = 16'h8000; ALU_control = 4'b0010;
+        expected = (SrcA ^ SrcB) & 16'hFFFF;
+        #10 $display("| XOR_L  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 0)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // XOR - alternating bit patterns
+        SrcA = 16'hAAAA; SrcB = 16'h5555; ALU_control = 4'b0010;
+        expected = (SrcA ^ SrcB) & 16'hFFFF;
+        #10 $display("| XOR_X  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 0)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+
+        // =========================
+        // OR edge cases
+        // =========================
+
+        // OR0: 0000 | 0000 = 0000 (identity, zero flag must assert)
+        SrcA = 16'h0000; SrcB = 16'h0000;
+        ALU_control = 4'b0011; expected = 16'h0000;
+        #10 $display("| OR0    | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 16'h0000)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // OR_PASS: 0000 | FFFF = FFFF (pass-through)
+        SrcA = 16'h0000; SrcB = 16'hFFFF;
+        ALU_control = 4'b0011; expected = 16'hFFFF;
+        #10 $display("| OR_PASS| %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 16'h0000)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // OR_FF: FFFF | FFFF = FFFF (saturation)
+        SrcA = 16'hFFFF; SrcB = 16'hFFFF;
+        ALU_control = 4'b0011; expected = 16'hFFFF;
+        #10 $display("| OR_SAT  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 16'h0000)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // OR_ALT: AAAA | 5555 = FFFF (alternating bits)
+        SrcA = 16'hAAAA; SrcB = 16'h5555;
+        ALU_control = 4'b0011; expected = 16'hFFFF;
+        #10 $display("| OR_ALT | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 16'h0000)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // OR_MSB: 8000 | 0000 = 8000 (sign bit only)
+        SrcA = 16'h8000; SrcB = 16'h0000;
+        ALU_control = 4'b0011; expected = 16'h8000;
+        #10 $display("| OR_MSB | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 16'h0000)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // OR_LSB: 0001 | 0000 = 0001 (lowest bit)
+        SrcA = 16'h0001; SrcB = 16'h0000;
+        ALU_control = 4'b0011; expected = 16'h0001;
+        #10 $display("| OR_LSB | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 16'h0000)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+
+
+        // =========================
+        // AND edge cases
+        // =========================
+
+        // AND0: 0000 & 0000 = 0000 (zero annihilator)
+        SrcA = 16'h0000; SrcB = 16'h0000;
+        ALU_control = 4'b0100; expected = 16'h0000;
+        #10 $display("| AND0   | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 16'h0000)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // AND_PASS: FFFF & FFFF = FFFF (identity)
+        SrcA = 16'hFFFF; SrcB = 16'hFFFF;
+        ALU_control = 4'b0100; expected = 16'hFFFF;
+        #10 $display("| AND_ID | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 16'h0000)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // AND_Z: FFFF & 0000 = 0000 (annihilation)
+        SrcA = 16'hFFFF; SrcB = 16'h0000;
+        ALU_control = 4'b0100; expected = 16'h0000;
+        #10 $display("| AND_Z  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 16'h0000)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // AND_SELF: A5A5 & A5A5 = A5A5 (self AND)
+        SrcA = 16'hA5A5; SrcB = 16'hA5A5;
+        ALU_control = 4'b0100; expected = 16'hA5A5;
+        #10 $display("| AND_S  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 16'h0000)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // AND_ALT: AAAA & 5555 = 0000 (alternating bits)
+        SrcA = 16'hAAAA; SrcB = 16'h5555;
+        ALU_control = 4'b0100; expected = 16'h0000;
+        #10 $display("| AND_A  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 16'h0000)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // AND_MSB: 8000 & FFFF = 8000 (sign bit isolation)
+        SrcA = 16'h8000; SrcB = 16'hFFFF;
+        ALU_control = 4'b0100; expected = 16'h8000;
+        #10 $display("| AND_M  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 16'h0000)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // AND_LSB: 0001 & FFFF = 0001 (lowest bit)
+        SrcA = 16'h0001; SrcB = 16'hFFFF;
+        ALU_control = 4'b0100; expected = 16'h0001;
+        #10 $display("| AND_L  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 16'h0000)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+
+        // =========================
+        // SLL edge cases
+        // =========================
+
+        // SLL0: shift by 0 (identity)
+        SrcA = 16'h1234; SrcB = 16'd0;
+        ALU_control = 4'b0101; expected = 16'h1234;
+        #10 $display("| SLL0   | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 16'h0000)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // SLL1: shift by 1
+        SrcA = 16'h0001; SrcB = 16'd1;
+        ALU_control = 4'b0101; expected = 16'h0002;
+        #10 $display("| SLL1   | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 16'h0000)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // SLL_MSB: shift into sign bit
+        SrcA = 16'h0001; SrcB = 16'd15;
+        ALU_control = 4'b0101; expected = 16'h8000;
+        #10 $display("| SLL_M  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 16'h0000)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // SLL_OV: bits shifted out (overflow wrap discarded)
+        SrcA = 16'h8000; SrcB = 16'd1;
+        ALU_control = 4'b0101; expected = 16'h0000;
+        #10 $display("| SLL_OV | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == 1'b1) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // SLL_MAX: max legal shift (15)
+        SrcA = 16'h00FF; SrcB = 16'd15;
+        ALU_control = 4'b0101; expected = 16'h8000;
+        #10 $display("| SLL15  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 16'h0000)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // SLL_Z: zero input
+        SrcA = 16'h0000; SrcB = 16'd7;
+        ALU_control = 4'b0101; expected = 16'h0000;
+        #10 $display("| SLL_Z  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == 1'b1) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+        // SLL_LSB: propagate LSB through shift
+        SrcA = 16'h0003; SrcB = 16'd4;
+        ALU_control = 4'b0101; expected = 16'h0030;
+        #10 $display("| SLL_L  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+                    SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                    (zero == (expected == 16'h0000)) ? "YES" : "NO",
+                    (ALU_result == expected) ? "YES" : "NO");
+
+
+        // SRL — basic example 
         SrcA = 16'b1100_0000_0000_1111; SrcB = 16'd4; ALU_control = 4'b0110; expected = SrcA >> 4;
         #10 $display("| SRL    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
                      SrcA, SrcB, ALU_control, expected, ALU_result, zero,
                      (zero == (expected == 0)) ? "YES" : "NO",
                      (ALU_result == expected) ? "YES" : "NO");
 
-        // SRA
-        SrcA = 16'b1000_0000_0000_1111; SrcB = 16'd4; ALU_control = 4'b0111; expected = $signed(SrcA) >>> 4;
-        #10 $display("| SRA    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
-                     $signed(SrcA), SrcB, ALU_control, $signed(expected), $signed(ALU_result), zero,
-                     (zero == (expected == 0)) ? "YES" : "NO",
-                     ($signed(ALU_result) == $signed(expected)) ? "YES" : "NO");
-
-        // JAL
-        SrcA = 16'd100; ALU_control = 4'b1000; expected = 100 + 2;
-        #10 $display("| JAL    | %8d | %8s |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
-                     SrcA, "-", ALU_control, expected, ALU_result, zero,
-                     (zero == (expected == 0)) ? "YES" : "NO",
-                     (ALU_result == expected) ? "YES" : "NO");
-
-        // Load/Store Address (ADD)
-        SrcA = 16'd200; SrcB = 16'd12; ALU_control = 4'b0000; expected = 200 + 12;
-        #10 $display("| LD/ST  | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
+        // SRL edge case: shift by 0 (no change)
+        SrcA = 16'd12345; SrcB = 16'd0; ALU_control = 4'b0110; expected = SrcA >> 0;
+        #10 $display("| SRL    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
                      SrcA, SrcB, ALU_control, expected, ALU_result, zero,
                      (zero == (expected == 0)) ? "YES" : "NO",
                      (ALU_result == expected) ? "YES" : "NO");
 
-        // Edge Case: zero result (SUB)
-        SrcA = 16'd15; SrcB = 16'd15; ALU_control = 4'b0001; expected = 0;
-        #10 $display("| SUB0   | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
+        // SRL edge case: shift by 1
+        SrcA = 16'b1000_0000_0000_0001; SrcB = 16'd1; ALU_control = 4'b0110; expected = SrcA >> 1;
+        #10 $display("| SRL    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
                      SrcA, SrcB, ALU_control, expected, ALU_result, zero,
                      (zero == (expected == 0)) ? "YES" : "NO",
                      (ALU_result == expected) ? "YES" : "NO");
+
+        // SRL edge case: shift resulting in zero
+        SrcA = 16'd1; SrcB = 16'd4; ALU_control = 4'b0110; expected = SrcA >> 4;
+        #10 $display("| SRL    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
+                     SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                     (zero == (expected == 0)) ? "YES" : "NO",
+                     (ALU_result == expected) ? "YES" : "NO");
+
+        // SRL edge case: input is zero
+        SrcA = 16'd0; SrcB = 16'd7; ALU_control = 4'b0110; expected = SrcA >> 7;
+        #10 $display("| SRL    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
+                     SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                     (zero == (expected == 0)) ? "YES" : "NO",
+                     (ALU_result == expected) ? "YES" : "NO");
+
+        // SRL edge case: all ones (checks zero-fill, not sign-extend)
+        SrcA = 16'hFFFF; SrcB = 16'd4; ALU_control = 4'b0110; expected = SrcA >> 4;
+        #10 $display("| SRL    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
+                     SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                     (zero == (expected == 0)) ? "YES" : "NO",
+                     (ALU_result == expected) ? "YES" : "NO");
+
+        // SRL edge case: max shift amount (15 for 16-bit)
+        SrcA = 16'h8000; SrcB = 16'd15; ALU_control = 4'b0110; expected = SrcA >> 15;
+        #10 $display("| SRL    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
+                     SrcA, SrcB, ALU_control, expected, ALU_result, zero,
+                     (zero == (expected == 0)) ? "YES" : "NO",
+                     (ALU_result == expected) ? "YES" : "NO");
+
+
+// =========================
+// SRA edge cases
+// =========================
+
+// SRA0: 0 >>> anything = 0
+SrcA = 16'h0000; SrcB = 16'd4; ALU_control = 4'b0111; expected = $signed(SrcA) >>> SrcB;
+#10 $display("| SRA0      | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
+             $signed(SrcA), SrcB, ALU_control, $signed(expected), $signed(ALU_result), zero,
+             (zero == (expected == 0)) ? "YES" : "NO",
+             ($signed(ALU_result) == $signed(expected)) ? "YES" : "NO");
+
+// SRA_MSB: 8000 >>> 4 = F800 (sign extension)
+SrcA = 16'h8000; SrcB = 16'd4; ALU_control = 4'b0111; expected = $signed(SrcA) >>> SrcB;
+#10 $display("| SRA_MSB  | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
+             $signed(SrcA), SrcB, ALU_control, $signed(expected), $signed(ALU_result), zero,
+             (zero == (expected == 0)) ? "YES" : "NO",
+             ($signed(ALU_result) == $signed(expected)) ? "YES" : "NO");
+
+// SRA_LSB: 0001 >>> 1 = 0
+SrcA = 16'h0001; SrcB = 16'd1; ALU_control = 4'b0111; expected = $signed(SrcA) >>> SrcB;
+#10 $display("| SRA_LSB  | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
+             $signed(SrcA), SrcB, ALU_control, $signed(expected), $signed(ALU_result), zero,
+             (zero == (expected == 0)) ? "YES" : "NO",
+             ($signed(ALU_result) == $signed(expected)) ? "YES" : "NO");
+
+// SRA_NEG: FFFF >>> 4 = FFFF (all ones, sign extension)
+SrcA = 16'hFFFF; SrcB = 16'd4; ALU_control = 4'b0111; expected = $signed(SrcA) >>> SrcB;
+#10 $display("| SRA_NEG  | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
+             $signed(SrcA), SrcB, ALU_control, $signed(expected), $signed(ALU_result), zero,
+             (zero == (expected == 0)) ? "YES" : "NO",
+             ($signed(ALU_result) == $signed(expected)) ? "YES" : "NO");
+
+// SRA_ALT: AAAA >>> 1 = D555 (alternating bits, signed)
+SrcA = 16'hAAAA; SrcB = 16'd1; ALU_control = 4'b0111; expected = $signed(SrcA) >>> SrcB;
+#10 $display("| SRA_ALT  | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
+             $signed(SrcA), SrcB, ALU_control, $signed(expected), $signed(ALU_result), zero,
+             (zero == (expected == 0)) ? "YES" : "NO",
+             ($signed(ALU_result) == $signed(expected)) ? "YES" : "NO");
+
+
+// =========================
+// JAL edge cases
+// =========================
+
+// JAL normal: 100 + 2
+SrcA = 16'd100; ALU_control = 4'b1000; expected = SrcA + 2;
+#10 $display("| JAL       | %8d | %8s |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
+             SrcA, "-", ALU_control, expected, ALU_result, zero,
+             (zero == (expected == 0)) ? "YES" : "NO",
+             (ALU_result == expected) ? "YES" : "NO");
+
+// JAL zero: 0 + 2
+SrcA = 16'd0; ALU_control = 4'b1000; expected = SrcA + 2;
+#10 $display("| JAL_ZERO  | %8d | %8s |   %b    | %8d | %10d |   %b  |      %s      |  %s  |",
+             SrcA, "-", ALU_control, expected, ALU_result, zero,
+             (zero == (expected == 0)) ? "YES" : "NO",
+             (ALU_result == expected) ? "YES" : "NO");
+
+// JAL max: FFFF + 2 = 1 (wrap-around)
+SrcA = 16'hFFFF; ALU_control = 4'b1000; expected = SrcA + 2;
+#10 $display("| JAL_MAX   | %8h | %8s |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+             SrcA, "-", ALU_control, expected, ALU_result, zero,
+             (zero == (expected == 0)) ? "YES" : "NO",
+             (ALU_result == expected) ? "YES" : "NO");
+
+// JAL edge: 7FFF + 2 = 8001 (positive to negative wrap)
+SrcA = 16'h7FFF; ALU_control = 4'b1000; expected = SrcA + 2;
+#10 $display("| JAL_EDGE  | %8h | %8s |   %b    | %8h | %10h |   %b  |      %s      |  %s  |",
+             SrcA, "-", ALU_control, expected, ALU_result, zero,
+             (zero == (expected == 0)) ? "YES" : "NO",
+             (ALU_result == expected) ? "YES" : "NO");
+
 
         $display("-----------------------------------------------------------------------------------------------");
         $display("ALU Test Bench Completed.");

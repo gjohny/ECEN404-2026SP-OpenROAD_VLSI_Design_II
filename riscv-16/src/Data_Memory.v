@@ -8,7 +8,7 @@ module Data_Memory(
   input         mem_read,
   output [15:0] mem_read_data
 );
-
+//test ALL THE ADDRESSES
   reg [`col-1:0] memory [0:`row_d-1];
   wire [2:0] addr = mem_access_addr[3:1];
 
