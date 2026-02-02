@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module Control_Unit(
+module Control_unit(
     input  [2:0] opcode,      // primary opcode
     input  [3:0] func,        // function field (R-type, I-type)
     input        zero,        // ALU zero flag (for branches)

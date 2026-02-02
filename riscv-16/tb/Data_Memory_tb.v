@@ -21,9 +21,21 @@ module Data_memory_tb;
   initial clk = 1'b0;
   always #5 clk = ~clk;
 
-  initial begin
-    $dumpfile("./tb/waveform/Data_memory.vcd");
-    $dumpvars(0, Data_memory_tb);
+    // initial begin
+    //     $dumpfile("./tb/waveform/Data_memory.vcd");
+    //     $dumpvars(0, Data_memory_tb);
+    // end
+
+  task write_word(input [2:0] idx, input [15:0] data);
+  begin
+    @(negedge clk);
+    mem_access_addr <= {12'b0, idx, 1'b0}; // word-aligned: [3:1]=idx
+    mem_write_data  <= data;
+    mem_write_en    <= 1'b1;
+    mem_read        <= 1'b0;
+    @(posedge clk);        // write happens here
+    @(negedge clk);
+    mem_write_en    <= 1'b0;
   end
 
   integer i;

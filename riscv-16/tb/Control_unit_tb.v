@@ -18,7 +18,7 @@ module Control_Unit_tb;
     wire RegWrite;
 
     // Instantiate DUT
-    Control_Unit uut (
+    Control_unit uut (
         .opcode(opcode),
         .func(func),
         .zero(zero),
@@ -35,10 +35,10 @@ module Control_Unit_tb;
     always #5 clk = ~clk;
 
     // Waveform dump
-    initial begin
-        $dumpfile("./tb/waveform/Control_unit.vcd");
-        $dumpvars(0, Control_Unit_tb);
-    end
+    // initial begin
+    //     $dumpfile("./tb/waveform/Control_unit.vcd");
+    //     $dumpvars(0, Control_Unit_tb);
+    // end
 
     // Display header
     initial begin
