@@ -1,10 +1,10 @@
-`timescale 1ns/1ps
+`timescale 1ns / 1ps
 
 `define STRLEN 32
 `define HALF_CLOCK_PERIOD 5
 `define CLOCK_PERIOD (`HALF_CLOCK_PERIOD * 2)
 
-module riscv16_top_tb;
+module top_tb;
 
     // Clock and reset
     reg clk;
@@ -28,8 +28,8 @@ module riscv16_top_tb;
 
     // Waveform dump
     initial begin
-        $dumpfile("riscv16_top.vcd");
-        $dumpvars(0, riscv16_top_tb);
+        $dumpfile("top_tb.vcd");
+        $dumpvars(0, top_tb);
     end
 
     // Clock generation
