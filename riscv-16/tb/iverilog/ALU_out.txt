@@ -1,18 +1,59 @@
-VCD info: dumpfile ./tb/waveform/ALU.vcd opened for output.
 -----------------------------------------------------------------------------------------------
 | Instr  |   SrcA   |   SrcB   | ALU Ctrl | Expected  | ALU Result | Zero | Zero Correct? | Pass? |
 -----------------------------------------------------------------------------------------------
 | ADD    |       10 |        5 |   0000    |       15 |         15 |   0  |      YES      |  YES  |
-| SUB    |       10 |        5 |   0001    |        5 |          5 |   0  |      YES      |  YES  |
-| XOR    |       10 |        5 |   0010    |       15 |         15 |   0  |      YES      |  YES  |
-| OR     |       10 |        5 |   0011    |       15 |         15 |   0  |      YES      |  YES  |
-| AND    |       10 |        5 |   0100    |        0 |          0 |   1  |      YES      |  YES  |
-| SLL    |       26 |        3 |   0101    |      208 |        208 |   0  |      YES      |  YES  |
+| ADD_W  |     ffff |     0001 |   0000    |     0000 |       0000 |   1  |      YES      |  YES  |
+| ADD_SO |     7fff |     0001 |   0000    |     8000 |       8000 |   0  |      YES      |  YES  |
+| ADD_NO |     8000 |     8000 |   0000    |     0000 |       0000 |   1  |      YES      |  YES  |
+| ADD_X  |     8000 |     7fff |   0000    |     ffff |       ffff |   0  |      YES      |  YES  |
+| SUB    |     000a |     0005 |   0001    |     0005 |       0005 |   0  |      YES      |  YES  |
+| SUB0   |     000f |     000f |   0001    |     0000 |       0000 |   1  |      YES      |  YES  |
+| SUB_UF |     0000 |     0001 |   0001    |     ffff |       ffff |   0  |      YES      |  YES  |
+| SUB_L  |     8000 |     7fff |   0001    |     0001 |       0001 |   0  |      YES      |  YES  |
+| SUB_M0 |     ffff |     0000 |   0001    |     ffff |       ffff |   0  |      YES      |  YES  |
+| SUB_0M |     0000 |     ffff |   0001    |     0001 |       0001 |   0  |      YES      |  YES  |
+| XOR    |     000a |     0005 |   0010    |     000f |       000f |   0  |      YES      |  YES  |
+| XOR_Z  |     1234 |     0000 |   0010    |     1234 |       1234 |   0  |      YES      |  YES  |
+| XOR_F  |     aaaa |     ffff |   0010    |     5555 |       5555 |   0  |      YES      |  YES  |
+| XOR_0  |     55aa |     55aa |   0010    |     0000 |       0000 |   1  |      YES      |  YES  |
+| XOR_L  |     ffff |     8000 |   0010    |     7fff |       7fff |   0  |      YES      |  YES  |
+| XOR_X  |     aaaa |     5555 |   0010    |     ffff |       ffff |   0  |      YES      |  YES  |
+| OR0    |     0000 |     0000 |   0011    |     0000 |       0000 |   1  |      YES      |  YES  |
+| OR_PASS|     0000 |     ffff |   0011    |     ffff |       ffff |   0  |      YES      |  YES  |
+| OR_SAT  |     ffff |     ffff |   0011    |     ffff |       ffff |   0  |      YES      |  YES  |
+| OR_ALT |     aaaa |     5555 |   0011    |     ffff |       ffff |   0  |      YES      |  YES  |
+| OR_MSB |     8000 |     0000 |   0011    |     8000 |       8000 |   0  |      YES      |  YES  |
+| OR_LSB |     0001 |     0000 |   0011    |     0001 |       0001 |   0  |      YES      |  YES  |
+| AND0   |     0000 |     0000 |   0100    |     0000 |       0000 |   1  |      YES      |  YES  |
+| AND_ID |     ffff |     ffff |   0100    |     ffff |       ffff |   0  |      YES      |  YES  |
+| AND_Z  |     ffff |     0000 |   0100    |     0000 |       0000 |   1  |      YES      |  YES  |
+| AND_S  |     a5a5 |     a5a5 |   0100    |     a5a5 |       a5a5 |   0  |      YES      |  YES  |
+| AND_A  |     aaaa |     5555 |   0100    |     0000 |       0000 |   1  |      YES      |  YES  |
+| AND_M  |     8000 |     ffff |   0100    |     8000 |       8000 |   0  |      YES      |  YES  |
+| AND_L  |     0001 |     ffff |   0100    |     0001 |       0001 |   0  |      YES      |  YES  |
+| SLL0   |     1234 |     0000 |   0101    |     1234 |       1234 |   0  |      YES      |  YES  |
+| SLL1   |     0001 |     0001 |   0101    |     0002 |       0002 |   0  |      YES      |  YES  |
+| SLL_M  |     0001 |     000f |   0101    |     8000 |       8000 |   0  |      YES      |  YES  |
+| SLL_OV |     8000 |     0001 |   0101    |     0000 |       0000 |   1  |      YES      |  YES  |
+| SLL15  |     00ff |     000f |   0101    |     8000 |       8000 |   0  |      YES      |  YES  |
+| SLL_Z  |     0000 |     0007 |   0101    |     0000 |       0000 |   1  |      YES      |  YES  |
+| SLL_L  |     0003 |     0004 |   0101    |     0030 |       0030 |   0  |      YES      |  YES  |
 | SRL    |    49167 |        4 |   0110    |     3072 |       3072 |   0  |      YES      |  YES  |
-| SRA    |   -32753 |        4 |   0111    |    -2048 |      -2048 |   0  |      YES      |  YES  |
-| JAL    |      100 |        - |   1000    |      102 |        102 |   0  |      YES      |  YES  |
-| LD/ST  |      200 |       12 |   0000    |      212 |        212 |   0  |      YES      |  YES  |
-| SUB0   |       15 |       15 |   0001    |        0 |          0 |   1  |      YES      |  YES  |
+| SRL    |    12345 |        0 |   0110    |    12345 |      12345 |   0  |      YES      |  YES  |
+| SRL    |    32769 |        1 |   0110    |    16384 |      16384 |   0  |      YES      |  YES  |
+| SRL    |        1 |        4 |   0110    |        0 |          0 |   1  |      YES      |  YES  |
+| SRL    |        0 |        7 |   0110    |        0 |          0 |   1  |      YES      |  YES  |
+| SRL    |    65535 |        4 |   0110    |     4095 |       4095 |   0  |      YES      |  YES  |
+| SRL    |    32768 |       15 |   0110    |        1 |          1 |   0  |      YES      |  YES  |
+| SRA0      |        0 |        4 |   0111    |        0 |          0 |   1  |      YES      |  YES  |
+| SRA_MSB  |   -32768 |        4 |   0111    |    -2048 |      -2048 |   0  |      YES      |  YES  |
+| SRA_LSB  |        1 |        1 |   0111    |        0 |          0 |   1  |      YES      |  YES  |
+| SRA_NEG  |       -1 |        4 |   0111    |       -1 |         -1 |   0  |      YES      |  YES  |
+| SRA_ALT  |   -21846 |        1 |   0111    |   -10923 |     -10923 |   0  |      YES      |  YES  |
+| JAL       |      100 |        - |   1000    |      102 |        102 |   0  |      YES      |  YES  |
+| JAL_ZERO  |        0 |        - |   1000    |        2 |          2 |   0  |      YES      |  YES  |
+| JAL_MAX   |     ffff |        - |   1000    |     0001 |       0001 |   0  |      YES      |  YES  |
+| JAL_EDGE  |     7fff |        - |   1000    |     8001 |       8001 |   0  |      YES      |  YES  |
 -----------------------------------------------------------------------------------------------
 ALU Test Bench Completed.
-./tb/ALU_tb.v:116: $finish called at 110000 (1ps)
+./tb/ALU_tb.v:488: $finish called at 530000 (1ps)
