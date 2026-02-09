@@ -92,7 +92,7 @@ echo "[*] Compiling $UNIT..."
 
 if [ "$UNIT" = "top" ]; then
   echo "[*] Detected top-level build. Compiling all RTL files..."
-  iverilog -g2012 -I ./src -o "$VVP_FILE" ./src/* "./tb/${UNIT}_tb.v"
+  iverilog -g2012 -I ./src -o "$VVP_FILE" ./src/*.v "./tb/${UNIT}_tb.v"
 else
   echo "[*] Detected unit-level build. Compiling ${UNIT}.v only..."
   iverilog -g2012 -o "$VVP_FILE" "./src/${UNIT}.v" "./tb/${UNIT}_tb.v"

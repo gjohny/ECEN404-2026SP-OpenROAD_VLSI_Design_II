@@ -28,7 +28,7 @@ module top_tb;
 
     // Waveform dump
     initial begin
-        $dumpfile("top_tb.vcd");
+        $dumpfile("./tb/waveform/top_tb.vcd");
         $dumpvars(0, top_tb);
     end
 
