@@ -17,7 +17,7 @@ module top_tb;
     wire [15:0] dbg_x1;
 
     // Instantiate DUT
-    riscv16_top dut (
+    top dut (
         .clk(clk),
         .reset(reset),
         .dbg_pc(dbg_pc),
