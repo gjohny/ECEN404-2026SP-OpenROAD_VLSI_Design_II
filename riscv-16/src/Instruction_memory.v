@@ -1,14 +1,11 @@
 `timescale 1ns/1ps
-
 module Instruction_memory #(
-    parameter IMEM_WORDS = 256,
-    parameter MEMFILE    = ""          // Optional memory file
+    parameter IMEM_WORDS = 256
 )(
     input      clk,
     input      [15:0] pc,
     output reg [15:0] instruction
 );
-
     // Memory array
     reg [15:0] memory [0:IMEM_WORDS-1];
     integer i;
@@ -17,10 +14,8 @@ module Instruction_memory #(
     initial begin
         for (i = 0; i < IMEM_WORDS; i = i + 1)
             memory[i] = 16'h0000;
-
-        // Load memory from file if specified
-        if (MEMFILE != "")
-            $readmemh(MEMFILE, memory);
+        // Always load memfile16
+        $readmemh("memfile16", memory);  // or "memfile16.mem"
     end
 
     // Word-aligned index
@@ -33,5 +28,4 @@ module Instruction_memory #(
         else
             instruction <= 16'h0000; // Return 0 if out-of-bounds
     end
-
 endmodule
