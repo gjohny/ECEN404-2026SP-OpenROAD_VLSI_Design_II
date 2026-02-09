@@ -91,7 +91,7 @@ module riscv16_top (
     wire [15:0] ALU_B;
     wire [15:0] ALUResult;
 
-    ALUSrc_mux EX_MUX ( //need to create mux
+    ALUSrc_mux EX_MUX ( 
         .reg_data(RD2),
         .imm_data(imm_ext),
         .ALUSrc(ALUSrc),
