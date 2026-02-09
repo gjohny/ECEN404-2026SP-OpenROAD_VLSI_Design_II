@@ -1,8 +1,13 @@
 module riscv16_top (
-    input clk,
-    input reset
-);
+    input  wire       clk,
+    input  wire       reset,
 
+    // Debug outputs
+    output wire [15:0] dbg_pc,
+    output wire [15:0] dbg_instr,
+    output wire [15:0] dbg_alu_result,
+    output wire [15:0] dbg_x1
+);
     /* =====================
        IF Stage
     ====================== */
@@ -19,18 +24,19 @@ module riscv16_top (
     );
 
     Instruction_memory IMEM (
-        .addr(PC),
+        .addr(PC),           // or .pc(PC) if your module calls it 'pc'
         .instruction(instruction)
     );
 
     /* =====================
        Instruction Fields
+       (match ISA / Sign_Extender)
     ====================== */
     wire [2:0] opcode = instruction[2:0];
     wire [3:0] func   = instruction[6:3];
-    wire [2:0] rs1    = instruction[15:13];
-    wire [2:0] rs2    = instruction[12:10];
     wire [2:0] rd     = instruction[9:7];
+    wire [2:0] rs2    = instruction[12:10];
+    wire [2:0] rs1    = instruction[15:13];
 
     /* =====================
        Control Unit
@@ -42,10 +48,9 @@ module riscv16_top (
     wire        RegWrite;
     wire [1:0]  ImmSrc;
     wire [3:0]  ALUControl;
+    wire        zero;
 
-    wire zero;
-
-    Control_unit CU (
+    Control_Unit CU (
         .opcode(opcode),
         .func(func),
         .zero(zero),
@@ -62,27 +67,30 @@ module riscv16_top (
        Register File
     ====================== */
     wire [15:0] RD1, RD2, WD3;
+    wire [15:0] rf_dbg_x1;
 
     Register_file RF (
         .clk(clk),
-        .we3(RegWrite),
-        .ra1(rs1),
-        .ra2(rs2),
-        .wa3(rd),
-        .wd3(WD3),
-        .rd1(RD1),
-        .rd2(RD2)
+        .RegWrite(RegWrite),   // use your real port name
+        .A3(rd),
+        .WD3(WD3),
+        .A1(rs1),
+        .RD1(RD1),
+        .A2(rs2),
+        .RD2(RD2),
+        .dbg_x1(rf_dbg_x1)     // new debug port
     );
 
     /* =====================
        Immediate Generation
     ====================== */
     wire [15:0] imm_ext;
+    wire [2:0] ImmSrc_ext = {1'b0, ImmSrc}; // if Sign_Extender expects 3 bits
 
     Sign_Extender SE (
         .instr(instruction),
-        .ImmSrc(ImmSrc),
-        .imm_ext(imm_ext)
+        .ImmSrc(ImmSrc_ext),
+        .ImmExt(imm_ext)
     );
 
     /* =====================
@@ -91,7 +99,7 @@ module riscv16_top (
     wire [15:0] ALU_B;
     wire [15:0] ALUResult;
 
-    ALUSrc_mux EX_MUX ( 
+    ALUSrc_mux EX_MUX (
         .reg_data(RD2),
         .imm_data(imm_ext),
         .ALUSrc(ALUSrc),
@@ -123,7 +131,7 @@ module riscv16_top (
     /* =====================
        Writeback
     ====================== */
-    Memory_mux WB_MUX ( //need to create mux
+    Memory_mux WB_MUX (
         .ALUResult(ALUResult),
         .MemData(ReadData),
         .ResultSrc(ResultSrc),
@@ -133,12 +141,20 @@ module riscv16_top (
     /* =====================
        PC Update Logic
     ====================== */
-    PCTarget PC_ADD ( //need to create target
+    PCTarget PC_ADD (
         .PC(PC),
         .imm_ext(imm_ext),
         .PC_target(PC_target)
     );
 
     assign PC_next = PCSrc ? PC_target : PC_plus2;
+
+    /* =====================
+       Debug outputs
+    ====================== */
+    assign dbg_pc         = PC;
+    assign dbg_instr      = instruction;
+    assign dbg_alu_result = ALUResult;
+    assign dbg_x1         = rf_dbg_x1;
 
 endmodule

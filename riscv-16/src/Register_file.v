@@ -10,9 +10,11 @@ module Register_file(
     output [15:0]    RD1,          // Data read from A1
     // Read port 2
     input  [2:0]     A2,           // Source register 2
-    output [15:0]    RD2           // Data read from A2
-);
+    output [15:0]    RD2,          // Data read from A2
 
+    // Debug: expose X1
+    output [15:0]    dbg_x1
+);
     reg [15:0] reg_array [7:0];    // 8 registers X0-X7
     integer i;
 
@@ -32,4 +34,6 @@ module Register_file(
     assign RD1 = (A1 == 3'b000) ? 16'd0 : reg_array[A1];
     assign RD2 = (A2 == 3'b000) ? 16'd0 : reg_array[A2];
 
+    // Debug output
+    assign dbg_x1 = reg_array[3'b001]; // X1
 endmodule
