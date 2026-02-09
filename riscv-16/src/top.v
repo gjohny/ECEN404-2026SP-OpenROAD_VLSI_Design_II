@@ -1,7 +1,6 @@
 module top (
     input clk,
     input reset
-);
 
     // Debug outputs
     output wire [15:0] dbg_pc,
