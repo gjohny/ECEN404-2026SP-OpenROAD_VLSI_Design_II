@@ -70,7 +70,7 @@ module riscv16_top (
     wire        zero;
 
     // Use the actual module name Control_Unit from the report [1]
-    Control_Unit CU (
+    Control_unit CU (
         .opcode(opcode),
         .func(func),
         .zero(zero),
