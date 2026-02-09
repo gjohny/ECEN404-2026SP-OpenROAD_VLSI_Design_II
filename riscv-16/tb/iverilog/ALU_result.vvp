@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #! /opt/homebrew/Cellar/icarus-verilog/12.0/bin/vvp
 :ivl_version "12.0 (stable)";
 :ivl_delay_selection "TYPICAL";
@@ -2322,3 +2323,3574 @@ T_1.211;
     "<interactive>";
     "./tb/ALU_tb.v";
     "./src/ALU.v";
+=======
+#! /usr/bin/vvp
+:ivl_version "12.0 (stable)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision - 12;
+<<<<<<< HEAD
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/system.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/vhdl_sys.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/vhdl_textio.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/v2005_math.vpi";
+:vpi_module "/opt/homebrew/Cellar/icarus-verilog/12.0/lib/ivl/va_math.vpi";
+S_0x104ba3a30 .scope module, "ALU_tb" "ALU_tb" 2 3;
+ .timescale -9 -12;
+v0x104bab0f0_0 .var "ALU_control", 3 0;
+v0x104bab190_0 .net "ALU_result", 15 0, v0x104ba0a70_0;  1 drivers
+v0x104bab230_0 .var "SrcA", 15 0;
+v0x104bab2d0_0 .var "SrcB", 15 0;
+v0x104bab750_0 .var "expected", 15 0;
+v0xb3d0bc000_0 .net "zero", 0 0, L_0x104bab7f0;  1 drivers
+S_0x104ba3bb0 .scope module, "uut" "ALU" 2 18, 3 1 0, S_0x104ba3a30;
+=======
+:vpi_module "/usr/lib/ivl/system.vpi";
+:vpi_module "/usr/lib/ivl/vhdl_sys.vpi";
+:vpi_module "/usr/lib/ivl/vhdl_textio.vpi";
+:vpi_module "/usr/lib/ivl/v2005_math.vpi";
+:vpi_module "/usr/lib/ivl/va_math.vpi";
+S_0x7a5e30982860 .scope module, "ALU_tb" "ALU_tb" 2 3;
+ .timescale -9 -12;
+v0x7a5e308a63c0_0 .var "ALU_control", 3 0;
+v0x7a5e308a6460_0 .net "ALU_result", 15 0, v0x7a5e308a60a0_0;  1 drivers
+v0x7a5e308a6500_0 .var "SrcA", 15 0;
+v0x7a5e308a65a0_0 .var "SrcB", 15 0;
+v0x7a5e308a6640_0 .var "expected", 15 0;
+v0x7a5e305d5e60_0 .net "zero", 0 0, L_0x7a5e305d5f00;  1 drivers
+S_0x7a5e309829f0 .scope module, "uut" "ALU" 2 18, 3 1 0, S_0x7a5e30982860;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+ .timescale 0 0;
+    .port_info 0 /INPUT 16 "SrcA";
+    .port_info 1 /INPUT 16 "SrcB";
+    .port_info 2 /INPUT 4 "ALU_control";
+    .port_info 3 /OUTPUT 16 "ALU_result";
+    .port_info 4 /OUTPUT 1 "zero";
+<<<<<<< HEAD
+v0x104ba09d0_0 .net "ALU_control", 3 0, v0x104bab0f0_0;  1 drivers
+v0x104ba0a70_0 .var "ALU_result", 15 0;
+v0x104ba0b10_0 .net "SrcA", 15 0, v0x104bab230_0;  1 drivers
+v0x104ba0bb0_0 .net "SrcB", 15 0, v0x104bab2d0_0;  1 drivers
+L_0xb3d478010 .functor BUFT 1, C4<0000000000000000>, C4<0>, C4<0>, C4<0>;
+v0x104ba0c50_0 .net/2u *"_ivl_0", 15 0, L_0xb3d478010;  1 drivers
+v0x104bab050_0 .net "zero", 0 0, L_0x104bab7f0;  alias, 1 drivers
+E_0xb3d09f000 .event anyedge, v0x104ba09d0_0, v0x104ba0b10_0, v0x104ba0bb0_0;
+L_0x104bab7f0 .cmp/eq 16, v0x104ba0a70_0, L_0xb3d478010;
+    .scope S_0x104ba3bb0;
+T_0 ;
+    %wait E_0xb3d09f000;
+    %load/vec4 v0x104ba09d0_0;
+=======
+v0x7a5e308a6000_0 .net "ALU_control", 3 0, v0x7a5e308a63c0_0;  1 drivers
+v0x7a5e308a60a0_0 .var "ALU_result", 15 0;
+v0x7a5e308a6140_0 .net "SrcA", 15 0, v0x7a5e308a6500_0;  1 drivers
+v0x7a5e308a61e0_0 .net "SrcB", 15 0, v0x7a5e308a65a0_0;  1 drivers
+L_0x7a5e304f56d8 .functor BUFT 1, C4<0000000000000000>, C4<0>, C4<0>, C4<0>;
+v0x7a5e308a6280_0 .net/2u *"_ivl_0", 15 0, L_0x7a5e304f56d8;  1 drivers
+v0x7a5e308a6320_0 .net "zero", 0 0, L_0x7a5e305d5f00;  alias, 1 drivers
+E_0x7a5e305d4e10 .event anyedge, v0x7a5e308a6000_0, v0x7a5e308a6140_0, v0x7a5e308a61e0_0;
+L_0x7a5e305d5f00 .cmp/eq 16, v0x7a5e308a60a0_0, L_0x7a5e304f56d8;
+    .scope S_0x7a5e309829f0;
+T_0 ;
+    %wait E_0x7a5e305d4e10;
+    %load/vec4 v0x7a5e308a6000_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %dup/vec4;
+    %pushi/vec4 0, 0, 4;
+    %cmp/u;
+    %jmp/1 T_0.0, 6;
+    %dup/vec4;
+    %pushi/vec4 1, 0, 4;
+    %cmp/u;
+    %jmp/1 T_0.1, 6;
+    %dup/vec4;
+    %pushi/vec4 2, 0, 4;
+    %cmp/u;
+    %jmp/1 T_0.2, 6;
+    %dup/vec4;
+    %pushi/vec4 3, 0, 4;
+    %cmp/u;
+    %jmp/1 T_0.3, 6;
+    %dup/vec4;
+    %pushi/vec4 4, 0, 4;
+    %cmp/u;
+    %jmp/1 T_0.4, 6;
+    %dup/vec4;
+    %pushi/vec4 5, 0, 4;
+    %cmp/u;
+    %jmp/1 T_0.5, 6;
+    %dup/vec4;
+    %pushi/vec4 6, 0, 4;
+    %cmp/u;
+    %jmp/1 T_0.6, 6;
+    %dup/vec4;
+    %pushi/vec4 7, 0, 4;
+    %cmp/u;
+    %jmp/1 T_0.7, 6;
+    %dup/vec4;
+    %pushi/vec4 8, 0, 4;
+    %cmp/u;
+    %jmp/1 T_0.8, 6;
+    %pushi/vec4 0, 0, 16;
+<<<<<<< HEAD
+    %store/vec4 v0x104ba0a70_0, 0, 16;
+    %jmp T_0.10;
+T_0.0 ;
+    %load/vec4 v0x104ba0b10_0;
+    %load/vec4 v0x104ba0bb0_0;
+    %add;
+    %store/vec4 v0x104ba0a70_0, 0, 16;
+    %jmp T_0.10;
+T_0.1 ;
+    %load/vec4 v0x104ba0b10_0;
+    %load/vec4 v0x104ba0bb0_0;
+    %sub;
+    %store/vec4 v0x104ba0a70_0, 0, 16;
+    %jmp T_0.10;
+T_0.2 ;
+    %load/vec4 v0x104ba0b10_0;
+    %load/vec4 v0x104ba0bb0_0;
+    %xor;
+    %store/vec4 v0x104ba0a70_0, 0, 16;
+    %jmp T_0.10;
+T_0.3 ;
+    %load/vec4 v0x104ba0b10_0;
+    %load/vec4 v0x104ba0bb0_0;
+    %or;
+    %store/vec4 v0x104ba0a70_0, 0, 16;
+    %jmp T_0.10;
+T_0.4 ;
+    %load/vec4 v0x104ba0b10_0;
+    %load/vec4 v0x104ba0bb0_0;
+    %and;
+    %store/vec4 v0x104ba0a70_0, 0, 16;
+    %jmp T_0.10;
+T_0.5 ;
+    %load/vec4 v0x104ba0b10_0;
+    %load/vec4 v0x104ba0bb0_0;
+    %parti/s 4, 0, 2;
+    %ix/vec4 4;
+    %shiftl 4;
+    %store/vec4 v0x104ba0a70_0, 0, 16;
+    %jmp T_0.10;
+T_0.6 ;
+    %load/vec4 v0x104ba0b10_0;
+    %load/vec4 v0x104ba0bb0_0;
+    %parti/s 4, 0, 2;
+    %ix/vec4 4;
+    %shiftr 4;
+    %store/vec4 v0x104ba0a70_0, 0, 16;
+    %jmp T_0.10;
+T_0.7 ;
+    %load/vec4 v0x104ba0b10_0;
+    %load/vec4 v0x104ba0bb0_0;
+    %parti/s 4, 0, 2;
+    %ix/vec4 4;
+    %shiftr/s 4;
+    %store/vec4 v0x104ba0a70_0, 0, 16;
+    %jmp T_0.10;
+T_0.8 ;
+    %load/vec4 v0x104ba0b10_0;
+    %addi 2, 0, 16;
+    %store/vec4 v0x104ba0a70_0, 0, 16;
+=======
+    %store/vec4 v0x7a5e308a60a0_0, 0, 16;
+    %jmp T_0.10;
+T_0.0 ;
+    %load/vec4 v0x7a5e308a6140_0;
+    %load/vec4 v0x7a5e308a61e0_0;
+    %add;
+    %store/vec4 v0x7a5e308a60a0_0, 0, 16;
+    %jmp T_0.10;
+T_0.1 ;
+    %load/vec4 v0x7a5e308a6140_0;
+    %load/vec4 v0x7a5e308a61e0_0;
+    %sub;
+    %store/vec4 v0x7a5e308a60a0_0, 0, 16;
+    %jmp T_0.10;
+T_0.2 ;
+    %load/vec4 v0x7a5e308a6140_0;
+    %load/vec4 v0x7a5e308a61e0_0;
+    %xor;
+    %store/vec4 v0x7a5e308a60a0_0, 0, 16;
+    %jmp T_0.10;
+T_0.3 ;
+    %load/vec4 v0x7a5e308a6140_0;
+    %load/vec4 v0x7a5e308a61e0_0;
+    %or;
+    %store/vec4 v0x7a5e308a60a0_0, 0, 16;
+    %jmp T_0.10;
+T_0.4 ;
+    %load/vec4 v0x7a5e308a6140_0;
+    %load/vec4 v0x7a5e308a61e0_0;
+    %and;
+    %store/vec4 v0x7a5e308a60a0_0, 0, 16;
+    %jmp T_0.10;
+T_0.5 ;
+    %load/vec4 v0x7a5e308a6140_0;
+    %load/vec4 v0x7a5e308a61e0_0;
+    %parti/s 4, 0, 2;
+    %ix/vec4 4;
+    %shiftl 4;
+    %store/vec4 v0x7a5e308a60a0_0, 0, 16;
+    %jmp T_0.10;
+T_0.6 ;
+    %load/vec4 v0x7a5e308a6140_0;
+    %load/vec4 v0x7a5e308a61e0_0;
+    %parti/s 4, 0, 2;
+    %ix/vec4 4;
+    %shiftr 4;
+    %store/vec4 v0x7a5e308a60a0_0, 0, 16;
+    %jmp T_0.10;
+T_0.7 ;
+    %load/vec4 v0x7a5e308a6140_0;
+    %load/vec4 v0x7a5e308a61e0_0;
+    %parti/s 4, 0, 2;
+    %ix/vec4 4;
+    %shiftr/s 4;
+    %store/vec4 v0x7a5e308a60a0_0, 0, 16;
+    %jmp T_0.10;
+T_0.8 ;
+    %load/vec4 v0x7a5e308a6140_0;
+    %addi 2, 0, 16;
+    %store/vec4 v0x7a5e308a60a0_0, 0, 16;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %jmp T_0.10;
+T_0.10 ;
+    %pop/vec4 1;
+    %jmp T_0;
+    .thread T_0, $push;
+<<<<<<< HEAD
+    .scope S_0x104ba3a30;
+=======
+    .scope S_0x7a5e30982860;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+T_1 ;
+    %vpi_call 2 33 "$display", "-----------------------------------------------------------------------------------------------" {0 0 0};
+    %vpi_call 2 34 "$display", "| Instr  |   SrcA   |   SrcB   | ALU Ctrl | Expected  | ALU Result | Zero | Zero Correct? | Pass? |" {0 0 0};
+    %vpi_call 2 35 "$display", "-----------------------------------------------------------------------------------------------" {0 0 0};
+    %pushi/vec4 10, 0, 16;
+<<<<<<< HEAD
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 5, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 0, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %pushi/vec4 15, 0, 16;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 5, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 0, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %pushi/vec4 15, 0, 16;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pad/u 32;
+    %pushi/vec4 0, 0, 32;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.0, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.1, 8;
+T_1.0 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.1, 8;
+ ; End of false expr.
+    %blend;
+T_1.1;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.2, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.3, 8;
+T_1.2 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.3, 8;
+ ; End of false expr.
+    %blend;
+T_1.3;
+<<<<<<< HEAD
+    %vpi_call 2 39 "$display", "| ADD    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 0, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+=======
+    %vpi_call 2 39 "$display", "| ADD    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 0, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmpi/e 1, 0, 1;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.4, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.5, 8;
+T_1.4 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.5, 8;
+ ; End of false expr.
+    %blend;
+T_1.5;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.6, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.7, 8;
+T_1.6 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.7, 8;
+ ; End of false expr.
+    %blend;
+T_1.7;
+<<<<<<< HEAD
+    %vpi_call 2 48 "$display", "| ADD_W  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 32767, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 0, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %pushi/vec4 32768, 0, 16;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 48 "$display", "| ADD_W  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 32767, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 0, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %pushi/vec4 32768, 0, 16;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pad/u 32;
+    %pushi/vec4 0, 0, 32;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.8, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.9, 8;
+T_1.8 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.9, 8;
+ ; End of false expr.
+    %blend;
+T_1.9;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.10, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.11, 8;
+T_1.10 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.11, 8;
+ ; End of false expr.
+    %blend;
+T_1.11;
+<<<<<<< HEAD
+    %vpi_call 2 57 "$display", "| ADD_SO | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 32768, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 32768, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 0, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+=======
+    %vpi_call 2 57 "$display", "| ADD_SO | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 32768, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 32768, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 0, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmpi/e 1, 0, 1;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.12, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.13, 8;
+T_1.12 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.13, 8;
+ ; End of false expr.
+    %blend;
+T_1.13;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.14, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.15, 8;
+T_1.14 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.15, 8;
+ ; End of false expr.
+    %blend;
+T_1.15;
+<<<<<<< HEAD
+    %vpi_call 2 66 "$display", "| ADD_NO | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 32768, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 32767, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 0, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 66 "$display", "| ADD_NO | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 32768, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 32767, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 0, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pad/u 32;
+    %pushi/vec4 0, 0, 32;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.16, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.17, 8;
+T_1.16 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.17, 8;
+ ; End of false expr.
+    %blend;
+T_1.17;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.18, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.19, 8;
+T_1.18 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.19, 8;
+ ; End of false expr.
+    %blend;
+T_1.19;
+<<<<<<< HEAD
+    %vpi_call 2 75 "$display", "| ADD_X  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 10, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 5, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 1, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %load/vec4 v0x104bab230_0;
+    %load/vec4 v0x104bab2d0_0;
+    %sub;
+    %pushi/vec4 65535, 0, 16;
+    %and;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 75 "$display", "| ADD_X  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 10, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 5, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 1, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %load/vec4 v0x7a5e308a6500_0;
+    %load/vec4 v0x7a5e308a65a0_0;
+    %sub;
+    %pushi/vec4 65535, 0, 16;
+    %and;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pad/u 32;
+    %pushi/vec4 0, 0, 32;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.20, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.21, 8;
+T_1.20 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.21, 8;
+ ; End of false expr.
+    %blend;
+T_1.21;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.22, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.23, 8;
+T_1.22 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.23, 8;
+ ; End of false expr.
+    %blend;
+T_1.23;
+<<<<<<< HEAD
+    %vpi_call 2 87 "$display", "| SUB    | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 15, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 15, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 1, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %load/vec4 v0x104bab230_0;
+    %load/vec4 v0x104bab2d0_0;
+    %sub;
+    %pushi/vec4 65535, 0, 16;
+    %and;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 87 "$display", "| SUB    | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 15, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 15, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 1, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %load/vec4 v0x7a5e308a6500_0;
+    %load/vec4 v0x7a5e308a65a0_0;
+    %sub;
+    %pushi/vec4 65535, 0, 16;
+    %and;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pad/u 32;
+    %pushi/vec4 0, 0, 32;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.24, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.25, 8;
+T_1.24 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.25, 8;
+ ; End of false expr.
+    %blend;
+T_1.25;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.26, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.27, 8;
+T_1.26 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.27, 8;
+ ; End of false expr.
+    %blend;
+T_1.27;
+<<<<<<< HEAD
+    %vpi_call 2 95 "$display", "| SUB0   | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 1, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %load/vec4 v0x104bab230_0;
+    %load/vec4 v0x104bab2d0_0;
+    %sub;
+    %pushi/vec4 65535, 0, 16;
+    %and;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 95 "$display", "| SUB0   | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 1, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %load/vec4 v0x7a5e308a6500_0;
+    %load/vec4 v0x7a5e308a65a0_0;
+    %sub;
+    %pushi/vec4 65535, 0, 16;
+    %and;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pad/u 32;
+    %pushi/vec4 0, 0, 32;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.28, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.29, 8;
+T_1.28 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.29, 8;
+ ; End of false expr.
+    %blend;
+T_1.29;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.30, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.31, 8;
+T_1.30 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.31, 8;
+ ; End of false expr.
+    %blend;
+T_1.31;
+<<<<<<< HEAD
+    %vpi_call 2 103 "$display", "| SUB_UF | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 32768, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 32767, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 1, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %load/vec4 v0x104bab230_0;
+    %load/vec4 v0x104bab2d0_0;
+    %sub;
+    %pushi/vec4 65535, 0, 16;
+    %and;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 103 "$display", "| SUB_UF | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 32768, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 32767, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 1, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %load/vec4 v0x7a5e308a6500_0;
+    %load/vec4 v0x7a5e308a65a0_0;
+    %sub;
+    %pushi/vec4 65535, 0, 16;
+    %and;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pad/u 32;
+    %pushi/vec4 0, 0, 32;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.32, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.33, 8;
+T_1.32 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.33, 8;
+ ; End of false expr.
+    %blend;
+T_1.33;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.34, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.35, 8;
+T_1.34 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.35, 8;
+ ; End of false expr.
+    %blend;
+T_1.35;
+<<<<<<< HEAD
+    %vpi_call 2 111 "$display", "| SUB_L  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 1, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %load/vec4 v0x104bab230_0;
+    %load/vec4 v0x104bab2d0_0;
+    %sub;
+    %pushi/vec4 65535, 0, 16;
+    %and;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 111 "$display", "| SUB_L  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 1, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %load/vec4 v0x7a5e308a6500_0;
+    %load/vec4 v0x7a5e308a65a0_0;
+    %sub;
+    %pushi/vec4 65535, 0, 16;
+    %and;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pad/u 32;
+    %pushi/vec4 0, 0, 32;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.36, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.37, 8;
+T_1.36 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.37, 8;
+ ; End of false expr.
+    %blend;
+T_1.37;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.38, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.39, 8;
+T_1.38 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.39, 8;
+ ; End of false expr.
+    %blend;
+T_1.39;
+<<<<<<< HEAD
+    %vpi_call 2 119 "$display", "| SUB_M0 | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 1, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %load/vec4 v0x104bab230_0;
+    %load/vec4 v0x104bab2d0_0;
+    %sub;
+    %pushi/vec4 65535, 0, 16;
+    %and;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 119 "$display", "| SUB_M0 | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 1, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %load/vec4 v0x7a5e308a6500_0;
+    %load/vec4 v0x7a5e308a65a0_0;
+    %sub;
+    %pushi/vec4 65535, 0, 16;
+    %and;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pad/u 32;
+    %pushi/vec4 0, 0, 32;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.40, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.41, 8;
+T_1.40 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.41, 8;
+ ; End of false expr.
+    %blend;
+T_1.41;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.42, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.43, 8;
+T_1.42 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.43, 8;
+ ; End of false expr.
+    %blend;
+T_1.43;
+<<<<<<< HEAD
+    %vpi_call 2 127 "$display", "| SUB_0M | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 10, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 5, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 2, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %load/vec4 v0x104bab230_0;
+    %load/vec4 v0x104bab2d0_0;
+    %xor;
+    %pushi/vec4 65535, 0, 16;
+    %and;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 127 "$display", "| SUB_0M | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 10, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 5, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 2, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %load/vec4 v0x7a5e308a6500_0;
+    %load/vec4 v0x7a5e308a65a0_0;
+    %xor;
+    %pushi/vec4 65535, 0, 16;
+    %and;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pad/u 32;
+    %pushi/vec4 0, 0, 32;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.44, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.45, 8;
+T_1.44 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.45, 8;
+ ; End of false expr.
+    %blend;
+T_1.45;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.46, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.47, 8;
+T_1.46 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.47, 8;
+ ; End of false expr.
+    %blend;
+T_1.47;
+<<<<<<< HEAD
+    %vpi_call 2 141 "$display", "| XOR    | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 4660, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 2, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %load/vec4 v0x104bab230_0;
+    %load/vec4 v0x104bab2d0_0;
+    %xor;
+    %pushi/vec4 65535, 0, 16;
+    %and;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 141 "$display", "| XOR    | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 4660, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 2, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %load/vec4 v0x7a5e308a6500_0;
+    %load/vec4 v0x7a5e308a65a0_0;
+    %xor;
+    %pushi/vec4 65535, 0, 16;
+    %and;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pad/u 32;
+    %pushi/vec4 0, 0, 32;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.48, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.49, 8;
+T_1.48 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.49, 8;
+ ; End of false expr.
+    %blend;
+T_1.49;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.50, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.51, 8;
+T_1.50 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.51, 8;
+ ; End of false expr.
+    %blend;
+T_1.51;
+<<<<<<< HEAD
+    %vpi_call 2 149 "$display", "| XOR_Z  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 43690, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 2, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %load/vec4 v0x104bab230_0;
+    %load/vec4 v0x104bab2d0_0;
+    %xor;
+    %pushi/vec4 65535, 0, 16;
+    %and;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 149 "$display", "| XOR_Z  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 43690, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 2, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %load/vec4 v0x7a5e308a6500_0;
+    %load/vec4 v0x7a5e308a65a0_0;
+    %xor;
+    %pushi/vec4 65535, 0, 16;
+    %and;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pad/u 32;
+    %pushi/vec4 0, 0, 32;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.52, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.53, 8;
+T_1.52 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.53, 8;
+ ; End of false expr.
+    %blend;
+T_1.53;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.54, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.55, 8;
+T_1.54 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.55, 8;
+ ; End of false expr.
+    %blend;
+T_1.55;
+<<<<<<< HEAD
+    %vpi_call 2 157 "$display", "| XOR_F  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 21930, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 21930, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 2, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %load/vec4 v0x104bab230_0;
+    %load/vec4 v0x104bab2d0_0;
+    %xor;
+    %pushi/vec4 65535, 0, 16;
+    %and;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 157 "$display", "| XOR_F  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 21930, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 21930, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 2, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %load/vec4 v0x7a5e308a6500_0;
+    %load/vec4 v0x7a5e308a65a0_0;
+    %xor;
+    %pushi/vec4 65535, 0, 16;
+    %and;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pad/u 32;
+    %pushi/vec4 0, 0, 32;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.56, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.57, 8;
+T_1.56 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.57, 8;
+ ; End of false expr.
+    %blend;
+T_1.57;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.58, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.59, 8;
+T_1.58 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.59, 8;
+ ; End of false expr.
+    %blend;
+T_1.59;
+<<<<<<< HEAD
+    %vpi_call 2 165 "$display", "| XOR_0  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 32768, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 2, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %load/vec4 v0x104bab230_0;
+    %load/vec4 v0x104bab2d0_0;
+    %xor;
+    %pushi/vec4 65535, 0, 16;
+    %and;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 165 "$display", "| XOR_0  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 32768, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 2, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %load/vec4 v0x7a5e308a6500_0;
+    %load/vec4 v0x7a5e308a65a0_0;
+    %xor;
+    %pushi/vec4 65535, 0, 16;
+    %and;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pad/u 32;
+    %pushi/vec4 0, 0, 32;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.60, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.61, 8;
+T_1.60 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.61, 8;
+ ; End of false expr.
+    %blend;
+T_1.61;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.62, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.63, 8;
+T_1.62 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.63, 8;
+ ; End of false expr.
+    %blend;
+T_1.63;
+<<<<<<< HEAD
+    %vpi_call 2 173 "$display", "| XOR_L  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 43690, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 21845, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 2, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %load/vec4 v0x104bab230_0;
+    %load/vec4 v0x104bab2d0_0;
+    %xor;
+    %pushi/vec4 65535, 0, 16;
+    %and;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 173 "$display", "| XOR_L  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 43690, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 21845, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 2, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %load/vec4 v0x7a5e308a6500_0;
+    %load/vec4 v0x7a5e308a65a0_0;
+    %xor;
+    %pushi/vec4 65535, 0, 16;
+    %and;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pad/u 32;
+    %pushi/vec4 0, 0, 32;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.64, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.65, 8;
+T_1.64 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.65, 8;
+ ; End of false expr.
+    %blend;
+T_1.65;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.66, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.67, 8;
+T_1.66 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.67, 8;
+ ; End of false expr.
+    %blend;
+T_1.67;
+<<<<<<< HEAD
+    %vpi_call 2 181 "$display", "| XOR_X  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 3, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 181 "$display", "| XOR_X  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 3, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pushi/vec4 0, 0, 16;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.68, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.69, 8;
+T_1.68 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.69, 8;
+ ; End of false expr.
+    %blend;
+T_1.69;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.70, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.71, 8;
+T_1.70 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.71, 8;
+ ; End of false expr.
+    %blend;
+T_1.71;
+<<<<<<< HEAD
+    %vpi_call 2 194 "$display", "| OR0    | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 3, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 194 "$display", "| OR0    | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 3, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pushi/vec4 0, 0, 16;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.72, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.73, 8;
+T_1.72 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.73, 8;
+ ; End of false expr.
+    %blend;
+T_1.73;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.74, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.75, 8;
+T_1.74 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.75, 8;
+ ; End of false expr.
+    %blend;
+T_1.75;
+<<<<<<< HEAD
+    %vpi_call 2 202 "$display", "| OR_PASS| %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 3, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 202 "$display", "| OR_PASS| %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 3, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pushi/vec4 0, 0, 16;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.76, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.77, 8;
+T_1.76 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.77, 8;
+ ; End of false expr.
+    %blend;
+T_1.77;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.78, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.79, 8;
+T_1.78 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.79, 8;
+ ; End of false expr.
+    %blend;
+T_1.79;
+<<<<<<< HEAD
+    %vpi_call 2 210 "$display", "| OR_SAT  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 43690, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 21845, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 3, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 210 "$display", "| OR_SAT  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 43690, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 21845, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 3, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pushi/vec4 0, 0, 16;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.80, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.81, 8;
+T_1.80 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.81, 8;
+ ; End of false expr.
+    %blend;
+T_1.81;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.82, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.83, 8;
+T_1.82 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.83, 8;
+ ; End of false expr.
+    %blend;
+T_1.83;
+<<<<<<< HEAD
+    %vpi_call 2 218 "$display", "| OR_ALT | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 32768, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 3, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %pushi/vec4 32768, 0, 16;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 218 "$display", "| OR_ALT | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 32768, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 3, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %pushi/vec4 32768, 0, 16;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pushi/vec4 0, 0, 16;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.84, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.85, 8;
+T_1.84 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.85, 8;
+ ; End of false expr.
+    %blend;
+T_1.85;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.86, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.87, 8;
+T_1.86 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.87, 8;
+ ; End of false expr.
+    %blend;
+T_1.87;
+<<<<<<< HEAD
+    %vpi_call 2 226 "$display", "| OR_MSB | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 3, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 226 "$display", "| OR_MSB | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 3, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pushi/vec4 0, 0, 16;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.88, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.89, 8;
+T_1.88 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.89, 8;
+ ; End of false expr.
+    %blend;
+T_1.89;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.90, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.91, 8;
+T_1.90 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.91, 8;
+ ; End of false expr.
+    %blend;
+T_1.91;
+<<<<<<< HEAD
+    %vpi_call 2 234 "$display", "| OR_LSB | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 4, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 234 "$display", "| OR_LSB | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 4, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pushi/vec4 0, 0, 16;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.92, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.93, 8;
+T_1.92 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.93, 8;
+ ; End of false expr.
+    %blend;
+T_1.93;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.94, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.95, 8;
+T_1.94 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.95, 8;
+ ; End of false expr.
+    %blend;
+T_1.95;
+<<<<<<< HEAD
+    %vpi_call 2 248 "$display", "| AND0   | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 4, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 248 "$display", "| AND0   | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 4, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pushi/vec4 0, 0, 16;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.96, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.97, 8;
+T_1.96 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.97, 8;
+ ; End of false expr.
+    %blend;
+T_1.97;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.98, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.99, 8;
+T_1.98 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.99, 8;
+ ; End of false expr.
+    %blend;
+T_1.99;
+<<<<<<< HEAD
+    %vpi_call 2 256 "$display", "| AND_ID | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 4, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 256 "$display", "| AND_ID | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 4, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pushi/vec4 0, 0, 16;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.100, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.101, 8;
+T_1.100 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.101, 8;
+ ; End of false expr.
+    %blend;
+T_1.101;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.102, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.103, 8;
+T_1.102 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.103, 8;
+ ; End of false expr.
+    %blend;
+T_1.103;
+<<<<<<< HEAD
+    %vpi_call 2 264 "$display", "| AND_Z  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 42405, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 42405, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 4, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %pushi/vec4 42405, 0, 16;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 264 "$display", "| AND_Z  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 42405, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 42405, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 4, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %pushi/vec4 42405, 0, 16;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pushi/vec4 0, 0, 16;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.104, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.105, 8;
+T_1.104 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.105, 8;
+ ; End of false expr.
+    %blend;
+T_1.105;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.106, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.107, 8;
+T_1.106 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.107, 8;
+ ; End of false expr.
+    %blend;
+T_1.107;
+<<<<<<< HEAD
+    %vpi_call 2 272 "$display", "| AND_S  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 43690, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 21845, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 4, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 272 "$display", "| AND_S  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 43690, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 21845, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 4, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pushi/vec4 0, 0, 16;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.108, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.109, 8;
+T_1.108 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.109, 8;
+ ; End of false expr.
+    %blend;
+T_1.109;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.110, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.111, 8;
+T_1.110 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.111, 8;
+ ; End of false expr.
+    %blend;
+T_1.111;
+<<<<<<< HEAD
+    %vpi_call 2 280 "$display", "| AND_A  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 32768, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 4, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %pushi/vec4 32768, 0, 16;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 280 "$display", "| AND_A  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 32768, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 4, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %pushi/vec4 32768, 0, 16;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pushi/vec4 0, 0, 16;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.112, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.113, 8;
+T_1.112 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.113, 8;
+ ; End of false expr.
+    %blend;
+T_1.113;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.114, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.115, 8;
+T_1.114 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.115, 8;
+ ; End of false expr.
+    %blend;
+T_1.115;
+<<<<<<< HEAD
+    %vpi_call 2 288 "$display", "| AND_M  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 4, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 288 "$display", "| AND_M  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 4, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pushi/vec4 0, 0, 16;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.116, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.117, 8;
+T_1.116 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.117, 8;
+ ; End of false expr.
+    %blend;
+T_1.117;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.118, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.119, 8;
+T_1.118 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.119, 8;
+ ; End of false expr.
+    %blend;
+T_1.119;
+<<<<<<< HEAD
+    %vpi_call 2 296 "$display", "| AND_L  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 4660, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 5, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %pushi/vec4 4660, 0, 16;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 296 "$display", "| AND_L  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 4660, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 5, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %pushi/vec4 4660, 0, 16;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pushi/vec4 0, 0, 16;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.120, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.121, 8;
+T_1.120 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.121, 8;
+ ; End of false expr.
+    %blend;
+T_1.121;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.122, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.123, 8;
+T_1.122 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.123, 8;
+ ; End of false expr.
+    %blend;
+T_1.123;
+<<<<<<< HEAD
+    %vpi_call 2 309 "$display", "| SLL0   | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 5, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %pushi/vec4 2, 0, 16;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 309 "$display", "| SLL0   | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 5, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %pushi/vec4 2, 0, 16;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pushi/vec4 0, 0, 16;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.124, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.125, 8;
+T_1.124 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.125, 8;
+ ; End of false expr.
+    %blend;
+T_1.125;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.126, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.127, 8;
+T_1.126 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.127, 8;
+ ; End of false expr.
+    %blend;
+T_1.127;
+<<<<<<< HEAD
+    %vpi_call 2 317 "$display", "| SLL1   | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 15, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 5, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %pushi/vec4 32768, 0, 16;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 317 "$display", "| SLL1   | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 15, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 5, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %pushi/vec4 32768, 0, 16;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pushi/vec4 0, 0, 16;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.128, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.129, 8;
+T_1.128 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.129, 8;
+ ; End of false expr.
+    %blend;
+T_1.129;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.130, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.131, 8;
+T_1.130 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.131, 8;
+ ; End of false expr.
+    %blend;
+T_1.131;
+<<<<<<< HEAD
+    %vpi_call 2 325 "$display", "| SLL_M  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 32768, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 5, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+=======
+    %vpi_call 2 325 "$display", "| SLL_M  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 32768, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 5, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmpi/e 1, 0, 1;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.132, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.133, 8;
+T_1.132 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.133, 8;
+ ; End of false expr.
+    %blend;
+T_1.133;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.134, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.135, 8;
+T_1.134 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.135, 8;
+ ; End of false expr.
+    %blend;
+T_1.135;
+<<<<<<< HEAD
+    %vpi_call 2 333 "$display", "| SLL_OV | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 255, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 15, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 5, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %pushi/vec4 32768, 0, 16;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 333 "$display", "| SLL_OV | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 255, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 15, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 5, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %pushi/vec4 32768, 0, 16;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pushi/vec4 0, 0, 16;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.136, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.137, 8;
+T_1.136 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.137, 8;
+ ; End of false expr.
+    %blend;
+T_1.137;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.138, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.139, 8;
+T_1.138 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.139, 8;
+ ; End of false expr.
+    %blend;
+T_1.139;
+<<<<<<< HEAD
+    %vpi_call 2 341 "$display", "| SLL15  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 7, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 5, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+=======
+    %vpi_call 2 341 "$display", "| SLL15  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 7, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 5, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmpi/e 1, 0, 1;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.140, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.141, 8;
+T_1.140 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.141, 8;
+ ; End of false expr.
+    %blend;
+T_1.141;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.142, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.143, 8;
+T_1.142 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.143, 8;
+ ; End of false expr.
+    %blend;
+T_1.143;
+<<<<<<< HEAD
+    %vpi_call 2 349 "$display", "| SLL_Z  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 3, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 4, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 5, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %pushi/vec4 48, 0, 16;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 349 "$display", "| SLL_Z  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 3, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 4, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 5, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %pushi/vec4 48, 0, 16;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pushi/vec4 0, 0, 16;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.144, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.145, 8;
+T_1.144 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.145, 8;
+ ; End of false expr.
+    %blend;
+T_1.145;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.146, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.147, 8;
+T_1.146 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.147, 8;
+ ; End of false expr.
+    %blend;
+T_1.147;
+<<<<<<< HEAD
+    %vpi_call 2 357 "$display", "| SLL_L  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 49167, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 4, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 6, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %load/vec4 v0x104bab230_0;
+    %ix/load 4, 4, 0;
+    %flag_set/imm 4, 0;
+    %shiftr 4;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 357 "$display", "| SLL_L  | %8h | %8h |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 49167, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 4, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 6, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %load/vec4 v0x7a5e308a6500_0;
+    %ix/load 4, 4, 0;
+    %flag_set/imm 4, 0;
+    %shiftr 4;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pad/u 32;
+    %pushi/vec4 0, 0, 32;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.148, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.149, 8;
+T_1.148 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.149, 8;
+ ; End of false expr.
+    %blend;
+T_1.149;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.150, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.151, 8;
+T_1.150 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.151, 8;
+ ; End of false expr.
+    %blend;
+T_1.151;
+<<<<<<< HEAD
+    %vpi_call 2 365 "$display", "| SRL    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 12345, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 6, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %load/vec4 v0x104bab230_0;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 365 "$display", "| SRL    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 12345, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 6, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %load/vec4 v0x7a5e308a6500_0;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pad/u 32;
+    %pushi/vec4 0, 0, 32;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.152, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.153, 8;
+T_1.152 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.153, 8;
+ ; End of false expr.
+    %blend;
+T_1.153;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.154, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.155, 8;
+T_1.154 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.155, 8;
+ ; End of false expr.
+    %blend;
+T_1.155;
+<<<<<<< HEAD
+    %vpi_call 2 372 "$display", "| SRL    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 32769, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 6, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %load/vec4 v0x104bab230_0;
+    %ix/load 4, 1, 0;
+    %flag_set/imm 4, 0;
+    %shiftr 4;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 372 "$display", "| SRL    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 32769, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 6, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %load/vec4 v0x7a5e308a6500_0;
+    %ix/load 4, 1, 0;
+    %flag_set/imm 4, 0;
+    %shiftr 4;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pad/u 32;
+    %pushi/vec4 0, 0, 32;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.156, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.157, 8;
+T_1.156 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.157, 8;
+ ; End of false expr.
+    %blend;
+T_1.157;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.158, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.159, 8;
+T_1.158 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.159, 8;
+ ; End of false expr.
+    %blend;
+T_1.159;
+<<<<<<< HEAD
+    %vpi_call 2 379 "$display", "| SRL    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 4, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 6, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %load/vec4 v0x104bab230_0;
+    %ix/load 4, 4, 0;
+    %flag_set/imm 4, 0;
+    %shiftr 4;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 379 "$display", "| SRL    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 4, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 6, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %load/vec4 v0x7a5e308a6500_0;
+    %ix/load 4, 4, 0;
+    %flag_set/imm 4, 0;
+    %shiftr 4;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pad/u 32;
+    %pushi/vec4 0, 0, 32;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.160, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.161, 8;
+T_1.160 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.161, 8;
+ ; End of false expr.
+    %blend;
+T_1.161;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.162, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.163, 8;
+T_1.162 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.163, 8;
+ ; End of false expr.
+    %blend;
+T_1.163;
+<<<<<<< HEAD
+    %vpi_call 2 386 "$display", "| SRL    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 7, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 6, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %load/vec4 v0x104bab230_0;
+    %ix/load 4, 7, 0;
+    %flag_set/imm 4, 0;
+    %shiftr 4;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 386 "$display", "| SRL    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 7, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 6, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %load/vec4 v0x7a5e308a6500_0;
+    %ix/load 4, 7, 0;
+    %flag_set/imm 4, 0;
+    %shiftr 4;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pad/u 32;
+    %pushi/vec4 0, 0, 32;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.164, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.165, 8;
+T_1.164 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.165, 8;
+ ; End of false expr.
+    %blend;
+T_1.165;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.166, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.167, 8;
+T_1.166 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.167, 8;
+ ; End of false expr.
+    %blend;
+T_1.167;
+<<<<<<< HEAD
+    %vpi_call 2 393 "$display", "| SRL    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 4, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 6, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %load/vec4 v0x104bab230_0;
+    %ix/load 4, 4, 0;
+    %flag_set/imm 4, 0;
+    %shiftr 4;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 393 "$display", "| SRL    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 4, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 6, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %load/vec4 v0x7a5e308a6500_0;
+    %ix/load 4, 4, 0;
+    %flag_set/imm 4, 0;
+    %shiftr 4;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pad/u 32;
+    %pushi/vec4 0, 0, 32;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.168, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.169, 8;
+T_1.168 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.169, 8;
+ ; End of false expr.
+    %blend;
+T_1.169;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.170, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.171, 8;
+T_1.170 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.171, 8;
+ ; End of false expr.
+    %blend;
+T_1.171;
+<<<<<<< HEAD
+    %vpi_call 2 400 "$display", "| SRL    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 32768, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 15, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 6, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %load/vec4 v0x104bab230_0;
+    %ix/load 4, 15, 0;
+    %flag_set/imm 4, 0;
+    %shiftr 4;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 400 "$display", "| SRL    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 32768, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 15, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 6, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %load/vec4 v0x7a5e308a6500_0;
+    %ix/load 4, 15, 0;
+    %flag_set/imm 4, 0;
+    %shiftr 4;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pad/u 32;
+    %pushi/vec4 0, 0, 32;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.172, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.173, 8;
+T_1.172 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.173, 8;
+ ; End of false expr.
+    %blend;
+T_1.173;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.174, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.175, 8;
+T_1.174 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.175, 8;
+ ; End of false expr.
+    %blend;
+T_1.175;
+<<<<<<< HEAD
+    %vpi_call 2 407 "$display", "| SRL    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |", v0x104bab230_0, v0x104bab2d0_0, v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 4, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 7, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %load/vec4 v0x104bab230_0;
+    %ix/getv 4, v0x104bab2d0_0;
+    %shiftr/s 4;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x104bab230_0;
+    %load/vec4 v0x104bab750_0;
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 407 "$display", "| SRL    | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 4, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 7, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %load/vec4 v0x7a5e308a6500_0;
+    %ix/getv 4, v0x7a5e308a65a0_0;
+    %shiftr/s 4;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e308a6500_0;
+    %load/vec4 v0x7a5e308a6640_0;
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pad/u 32;
+    %pushi/vec4 0, 0, 32;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.176, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.177, 8;
+T_1.176 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.177, 8;
+ ; End of false expr.
+    %blend;
+T_1.177;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.178, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.179, 8;
+T_1.178 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.179, 8;
+ ; End of false expr.
+    %blend;
+T_1.179;
+<<<<<<< HEAD
+    %vpi_call 2 419 "$display", "| SRA0      | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |", S<4,vec4,s16>, v0x104bab2d0_0, v0x104bab0f0_0, S<3,vec4,s16>, S<2,vec4,s16>, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {5 0 0};
+    %pushi/vec4 32768, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 4, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 7, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %load/vec4 v0x104bab230_0;
+    %ix/getv 4, v0x104bab2d0_0;
+    %shiftr/s 4;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x104bab230_0;
+    %load/vec4 v0x104bab750_0;
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 419 "$display", "| SRA0      | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |", S<4,vec4,s16>, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, S<3,vec4,s16>, S<2,vec4,s16>, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {5 0 0};
+    %pushi/vec4 32768, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 4, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 7, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %load/vec4 v0x7a5e308a6500_0;
+    %ix/getv 4, v0x7a5e308a65a0_0;
+    %shiftr/s 4;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e308a6500_0;
+    %load/vec4 v0x7a5e308a6640_0;
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pad/u 32;
+    %pushi/vec4 0, 0, 32;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.180, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.181, 8;
+T_1.180 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.181, 8;
+ ; End of false expr.
+    %blend;
+T_1.181;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.182, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.183, 8;
+T_1.182 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.183, 8;
+ ; End of false expr.
+    %blend;
+T_1.183;
+<<<<<<< HEAD
+    %vpi_call 2 426 "$display", "| SRA_MSB  | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |", S<4,vec4,s16>, v0x104bab2d0_0, v0x104bab0f0_0, S<3,vec4,s16>, S<2,vec4,s16>, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {5 0 0};
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 7, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %load/vec4 v0x104bab230_0;
+    %ix/getv 4, v0x104bab2d0_0;
+    %shiftr/s 4;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x104bab230_0;
+    %load/vec4 v0x104bab750_0;
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 426 "$display", "| SRA_MSB  | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |", S<4,vec4,s16>, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, S<3,vec4,s16>, S<2,vec4,s16>, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {5 0 0};
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 7, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %load/vec4 v0x7a5e308a6500_0;
+    %ix/getv 4, v0x7a5e308a65a0_0;
+    %shiftr/s 4;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e308a6500_0;
+    %load/vec4 v0x7a5e308a6640_0;
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pad/u 32;
+    %pushi/vec4 0, 0, 32;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.184, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.185, 8;
+T_1.184 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.185, 8;
+ ; End of false expr.
+    %blend;
+T_1.185;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.186, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.187, 8;
+T_1.186 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.187, 8;
+ ; End of false expr.
+    %blend;
+T_1.187;
+<<<<<<< HEAD
+    %vpi_call 2 433 "$display", "| SRA_LSB  | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |", S<4,vec4,s16>, v0x104bab2d0_0, v0x104bab0f0_0, S<3,vec4,s16>, S<2,vec4,s16>, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {5 0 0};
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 4, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 7, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %load/vec4 v0x104bab230_0;
+    %ix/getv 4, v0x104bab2d0_0;
+    %shiftr/s 4;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x104bab230_0;
+    %load/vec4 v0x104bab750_0;
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 433 "$display", "| SRA_LSB  | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |", S<4,vec4,s16>, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, S<3,vec4,s16>, S<2,vec4,s16>, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {5 0 0};
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 4, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 7, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %load/vec4 v0x7a5e308a6500_0;
+    %ix/getv 4, v0x7a5e308a65a0_0;
+    %shiftr/s 4;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e308a6500_0;
+    %load/vec4 v0x7a5e308a6640_0;
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pad/u 32;
+    %pushi/vec4 0, 0, 32;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.188, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.189, 8;
+T_1.188 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.189, 8;
+ ; End of false expr.
+    %blend;
+T_1.189;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.190, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.191, 8;
+T_1.190 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.191, 8;
+ ; End of false expr.
+    %blend;
+T_1.191;
+<<<<<<< HEAD
+    %vpi_call 2 440 "$display", "| SRA_NEG  | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |", S<4,vec4,s16>, v0x104bab2d0_0, v0x104bab0f0_0, S<3,vec4,s16>, S<2,vec4,s16>, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {5 0 0};
+    %pushi/vec4 43690, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x104bab2d0_0, 0, 16;
+    %pushi/vec4 7, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %load/vec4 v0x104bab230_0;
+    %ix/getv 4, v0x104bab2d0_0;
+    %shiftr/s 4;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x104bab230_0;
+    %load/vec4 v0x104bab750_0;
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 440 "$display", "| SRA_NEG  | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |", S<4,vec4,s16>, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, S<3,vec4,s16>, S<2,vec4,s16>, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {5 0 0};
+    %pushi/vec4 43690, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 1, 0, 16;
+    %store/vec4 v0x7a5e308a65a0_0, 0, 16;
+    %pushi/vec4 7, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %load/vec4 v0x7a5e308a6500_0;
+    %ix/getv 4, v0x7a5e308a65a0_0;
+    %shiftr/s 4;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e308a6500_0;
+    %load/vec4 v0x7a5e308a6640_0;
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pad/u 32;
+    %pushi/vec4 0, 0, 32;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.192, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.193, 8;
+T_1.192 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.193, 8;
+ ; End of false expr.
+    %blend;
+T_1.193;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.194, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.195, 8;
+T_1.194 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.195, 8;
+ ; End of false expr.
+    %blend;
+T_1.195;
+<<<<<<< HEAD
+    %vpi_call 2 447 "$display", "| SRA_ALT  | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |", S<4,vec4,s16>, v0x104bab2d0_0, v0x104bab0f0_0, S<3,vec4,s16>, S<2,vec4,s16>, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {5 0 0};
+    %pushi/vec4 100, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 8, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %load/vec4 v0x104bab230_0;
+    %addi 2, 0, 16;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 447 "$display", "| SRA_ALT  | %8d | %8d |   %b    | %8d | %10d |   %b  |      %s      |  %s  |", S<4,vec4,s16>, v0x7a5e308a65a0_0, v0x7a5e308a63c0_0, S<3,vec4,s16>, S<2,vec4,s16>, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {5 0 0};
+    %pushi/vec4 100, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 8, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %load/vec4 v0x7a5e308a6500_0;
+    %addi 2, 0, 16;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pad/u 32;
+    %pushi/vec4 0, 0, 32;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.196, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.197, 8;
+T_1.196 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.197, 8;
+ ; End of false expr.
+    %blend;
+T_1.197;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.198, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.199, 8;
+T_1.198 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.199, 8;
+ ; End of false expr.
+    %blend;
+T_1.199;
+<<<<<<< HEAD
+    %vpi_call 2 459 "$display", "| JAL       | %8d | %8s |   %b    | %8d | %10d |   %b  |      %s      |  %s  |", v0x104bab230_0, "-", v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 8, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %load/vec4 v0x104bab230_0;
+    %addi 2, 0, 16;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 459 "$display", "| JAL       | %8d | %8s |   %b    | %8d | %10d |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, "-", v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 0, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 8, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %load/vec4 v0x7a5e308a6500_0;
+    %addi 2, 0, 16;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pad/u 32;
+    %pushi/vec4 0, 0, 32;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.200, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.201, 8;
+T_1.200 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.201, 8;
+ ; End of false expr.
+    %blend;
+T_1.201;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.202, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.203, 8;
+T_1.202 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.203, 8;
+ ; End of false expr.
+    %blend;
+T_1.203;
+<<<<<<< HEAD
+    %vpi_call 2 466 "$display", "| JAL_ZERO  | %8d | %8s |   %b    | %8d | %10d |   %b  |      %s      |  %s  |", v0x104bab230_0, "-", v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 8, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %load/vec4 v0x104bab230_0;
+    %addi 2, 0, 16;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 466 "$display", "| JAL_ZERO  | %8d | %8s |   %b    | %8d | %10d |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, "-", v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 65535, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 8, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %load/vec4 v0x7a5e308a6500_0;
+    %addi 2, 0, 16;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pad/u 32;
+    %pushi/vec4 0, 0, 32;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.204, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.205, 8;
+T_1.204 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.205, 8;
+ ; End of false expr.
+    %blend;
+T_1.205;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.206, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.207, 8;
+T_1.206 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.207, 8;
+ ; End of false expr.
+    %blend;
+T_1.207;
+<<<<<<< HEAD
+    %vpi_call 2 473 "$display", "| JAL_MAX   | %8h | %8s |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, "-", v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 32767, 0, 16;
+    %store/vec4 v0x104bab230_0, 0, 16;
+    %pushi/vec4 8, 0, 4;
+    %store/vec4 v0x104bab0f0_0, 0, 4;
+    %load/vec4 v0x104bab230_0;
+    %addi 2, 0, 16;
+    %store/vec4 v0x104bab750_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0xb3d0bc000_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %vpi_call 2 473 "$display", "| JAL_MAX   | %8h | %8s |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, "-", v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+    %pushi/vec4 32767, 0, 16;
+    %store/vec4 v0x7a5e308a6500_0, 0, 16;
+    %pushi/vec4 8, 0, 4;
+    %store/vec4 v0x7a5e308a63c0_0, 0, 4;
+    %load/vec4 v0x7a5e308a6500_0;
+    %addi 2, 0, 16;
+    %store/vec4 v0x7a5e308a6640_0, 0, 16;
+    %delay 10000, 0;
+    %load/vec4 v0x7a5e305d5e60_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %pad/u 32;
+    %pushi/vec4 0, 0, 32;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.208, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.209, 8;
+T_1.208 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.209, 8;
+ ; End of false expr.
+    %blend;
+T_1.209;
+<<<<<<< HEAD
+    %load/vec4 v0x104bab190_0;
+    %load/vec4 v0x104bab750_0;
+=======
+    %load/vec4 v0x7a5e308a6460_0;
+    %load/vec4 v0x7a5e308a6640_0;
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %cmp/e;
+    %flag_mov 8, 4;
+    %jmp/0 T_1.210, 8;
+    %pushi/vec4 5850451, 0, 24; draw_string_vec4
+    %jmp/1 T_1.211, 8;
+T_1.210 ; End of true expr.
+    %pushi/vec4 20047, 0, 24; draw_string_vec4
+    %jmp/0 T_1.211, 8;
+ ; End of false expr.
+    %blend;
+T_1.211;
+<<<<<<< HEAD
+    %vpi_call 2 480 "$display", "| JAL_EDGE  | %8h | %8s |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x104bab230_0, "-", v0x104bab0f0_0, v0x104bab750_0, v0x104bab190_0, v0xb3d0bc000_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+=======
+    %vpi_call 2 480 "$display", "| JAL_EDGE  | %8h | %8s |   %b    | %8h | %10h |   %b  |      %s      |  %s  |", v0x7a5e308a6500_0, "-", v0x7a5e308a63c0_0, v0x7a5e308a6640_0, v0x7a5e308a6460_0, v0x7a5e305d5e60_0, S<1,vec4,u24>, S<0,vec4,u24> {2 0 0};
+>>>>>>> ddc505701c3081d5add124ed685a786686c2d118
+    %vpi_call 2 486 "$display", "-----------------------------------------------------------------------------------------------" {0 0 0};
+    %vpi_call 2 487 "$display", "ALU Test Bench Completed." {0 0 0};
+    %vpi_call 2 488 "$finish" {0 0 0};
+    %end;
+    .thread T_1;
+# The file index is used to find the file name in the following table.
+:file_names 4;
+    "N/A";
+    "<interactive>";
+    "./tb/ALU_tb.v";
+    "./src/ALU.v";
+>>>>>>> 93f1fd1c42928418f4a723149b71da564103844d

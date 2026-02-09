@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module top (
+module riscv16_top (
     input  wire       clk,
     input  wire       reset,
 
@@ -10,20 +10,32 @@ module top (
     output wire [15:0] dbg_alu_result,
     output wire [15:0] dbg_x1
 );
-    // IF stage
-    wire [15:0] PC;
+
+    /* =====================
+       IF Stage
+    ====================== */
+    wire [15:0] PC, PC_next, PC_plus2, PC_target;
     wire [15:0] instruction;
 
+    assign PC_plus2 = PC + 16'd2;
+
+    // NOTE: pc_counter_16 from the report does not take PC_next as an input [1].
+    // It computes next PC internally based on branch/jal/jalr signals.
+    // For now we tie branch/jal/jalr inactive so it behaves like PC := PC+2.
     pc_counter_16 PC_REG (
         .clk(clk),
         .reset(reset),
-        .pc_en(1'b1),        // no stalls for now
-        .branch_taken(1'b0), // simple core, no branches wired yet
-        .branch_imm(7'd0),
+        .pc_en(1'b1),
+
+        .branch_taken(1'b0),
+        .branch_imm(7'sd0),
+
         .jal_taken(1'b0),
-        .jal_imm(10'd0),
+        .jal_imm(10'sd0),
+
         .jalr_taken(1'b0),
-        .jalr_target(16'd0),
+        .jalr_target(16'h0000),
+
         .pc(PC)
     );
 
@@ -36,14 +48,18 @@ module top (
         .instruction(instruction)
     );
 
-    // Decode fields (ISA layout) [2]
+    /* =====================
+       Instruction Fields
+    ====================== */
     wire [2:0] opcode = instruction[2:0];
     wire [3:0] func   = instruction[6:3];
-    wire [2:0] rd     = instruction[9:7];
-    wire [2:0] rs2    = instruction[12:10];
     wire [2:0] rs1    = instruction[15:13];
+    wire [2:0] rs2    = instruction[12:10];
+    wire [2:0] rd     = instruction[9:7];
 
-    // Control unit
+    /* =====================
+       Control Unit
+    ====================== */
     wire        PCSrc;
     wire        ResultSrc;
     wire        MemWrite;
@@ -53,6 +69,7 @@ module top (
     wire [3:0]  ALUControl;
     wire        zero;
 
+    // Use the actual module name Control_Unit from the report [1]
     Control_Unit CU (
         .opcode(opcode),
         .func(func),
@@ -66,10 +83,13 @@ module top (
         .RegWrite(RegWrite)
     );
 
-    // Register file
+    /* =====================
+       Register File
+    ====================== */
     wire [15:0] RD1, RD2, WD3;
     wire [15:0] rf_dbg_x1;
 
+    // Match your Register_file port names from the report [1]
     Register_file RF (
         .clk(clk),
         .RegWrite(RegWrite),
@@ -79,12 +99,16 @@ module top (
         .RD1(RD1),
         .A2(rs2),
         .RD2(RD2),
-        .dbg_x1(rf_dbg_x1)
+        .dbg_x1(rf_dbg_x1)   // this is your added debug port
     );
 
-    // Immediate generation
+    /* =====================
+       Immediate Generation
+    ====================== */
     wire [15:0] imm_ext;
-    wire [2:0]  ImmSrc_ext = {1'b0, ImmSrc}; // Sign_Extender expects 3 bits [1]
+
+    // Sign_Extender in the report expects ImmSrc[2:0], not [1:0] [1]
+    wire [2:0] ImmSrc_ext = {1'b0, ImmSrc};
 
     Sign_Extender SE (
         .instr(instruction),
@@ -92,11 +116,13 @@ module top (
         .ImmExt(imm_ext)
     );
 
-    // Execute
+    /* =====================
+       Execute Stage
+    ====================== */
     wire [15:0] ALU_B;
     wire [15:0] ALUResult;
 
-    // Simple ALUSrc mux (reg vs imm)
+    // Replace EX_MUX module with a simple assign so it works now
     assign ALU_B = (ALUSrc) ? imm_ext : RD2;
 
     ALU ALU_CORE (
@@ -107,7 +133,9 @@ module top (
         .zero(zero)
     );
 
-    // Data memory
+    /* =====================
+       Data Memory
+    ====================== */
     wire [15:0] ReadData;
 
     Data_Memory DMEM (
@@ -119,14 +147,23 @@ module top (
         .mem_read_data(ReadData)
     );
 
-    // Writeback
+    /* =====================
+       Writeback
+    ====================== */
+    // Replace WB_MUX module with a simple assign so it works now
     assign WD3 = (ResultSrc) ? ReadData : ALUResult;
 
-    // For now, ignore PCSrc and just do sequential PC+2
-    // (since pc_counter_16 is handling PC increment and we aren't wiring branches yet)
-    // Later you can replace with full PC control.
+    /* =====================
+       PC Update Logic
+    ====================== */
+    // Keep these signals for naming consistency with your skeleton,
+    // but they are not currently feeding pc_counter_16 (see note above).
+    assign PC_target = PC + imm_ext;
+    assign PC_next   = (PCSrc) ? PC_target : PC_plus2;
 
-    // Debug outputs
+    /* =====================
+       Debug
+    ====================== */
     assign dbg_pc         = PC;
     assign dbg_instr      = instruction;
     assign dbg_alu_result = ALUResult;
