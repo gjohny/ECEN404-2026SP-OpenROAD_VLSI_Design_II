@@ -1,6 +1,7 @@
 `timescale 1ns/1ps
 module Instruction_memory #(
-    parameter IMEM_WORDS = 256
+    parameter IMEM_WORDS = 256,
+    parameter MEMFILE = "src/program16.mem"
 )(
     input      clk,
     input      [15:0] pc,
