@@ -1,13 +1,7 @@
-<<<<<<< HEAD
-module riscv16_top (
-    input  wire       clk,
-    input  wire       reset,
-=======
 module top (
     input clk,
     input reset
 );
->>>>>>> 7a982f7780ad9e83046568c19e77c5bc9c8d07a2
 
     // Debug outputs
     output wire [15:0] dbg_pc,
