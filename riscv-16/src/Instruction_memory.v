@@ -15,7 +15,7 @@ module Instruction_memory #(
         for (i = 0; i < IMEM_WORDS; i = i + 1)
             memory[i] = 16'h0000;
         // Always load memfile16
-        $readmemh("memfile16", memory);  // or "memfile16.mem"
+        $readmemh("program16", memory);  // or "memfile16.mem"
     end
 
     // Word-aligned index
