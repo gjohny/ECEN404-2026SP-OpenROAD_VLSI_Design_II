@@ -1,4 +1,4 @@
-module riscv16_top (
+module top (
     input clk,
     input reset
 );
