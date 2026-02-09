@@ -89,7 +89,15 @@ VCD_FILE="$WAVEFORM_DIR/${UNIT}.vcd"
 
 # ---- Step 1: Compile ----
 echo "[*] Compiling $UNIT..."
-iverilog -o "$VVP_FILE" "./src/${UNIT}.v" "./tb/${UNIT}_tb.v"
+
+if [ "$UNIT" = "top" ]; then
+  echo "[*] Detected top-level build. Compiling all RTL files..."
+  iverilog -g2012 -o "$VVP_FILE" ./src/*.v "./tb/${UNIT}_tb.v"
+else
+  echo "[*] Detected unit-level build. Compiling ${UNIT}.v only..."
+  iverilog -g2012 -o "$VVP_FILE" "./src/${UNIT}.v" "./tb/${UNIT}_tb.v"
+fi
+
 if [ $? -ne 0 ]; then
   echo "[!] ❌ Compilation failed for $UNIT"
   exit 1
