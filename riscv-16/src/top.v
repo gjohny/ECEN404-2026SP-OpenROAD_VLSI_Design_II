@@ -1,6 +1,8 @@
+`timescale 1ns / 1ps
+
 module top (
-    input clk,
-    input reset
+    input  wire       clk,
+    input  wire       reset,
 
     // Debug outputs
     output wire [15:0] dbg_pc,
@@ -8,39 +10,40 @@ module top (
     output wire [15:0] dbg_alu_result,
     output wire [15:0] dbg_x1
 );
-    /* =====================
-       IF Stage
-    ====================== */
-    wire [15:0] PC, PC_next, PC_plus2, PC_target;
+    // IF stage
+    wire [15:0] PC;
     wire [15:0] instruction;
-
-    assign PC_plus2 = PC + 16'd2;
 
     pc_counter_16 PC_REG (
         .clk(clk),
         .reset(reset),
-        .PC_next(PC_next),
-        .PC(PC)
+        .pc_en(1'b1),        // no stalls for now
+        .branch_taken(1'b0), // simple core, no branches wired yet
+        .branch_imm(7'd0),
+        .jal_taken(1'b0),
+        .jal_imm(10'd0),
+        .jalr_taken(1'b0),
+        .jalr_target(16'd0),
+        .pc(PC)
     );
 
-    Instruction_memory IMEM (
-        .addr(PC),           // or .pc(PC) if your module calls it 'pc'
+    Instruction_memory #(
+        .IMEM_WORDS(256),
+        .MEMFILE("src/program16.mem")
+    ) IMEM (
+        .clk(clk),
+        .pc(PC),
         .instruction(instruction)
     );
 
-    /* =====================
-       Instruction Fields
-       (match ISA / Sign_Extender)
-    ====================== */
+    // Decode fields (ISA layout) [2]
     wire [2:0] opcode = instruction[2:0];
     wire [3:0] func   = instruction[6:3];
     wire [2:0] rd     = instruction[9:7];
     wire [2:0] rs2    = instruction[12:10];
     wire [2:0] rs1    = instruction[15:13];
 
-    /* =====================
-       Control Unit
-    ====================== */
+    // Control unit
     wire        PCSrc;
     wire        ResultSrc;
     wire        MemWrite;
@@ -63,29 +66,25 @@ module top (
         .RegWrite(RegWrite)
     );
 
-    /* =====================
-       Register File
-    ====================== */
+    // Register file
     wire [15:0] RD1, RD2, WD3;
     wire [15:0] rf_dbg_x1;
 
     Register_file RF (
         .clk(clk),
-        .RegWrite(RegWrite),   // use your real port name
+        .RegWrite(RegWrite),
         .A3(rd),
         .WD3(WD3),
         .A1(rs1),
         .RD1(RD1),
         .A2(rs2),
         .RD2(RD2),
-        .dbg_x1(rf_dbg_x1)     // new debug port
+        .dbg_x1(rf_dbg_x1)
     );
 
-    /* =====================
-       Immediate Generation
-    ====================== */
+    // Immediate generation
     wire [15:0] imm_ext;
-    wire [2:0] ImmSrc_ext = {1'b0, ImmSrc}; // if Sign_Extender expects 3 bits
+    wire [2:0]  ImmSrc_ext = {1'b0, ImmSrc}; // Sign_Extender expects 3 bits [1]
 
     Sign_Extender SE (
         .instr(instruction),
@@ -93,18 +92,12 @@ module top (
         .ImmExt(imm_ext)
     );
 
-    /* =====================
-       Execute Stage
-    ====================== */
+    // Execute
     wire [15:0] ALU_B;
     wire [15:0] ALUResult;
 
-    ALUSrc_mux EX_MUX (
-        .reg_data(RD2),
-        .imm_data(imm_ext),
-        .ALUSrc(ALUSrc),
-        .ALU_B(ALU_B)
-    );
+    // Simple ALUSrc mux (reg vs imm)
+    assign ALU_B = (ALUSrc) ? imm_ext : RD2;
 
     ALU ALU_CORE (
         .SrcA(RD1),
@@ -114,9 +107,7 @@ module top (
         .zero(zero)
     );
 
-    /* =====================
-       Data Memory
-    ====================== */
+    // Data memory
     wire [15:0] ReadData;
 
     Data_Memory DMEM (
@@ -128,30 +119,14 @@ module top (
         .mem_read_data(ReadData)
     );
 
-    /* =====================
-       Writeback
-    ====================== */
-    Memory_mux WB_MUX (
-        .ALUResult(ALUResult),
-        .MemData(ReadData),
-        .ResultSrc(ResultSrc),
-        .Result(WD3)
-    );
+    // Writeback
+    assign WD3 = (ResultSrc) ? ReadData : ALUResult;
 
-    /* =====================
-       PC Update Logic
-    ====================== */
-    PCTarget PC_ADD (
-        .PC(PC),
-        .imm_ext(imm_ext),
-        .PC_target(PC_target)
-    );
+    // For now, ignore PCSrc and just do sequential PC+2
+    // (since pc_counter_16 is handling PC increment and we aren't wiring branches yet)
+    // Later you can replace with full PC control.
 
-    assign PC_next = PCSrc ? PC_target : PC_plus2;
-
-    /* =====================
-       Debug outputs
-    ====================== */
+    // Debug outputs
     assign dbg_pc         = PC;
     assign dbg_instr      = instruction;
     assign dbg_alu_result = ALUResult;
