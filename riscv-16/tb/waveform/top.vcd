@@ -1,5 +1,5 @@
 $date
-	Mon Feb 16 08:37:34 2026
+	Mon Feb 16 09:49:50 2026
 $end
 $version
 	Icarus Verilog
@@ -45,7 +45,7 @@ $var wire 1 ? PCSrc $end
 $var wire 16 @ PC [15:0] $end
 $var wire 1 A MemWrite $end
 $var wire 3 B ImmSrc_ext [2:0] $end
-$var wire 2 C ImmSrc [1:0] $end
+$var wire 3 C ImmSrc [2:0] $end
 $var wire 16 D ALU_B [15:0] $end
 $var wire 1 E ALUSrc $end
 $var wire 16 F ALUResult [15:0] $end
@@ -63,7 +63,7 @@ $var wire 3 M opcode [2:0] $end
 $var wire 1 . zero $end
 $var reg 4 N ALUControl [3:0] $end
 $var reg 1 E ALUSrc $end
-$var reg 2 O ImmSrc [1:0] $end
+$var reg 3 O ImmSrc [2:0] $end
 $var reg 1 A MemWrite $end
 $var reg 1 ? PCSrc $end
 $var reg 1 8 RegWrite $end
@@ -138,9 +138,9 @@ bx o
 bx n
 bx m
 bx l
-b0 k
+bx k
 bx j
-b0xx i
+bx i
 b1000 h
 bx g
 bx f
@@ -179,13 +179,13 @@ bx F
 xE
 bx D
 bx C
-b0xx B
+bx B
 xA
 b0 @
 x?
-b0x0 >
+bx >
 b10 =
-b0 <
+bx <
 bx ;
 bx :
 bx 9
@@ -193,7 +193,7 @@ x8
 x7
 bx 6
 bx 5
-b0 4
+bx 4
 bx 3
 bx 2
 bx 1
@@ -216,6 +216,9 @@ b0 !
 $end
 #5000
 b0 S
+b11 B
+b0 9
+b0 R
 b0 6
 b0 d
 1.
@@ -224,39 +227,39 @@ b0 )
 b0 F
 b0 K
 b0 P
+b1100000 >
 b0 D
 b0 H
-b0 9
-b0 R
-b10 >
+08
+b11 C
+b11 O
+b11 i
+0E
+b1 G
+b1 J
+b1 N
+0A
+07
+1?
 b0 :
 b0 Q
 b0 f
 b0 ;
 b0 I
 b0 g
-18
-b0 B
-b0 i
-b0 C
-b0 O
-1E
-b0 G
-b0 J
-b0 N
-0A
-07
-0?
-b0 1
-b0 c
+b1100000 <
+b1100000 4
+b1100000 k
+b11 2
+b11 M
+b0 5
+b0 L
+b1 1
+b1 c
 b0 /
 b0 b
-b11 0
-b11 a
-b1000 5
-b1000 L
-b1 2
-b1 M
+b1 0
+b1 a
 b110000001000001 #
 b110000001000001 *
 b110000001000001 3
@@ -276,8 +279,8 @@ b110000001000001 j
 0%
 #35000
 b1 T
-b100 >
-b10 <
+b1100010 >
+b1100010 <
 b100 =
 b10 "
 b10 +
@@ -288,10 +291,32 @@ b10 _
 #40000
 0%
 #45000
-b1 /
-b1 b
-b1 0
-b1 a
+b1 6
+b1 d
+0.
+b1 $
+b1 )
+b1 F
+b1 K
+b1 P
+b1 D
+b1 H
+b1 B
+18
+1E
+b1 C
+b1 O
+b1 i
+b11 G
+b11 J
+b11 N
+0?
+b1 4
+b1 k
+b1 2
+b1 M
+b10 5
+b10 L
 b10 T
 b110 >
 b10010001000001 #
@@ -299,7 +324,7 @@ b10010001000001 *
 b10010001000001 3
 b10010001000001 V
 b10010001000001 j
-b100 <
+b101 <
 b110 =
 b100 "
 b100 +
@@ -310,28 +335,43 @@ b100 _
 #50000
 0%
 #55000
-1?
-b1 B
-b1 i
-b1 C
-b1 O
-b1 G
-b1 J
-b1 N
-08
+b0 6
+b0 d
+b0 B
+1.
+b0 $
+b0 )
+b0 F
+b0 K
+b0 P
+b0 D
+b0 H
+18
+b0 C
+b0 O
+b0 i
 0E
-b100 1
-b100 c
-b100 /
-b100 b
-b0 0
-b0 a
-b110 5
-b110 L
-b100 2
-b100 M
+b1001 G
+b1001 J
+b1001 N
+b0 4
+b0 k
+b0 2
+b0 M
+b1001 5
+b1001 L
+b0 1
+b0 c
+b110 /
+b110 b
+b100 0
+b100 a
 b11 T
-b110 >
+b1000 >
+b1 !
+b1 ,
+b1 -
+b1 e
 b1001000110100 #
 b1001000110100 *
 b1001000110100 3
@@ -349,25 +389,39 @@ b110 _
 b1 (
 0%
 #65000
-18
-b0 B
-b0 i
-b0 C
-b0 O
-b1111 G
-b1111 J
-b1111 N
-0?
-b0 4
-b0 k
-b101 /
-b101 b
-b10 0
-b10 a
-b1111 5
-b1111 L
-b0 2
-b0 M
+b101 S
+b101011 6
+b101011 d
+0.
+b101011 $
+b101011 )
+b101011 F
+b101011 K
+b101011 P
+b101011 D
+b101011 H
+b101011 4
+b101011 k
+b10 B
+b10 C
+b10 O
+b10 i
+1A
+1E
+08
+b0 G
+b0 J
+b0 N
+b10 2
+b10 M
+b1011 5
+b1011 L
+b1 1
+b1 c
+b111 /
+b111 b
+b0 0
+b0 a
 b100 T
 b1010 >
 b101011001111000 #
@@ -375,7 +429,7 @@ b101011001111000 *
 b101011001111000 3
 b101011001111000 V
 b101011001111000 j
-b1000 <
+b110011 <
 b1010 =
 b1000 "
 b1000 +
@@ -387,18 +441,34 @@ b1000 _
 b10 (
 0%
 #75000
+b0 S
+b0 6
+b0 d
+1.
+b0 $
+b0 )
+b0 F
+b0 K
+b0 P
+b0 B
+b0 D
+b0 H
 18
-b0 G
-b0 J
-b0 N
+b0 C
+b0 O
+b0 i
+0E
+0A
+b0 4
+b0 k
+b0 2
+b0 M
+b0 5
+b0 L
 b0 1
 b0 c
 b0 /
 b0 b
-b0 0
-b0 a
-b0 5
-b0 L
 b101 T
 b1100 >
 b0 #
@@ -462,6 +532,6 @@ b0 m
 b0 p
 b10100000111001001101111011001110111001001100001011011010010000000110001001110100010000001111000001100010010000000111101001000000011001100100000001010110010000000110001 q
 b100 o
-b0 n
+b1 n
 b110 (
 0%
