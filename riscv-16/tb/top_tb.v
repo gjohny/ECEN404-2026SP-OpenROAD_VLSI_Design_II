@@ -28,7 +28,7 @@ module top_tb;
 
     // Waveform dump
     initial begin
-        $dumpfile("./tb/waveform/top_tb.vcd");
+        $dumpfile("./tb/waveform/top.vcd");
         $dumpvars(0, top_tb);
     end
 
@@ -73,6 +73,18 @@ module top_tb;
     // Watchdog
     reg [15:0] watchdog;
 
+    // ------------------------------------------------------------
+    // Periodic debug print (every 10000 ns starting at t=0)
+    // ------------------------------------------------------------
+    initial begin
+        forever begin
+            #10000;
+            $display("Time=%0t | PC=0x%04h | Instr=0x%04h | ALU=0x%04h | x1=0x%04h",
+                    $time, dbg_pc, dbg_instr, dbg_alu_result, dbg_x1);
+        end
+    end
+
+
     // Main stimulus
     initial begin
         passed   = 0;
@@ -95,7 +107,7 @@ module top_tb;
         // PC=0x0000: ADDI x1, x0, 3  (0x6041)
         // PC=0x0002: ADDI x1, x1, 1  (0x2441)
         // So after PC reaches 0x0004, x1 should be 4.
-        while (dbg_pc < 16'h0004) begin
+        while (dbg_pc < 16'h000f) begin
             @(posedge clk);
             @(negedge clk);
             $display("Time=%0t | PC=0x%04h | Instr=0x%04h | ALU=0x%04h | x1=0x%04h",
