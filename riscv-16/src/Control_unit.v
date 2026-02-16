@@ -43,7 +43,7 @@ module Control_unit(
                 ALUSrc     = 1'b1;
                 RegWrite   = 1'b1;
                 ResultSrc  = 1'b0;
-                ImmSrc     = 2'b00;
+                ImmSrc     = 2'b01;
 
                 // Decode func field
                 case (func)

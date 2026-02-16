@@ -82,15 +82,17 @@ module top_tb;
 
         // 1. Reset the system
         reset = 1'b1;
-        #(`CLOCK_PERIOD * 2);
-        @(posedge clk);
+        #20;
         reset = 1'b0; 
+        @(posedge clk);
+        
 
         $display("--- Starting Execution ---");
 
         // 2. Run for exactly 8 cycles and print every step
         repeat (8) begin
             @(negedge clk); // Sample values right after the rising edge
+            #7;
             $display("Time=%0t | PC=0x%04h | Instr=0x%04h | ALU=0x%04h | x1=0x%04h",
                      $time, dbg_pc, dbg_instr, dbg_alu_result, dbg_x1);
         end
@@ -98,49 +100,6 @@ module top_tb;
         // 3. Final Check (Adjust expected to 0x0004 or 0x0006 based on your .mem)
         passTest(dbg_x1, 16'h0004, "Program 1: x1 = 3 + 1", passed);
 
-        allPassed(passed, 1);
-        $finish;
-    end
-
-
-    // Main stimulus
-    initial begin
-        passed   = 0;
-        watchdog = 0;
-
-        // Apply reset
-        reset = 1'b1;
-        #(2 * `CLOCK_PERIOD);
-        @(posedge clk);
-        reset = 1'b0;
-
-        // Wait a couple cycles after reset deassertion
-        @(posedge clk);
-        @(posedge clk);
-
-        // ===========================
-        // Program 1: x1 = 3 + 1
-        // ===========================
-        // We know:
-        // PC=0x0000: ADDI x1, x0, 3  (0x6041)
-        // PC=0x0002: ADDI x1, x1, 1  (0x2441)
-        // So after PC reaches 0x0004, x1 should be 4.
-        while (dbg_pc < 16'h000f) begin
-            @(posedge clk);
-            @(negedge clk);
-            $display("Time=%0t | PC=0x%04h | Instr=0x%04h | ALU=0x%04h | x1=0x%04h",
-                     $time, dbg_pc, dbg_instr, dbg_alu_result, dbg_x1);
-            watchdog = watchdog + 1;
-            if (watchdog == 16'hFFFF) begin
-                $display("Watchdog expired.");
-                $finish;
-            end
-        end
-
-        // Check that x1 == 4
-        passTest(dbg_x1, 16'h0004, "Program 1: x1 = 3 + 1", passed);
-
-        // Final summary
         allPassed(passed, 1);
         $finish;
     end

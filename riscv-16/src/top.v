@@ -43,7 +43,6 @@ module riscv16_top (
         .IMEM_WORDS(256),
         .MEMFILE("src/program16.mem")
     ) IMEM (
-        .clk(clk),
         .pc(PC),
         .instruction(instruction)
     );

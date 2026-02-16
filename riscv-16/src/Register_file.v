@@ -25,7 +25,7 @@ module Register_file(
     end
 
     // Synchronous write
-    always @(posedge clk) begin
+    always @(negedge clk) begin
         if (RegWrite && A3 != 3'b000)  // X0 is always 0
             reg_array[A3] <= WD3;
     end
