@@ -82,56 +82,35 @@ module top_tb;
     // Watchdog
     reg [15:0] watchdog;
 
-    // ------------------------------------------------------------
-    // Periodic debug print (every 10000 ns starting at t=0)
-    // ------------------------------------------------------------
-    initial begin
-        forever begin
-            #10000;
-            $display("Time=%0t | PC=0x%04h | Instr=0x%04h | ALU=0x%04h | x1=0x%04h",
-                    $time, dbg_pc, dbg_instr, dbg_alu_result, dbg_x1);
-        end
-    end
-
 
     // Main stimulus
     initial begin
         passed   = 0;
         watchdog = 0;
 
-        // Apply reset
+        // 1. Reset
         reset = 1'b1;
-        #(2 * `CLOCK_PERIOD);
+        #20;            
         @(posedge clk);
-        reset = 1'b0;
+        #1;             // Small delay to move away from the edge
+        reset = 1'b0;   
 
-        // Wait a couple cycles after reset deassertion
-        @(posedge clk);
-        @(posedge clk);
+        $display("--- Starting Execution ---");
 
-        // ===========================
-        // Program 1: x1 = 3 + 1
-        // ===========================
-        // We know:
-        // PC=0x0000: ADDI x1, x0, 3  (0x6041)
-        // PC=0x0002: ADDI x1, x1, 1  (0x2441)
-        // So after PC reaches 0x0004, x1 should be 4.
-        while (dbg_pc < 16'h000f) begin
-            @(posedge clk);
-            @(negedge clk);
+        // 2. Monitoring Loop
+        // We run until PC reaches 0x0008 or the watchdog hits 50 cycles
+        while (dbg_pc < 16'h0008 && watchdog < 50) begin 
+            @(negedge clk); 
             $display("Time=%0t | PC=0x%04h | Instr=0x%04h | ALU=0x%04h | x1=0x%04h",
                      $time, dbg_pc, dbg_instr, dbg_alu_result, dbg_x1);
-            watchdog = watchdog + 1;
-            if (watchdog == 16'hFFFF) begin
-                $display("Watchdog expired.");
-                $finish;
-            end
+            
+            watchdog = watchdog + 1; // Standard Verilog increment
         end
 
-        // Check that x1 == 4
+        // 3. Final Check
+        $display("--- Simulation Finished ---");
         passTest(dbg_x1, 16'h0004, "Program 1: x1 = 3 + 1", passed);
 
-        // Final summary
         allPassed(passed, 1);
         $finish;
     end

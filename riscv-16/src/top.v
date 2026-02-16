@@ -49,13 +49,104 @@ module riscv16_top (
     );
 
     /* =====================
-       Instruction Fields
-    ====================== */
+    Instruction Fields
+    ===================== */
+
     wire [2:0] opcode = instruction[2:0];
-    wire [3:0] func   = instruction[6:3];
-    wire [2:0] rs1    = instruction[15:13];
-    wire [2:0] rs2    = instruction[12:10];
-    wire [2:0] rd     = instruction[9:7];
+
+    localparam OPC_R = 3'b000;
+    localparam OPC_I = 3'b001;
+    localparam OPC_S = 3'b010;
+    localparam OPC_B = 3'b011;
+    localparam OPC_U = 3'b110;
+    localparam OPC_J = 3'b100;
+
+    wire [3:0] func = instruction[6:3];
+
+    /* =====================
+    Raw Field Extraction
+    ===================== */
+
+    // ---------- R-Type ----------
+    wire [2:0] rs1_r = instruction[15:13];
+    wire [2:0] rs2_r = instruction[12:10];
+    wire [2:0] rd_r  = instruction[9:7];
+
+    // ---------- I-Type ----------
+    wire [2:0] imm_i_raw = instruction[15:13];   // imm[2:0]
+    wire [2:0] rs1_i     = instruction[12:10];
+    wire [2:0] rd_i      = instruction[9:7];
+
+    // ---------- S-Type ----------
+    wire [6:0] imm_s_raw = instruction[15:9];    // imm[6:0]
+    wire [2:0] rs1_s     = instruction[8:6];
+    wire [2:0] rs2_s     = instruction[5:3];
+
+    // ---------- B-Type ----------
+    wire [2:0] imm_b_hi  = instruction[15:13];   // imm[6:4]
+    wire [3:0] imm_b_lo  = instruction[12:9];    // imm[3:0]
+    wire [2:0] rs1_b     = instruction[8:6];
+    wire [2:0] rs2_b     = instruction[5:3];
+
+    // ---------- U-Type ----------
+    wire [9:0] imm_u_raw = instruction[15:6];    // imm[12:3]
+    wire [2:0] rd_u      = instruction[5:3];
+
+    // ---------- J-Type ----------
+    wire [9:0] imm_j_raw = instruction[15:6];    // imm[15:6]
+    wire [2:0] rd_j      = instruction[5:3];
+
+
+    /* =====================
+    Register Selection
+    ===================== */
+
+    wire [2:0] rs1 =
+        (opcode == OPC_R) ? rs1_r :
+        (opcode == OPC_I) ? rs1_i :
+        (opcode == OPC_S) ? rs1_s :
+        (opcode == OPC_B) ? rs1_b :
+        3'b000;
+
+    wire [2:0] rs2 =
+        (opcode == OPC_R) ? rs2_r :
+        (opcode == OPC_S) ? rs2_s :
+        (opcode == OPC_B) ? rs2_b :
+        3'b000;
+
+    wire [2:0] rd =
+        (opcode == OPC_R) ? rd_r :
+        (opcode == OPC_I) ? rd_i :
+        (opcode == OPC_U) ? rd_u :
+        (opcode == OPC_J) ? rd_j :
+        3'b000;
+
+
+    /* =====================
+    Immediate Construction
+    ===================== */
+
+    // Sign-extend immediates to 16 bits
+
+    wire [15:0] imm_i = {{13{imm_i_raw[2]}}, imm_i_raw};              // 3-bit signed
+    wire [15:0] imm_s = {{9{imm_s_raw[6]}}, imm_s_raw};               // 7-bit signed
+    wire [15:0] imm_b = {{9{imm_b_hi[2]}}, imm_b_hi, imm_b_lo};       // 7-bit signed
+    wire [15:0] imm_u = {imm_u_raw, 6'b000000};                       // upper immediate
+    wire [15:0] imm_j = {{6{imm_j_raw[9]}}, imm_j_raw};               // 10-bit signed
+
+
+    /* =====================
+    Unified Immediate Output
+    ===================== */
+
+    wire [15:0] imm =
+        (opcode == OPC_I) ? imm_i :
+        (opcode == OPC_S) ? imm_s :
+        (opcode == OPC_B) ? imm_b :
+        (opcode == OPC_U) ? imm_u :
+        (opcode == OPC_J) ? imm_j :
+        16'h0000;
+
 
     /* =====================
        Control Unit
