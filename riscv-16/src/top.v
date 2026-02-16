@@ -122,8 +122,13 @@ module riscv16_top (
     wire [15:0] ALU_B;
     wire [15:0] ALUResult;
 
-    // Replace EX_MUX module with a simple assign so it works now
-    assign ALU_B = (ALUSrc) ? imm_ext : RD2;
+    ALUSrc_mux RD_2 (
+        .RD2(RD2),
+        .ImmExt(imm_ext),
+        .ALUSrc(ALUSrc),
+        .SrcB(ALU_B)
+    );
+
 
     ALU ALU_CORE (
         .SrcA(RD1),
