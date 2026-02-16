@@ -1,5 +1,5 @@
 $date
-	Mon Feb 16 09:44:12 2026
+	Mon Feb 16 10:04:55 2026
 $end
 $version
 	Icarus Verilog
@@ -82,100 +82,93 @@ $scope module IMEM $end
 $var wire 1 T clk $end
 $var wire 16 U word_index [15:0] $end
 $var wire 16 V pc [15:0] $end
-$var parameter 32 W IMEM_WORDS $end
-$var parameter 136 X MEMFILE $end
-$var reg 16 Y instruction [15:0] $end
-$var integer 32 Z i [31:0] $end
+$var reg 16 W instruction [15:0] $end
+$var integer 32 X i [31:0] $end
 $upscope $end
 $scope module PC_REG $end
-$var wire 7 [ branch_imm [6:0] $end
-$var wire 1 \ branch_taken $end
+$var wire 7 Y branch_imm [6:0] $end
+$var wire 1 Z branch_taken $end
 $var wire 1 % clk $end
-$var wire 10 ] jal_imm [9:0] $end
-$var wire 1 ^ jal_taken $end
-$var wire 1 _ jalr_taken $end
-$var wire 16 ` jalr_target [15:0] $end
-$var wire 1 a pc_en $end
+$var wire 10 [ jal_imm [9:0] $end
+$var wire 1 \ jal_taken $end
+$var wire 1 ] jalr_taken $end
+$var wire 16 ^ jalr_target [15:0] $end
+$var wire 1 _ pc_en $end
 $var wire 1 ' reset $end
-$var reg 16 b pc [15:0] $end
+$var reg 16 ` pc [15:0] $end
 $scope function hw_to_bytes $end
-$var reg 16 c imm_hw [15:0] $end
+$var reg 16 a imm_hw [15:0] $end
 $upscope $end
 $upscope $end
 $scope module RD_2 $end
 $var wire 1 E ALUSrc $end
-$var wire 16 d SrcB [15:0] $end
-$var wire 16 e RD2 [15:0] $end
-$var wire 16 f ImmExt [15:0] $end
+$var wire 16 b SrcB [15:0] $end
+$var wire 16 c RD2 [15:0] $end
+$var wire 16 d ImmExt [15:0] $end
 $upscope $end
 $scope module RF $end
-$var wire 3 g A1 [2:0] $end
-$var wire 3 h A2 [2:0] $end
-$var wire 3 i A3 [2:0] $end
+$var wire 3 e A1 [2:0] $end
+$var wire 3 f A2 [2:0] $end
+$var wire 3 g A3 [2:0] $end
 $var wire 1 8 RegWrite $end
-$var wire 16 j WD3 [15:0] $end
+$var wire 16 h WD3 [15:0] $end
 $var wire 1 % clk $end
-$var wire 16 k dbg_x1 [15:0] $end
-$var wire 16 l RD2 [15:0] $end
-$var wire 16 m RD1 [15:0] $end
-$var integer 32 n i [31:0] $end
+$var wire 16 i dbg_x1 [15:0] $end
+$var wire 16 j RD2 [15:0] $end
+$var wire 16 k RD1 [15:0] $end
+$var integer 32 l i [31:0] $end
 $upscope $end
 $scope module SE $end
-$var wire 3 o ImmSrc [2:0] $end
-$var wire 16 p instr [15:0] $end
-$var reg 16 q ImmExt [15:0] $end
+$var wire 3 m ImmSrc [2:0] $end
+$var wire 16 n instr [15:0] $end
+$var reg 16 o ImmExt [15:0] $end
 $upscope $end
 $upscope $end
 $scope task allPassed $end
-$var reg 8 r numTests [7:0] $end
-$var reg 8 s passed [7:0] $end
+$var reg 8 p numTests [7:0] $end
+$var reg 8 q passed [7:0] $end
 $upscope $end
 $scope task passTest $end
-$var reg 16 t actualOut [15:0] $end
-$var reg 16 u expectedOut [15:0] $end
-$var reg 8 v passed [7:0] $end
-$var reg 257 w testName [256:0] $end
+$var reg 16 r actualOut [15:0] $end
+$var reg 16 s expectedOut [15:0] $end
+$var reg 8 t passed [7:0] $end
+$var reg 257 u testName [256:0] $end
 $upscope $end
 $upscope $end
 $enddefinitions $end
-$comment Show the parameter values. $end
-$dumpall
-b111001101110010011000110010111101110000011100100110111101100111011100100110000101101101001100010011011000101110011011010110010101101101 X
-b100000000 W
-$end
 #0
 $dumpvars
-bx w
-bx v
 bx u
 bx t
 bx s
 bx r
-b11 q
-b110000010000001 p
-b1 o
-b1000 n
-b0 m
-b0 l
+bx q
+bx p
+b11 o
+b110000010000001 n
+b1 m
+b1000 l
 b0 k
-b11 j
-b1 i
-b0 h
-b11 g
-b11 f
-b0 e
+b0 j
+b0 i
+b11 h
+b1 g
+b0 f
+b11 e
 b11 d
-bx c
-b0 b
-1a
+b0 c
+b11 b
+bx a
 b0 `
-0_
-0^
-b0 ]
+1_
+b0 ^
+0]
 0\
 b0 [
-b100000000 Z
-b110000010000001 Y
+0Z
+b0 Y
+b100000000 X
+b110000010000001 W
 b0 V
 b0 U
 zT
@@ -237,7 +230,7 @@ $end
 b11 !
 b11 ,
 b11 -
-b11 k
+b11 i
 0%
 #15000
 1%
@@ -253,14 +246,14 @@ b10 "
 b10 +
 b10 @
 b10 V
-b10 b
+b10 `
 1%
 #30000
 0%
 #35000
 b0 S
 b0 6
-b0 j
+b0 h
 1.
 b0 $
 b0 )
@@ -269,27 +262,27 @@ b0 K
 b0 P
 b0 D
 b0 H
-b0 d
+b0 b
 18
 b0 B
-b0 o
+b0 m
 b0 C
 b0 O
 0E
 b0 4
-b0 f
-b0 q
+b0 d
+b0 o
 b0 1
-b0 i
-b0 0
 b0 g
+b0 0
+b0 e
 b0 2
 b0 M
 b0 #
 b0 *
 b0 3
-b0 Y
-b0 p
+b0 W
+b0 n
 b10 U
 b110 >
 b100 <
@@ -298,7 +291,7 @@ b100 "
 b100 +
 b100 @
 b100 V
-b100 b
+b100 `
 1%
 #40000
 0%
@@ -311,7 +304,7 @@ b110 "
 b110 +
 b110 @
 b110 V
-b110 b
+b110 `
 1%
 #50000
 0%
@@ -324,7 +317,7 @@ b1000 "
 b1000 +
 b1000 @
 b1000 V
-b1000 b
+b1000 `
 1%
 #60000
 0%
@@ -337,7 +330,7 @@ b1010 "
 b1010 +
 b1010 @
 b1010 V
-b1010 b
+b1010 `
 1%
 #70000
 0%
@@ -350,7 +343,7 @@ b1100 "
 b1100 +
 b1100 @
 b1100 V
-b1100 b
+b1100 `
 1%
 #80000
 0%
@@ -363,7 +356,7 @@ b1110 "
 b1110 +
 b1110 @
 b1110 V
-b1110 b
+b1110 `
 1%
 #90000
 0%
@@ -376,7 +369,7 @@ b10000 "
 b10000 +
 b10000 @
 b10000 V
-b10000 b
+b10000 `
 1%
 #100000
 0%
@@ -389,12 +382,12 @@ b10010 "
 b10010 +
 b10010 @
 b10010 V
-b10010 b
+b10010 `
 1%
 #107000
-b1 r
-b0 s
-b0 v
-b10100000111001001101111011001110111001001100001011011010010000000110001001110100010000001111000001100010010000000111101001000000011001100100000001010110010000000110001 w
-b100 u
-b11 t
+b1 p
+b0 q
+b0 t
+b10100000111001001101111011001110111001001100001011011010010000000110001001110100010000001111000001100010010000000111101001000000011001100100000001010110010000000110001 u
+b100 s
+b11 r
