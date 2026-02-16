@@ -28,12 +28,24 @@ if [ "$CURRENT_DIR" != "$EXPECTED_DIR" ]; then
 fi
 
 # Check argument
-if [ $# -ne 1 ]; then
-  echo "Usage: $0 <unit_name>, MISSING UNIT NAME"
+if [ $# -lt 1 ] || [ $# -gt 2 ]; then
+  echo "Usage: $0 <unit_name> [--wave]"
   exit 1
 fi
 
 UNIT=$1
+OPEN_WAVE=false
+
+if [ $# -eq 2 ]; then
+  if [ "$2" = "--wave" ]; then
+    OPEN_WAVE=true
+  else
+    echo "Unknown option: $2"
+    echo "Usage: $0 <unit_name> [--wave]"
+    exit 1
+  fi
+fi
+
 IVERILOG_DIR="./tb/iverilog"
 WAVEFORM_DIR="./tb/waveform"
 
@@ -117,7 +129,7 @@ else
 fi
 
 # ---- Step 3: Launch GTKWave (if available) ----
-if [ -f "$VCD_FILE" ]; then
+if [ "$OPEN_WAVE" = true ] && [ -f "$VCD_FILE" ]; then
   echo "[*] Opening GTKWave for $VCD_FILE..."
   # For WSL, gtkwave must be accessible via PATH and X server must be running
   if command -v gtkwave >/dev/null 2>&1; then\
@@ -131,7 +143,7 @@ if [ -f "$VCD_FILE" ]; then
     echo "    (You must also have an X server like VcXsrv or Xming running on Windows)"
   fi
 else
-  echo "[!] No VCD file found: $VCD_FILE"
+  echo "[!] No VCD file found: $VCD_FILE OR --wave option not specified. Skipping GTKWave launch."
 fi
 
 echo "[*] Done."

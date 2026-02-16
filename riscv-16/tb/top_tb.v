@@ -16,6 +16,15 @@ module top_tb;
     wire [15:0] dbg_alu_result;
     wire [15:0] dbg_x1;
 
+    //print IMEM contents at the beginning of the simulation
+    initial 
+        begin
+            #1;
+            $display("IMEM[0]=%h", dut.IMEM.memory[0]);
+            $display("IMEM[1]=%h", dut.IMEM.memory[1]);
+        end
+
+
     // Instantiate DUT
     riscv16_top dut (
         .clk(clk),
