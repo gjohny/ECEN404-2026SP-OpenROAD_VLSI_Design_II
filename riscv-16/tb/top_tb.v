@@ -77,11 +77,29 @@ module top_tb;
     // Periodic debug print (every 10000 ns starting at t=0)
     // ------------------------------------------------------------
     initial begin
-        forever begin
-            #10000;
+        passed   = 0;
+        watchdog = 0;
+
+        // 1. Reset the system
+        reset = 1'b1;
+        #(`CLOCK_PERIOD * 2);
+        @(posedge clk);
+        reset = 1'b0; 
+
+        $display("--- Starting Execution ---");
+
+        // 2. Run for exactly 8 cycles and print every step
+        repeat (8) begin
+            @(negedge clk); // Sample values right after the rising edge
             $display("Time=%0t | PC=0x%04h | Instr=0x%04h | ALU=0x%04h | x1=0x%04h",
-                    $time, dbg_pc, dbg_instr, dbg_alu_result, dbg_x1);
+                     $time, dbg_pc, dbg_instr, dbg_alu_result, dbg_x1);
         end
+
+        // 3. Final Check (Adjust expected to 0x0004 or 0x0006 based on your .mem)
+        passTest(dbg_x1, 16'h0004, "Program 1: x1 = 3 + 1", passed);
+
+        allPassed(passed, 1);
+        $finish;
     end
 
 
