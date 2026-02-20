@@ -52,8 +52,10 @@ module riscv16_top (
     ====================== */
     wire [2:0] opcode = instruction[2:0];
     wire [3:0] func   = instruction[6:3];
-    wire [2:0] rs1    = instruction[15:13];
-    wire [2:0] rs2    = instruction[12:10];
+    // wire [2:0] rs1    = instruction[15:13];
+    // wire [2:0] rs2    = instruction[12:10];
+    wire [2:0] a1_mux = (opcode == 3'b001) ? instruction[12:10] : instruction[15:13];
+    wire [2:0] a2_mux = instruction[12:10];
     wire [2:0] rd     = instruction[9:7];
 
     /* =====================
@@ -94,9 +96,9 @@ module riscv16_top (
         .RegWrite(RegWrite),
         .A3(rd),
         .WD3(WD3),
-        .A1(rs1),
+        .A1(a1_mux),
         .RD1(RD1),
-        .A2(rs2),
+        .A2(a2_mux),
         .RD2(RD2),
         .dbg_x1(rf_dbg_x1)   // this is your added debug port
     );

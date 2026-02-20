@@ -1,5 +1,5 @@
 $date
-	Mon Feb 16 09:57:02 2026
+	Fri Feb 20 17:18:38 2026
 $end
 $version
 	Icarus Verilog
@@ -25,13 +25,13 @@ $var wire 16 , dbg_x1 [15:0] $end
 $var wire 1 ' reset $end
 $var wire 16 - rf_dbg_x1 [15:0] $end
 $var wire 1 . zero $end
-$var wire 3 / rs2 [2:0] $end
-$var wire 3 0 rs1 [2:0] $end
-$var wire 3 1 rd [2:0] $end
-$var wire 3 2 opcode [2:0] $end
-$var wire 16 3 instruction [15:0] $end
-$var wire 16 4 imm_ext [15:0] $end
-$var wire 4 5 func [3:0] $end
+$var wire 3 / rd [2:0] $end
+$var wire 3 0 opcode [2:0] $end
+$var wire 16 1 instruction [15:0] $end
+$var wire 16 2 imm_ext [15:0] $end
+$var wire 4 3 func [3:0] $end
+$var wire 3 4 a2_mux [2:0] $end
+$var wire 3 5 a1_mux [2:0] $end
 $var wire 16 6 WD3 [15:0] $end
 $var wire 1 7 ResultSrc $end
 $var wire 1 8 RegWrite $end
@@ -161,7 +161,7 @@ b0 k
 b11 j
 b1 i
 b0 h
-b11 g
+b0 g
 b11 f
 b0 e
 b11 d
@@ -210,12 +210,12 @@ b0 9
 07
 b11 6
 b0 5
-b11 4
-b110000010000001 3
-b1 2
-b1 1
-b11 0
-b0 /
+b0 4
+b0 3
+b11 2
+b110000010000001 1
+b1 0
+b1 /
 0.
 b0 -
 b0 ,
@@ -253,22 +253,28 @@ b100 )
 b100 F
 b100 K
 b100 P
-b1 D
-b1 H
-b1 d
 b11 ;
 b11 I
 b11 m
-b1 4
+b1 D
+b1 H
+b1 d
+b11 :
+b11 Q
+b11 e
+b11 l
+b1 5
+b1 g
+b1 2
 b1 f
 b1 q
-b1 0
-b1 g
-b10000010000001 #
-b10000010000001 *
-b10000010000001 3
-b10000010000001 Y
-b10000010000001 p
+b1 4
+b1 h
+b10010010000001 #
+b10010010000001 *
+b10010010000001 1
+b10010010000001 Y
+b10010010000001 p
 b1 U
 b100 >
 b11 <
@@ -290,6 +296,10 @@ b101 P
 b100 ;
 b100 I
 b100 m
+b100 :
+b100 Q
+b100 e
+b100 l
 b100 !
 b100 ,
 b100 -
@@ -305,30 +315,36 @@ b0 )
 b0 F
 b0 K
 b0 P
-b0 D
-b0 H
-b0 d
 b0 ;
 b0 I
 b0 m
+b0 D
+b0 H
+b0 d
+b0 :
+b0 Q
+b0 e
+b0 l
+b0 5
+b0 g
 18
 b0 B
 b0 o
 b0 C
 b0 O
 0E
-b0 4
+b0 2
 b0 f
 b0 q
-b0 1
+b0 /
 b0 i
+b0 4
+b0 h
 b0 0
-b0 g
-b0 2
 b0 M
 b0 #
 b0 *
-b0 3
+b0 1
 b0 Y
 b0 p
 b10 U
