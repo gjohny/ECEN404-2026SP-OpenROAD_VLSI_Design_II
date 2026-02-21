@@ -13,7 +13,9 @@ module Register_file(
     output [15:0]    RD2,          // Data read from A2
 
     // Debug: expose X1
-    output [15:0]    dbg_x1
+    output [15:0]    dbg_x1,
+    output [15:0]    dbg_x2,
+    output [15:0]    dbg_x3
 );
     reg [15:0] reg_array [7:0];    // 8 registers X0-X7
     integer i;
@@ -35,5 +37,7 @@ module Register_file(
     assign RD2 = (A2 == 3'b000) ? 16'd0 : reg_array[A2];
 
     // Debug output
-    assign dbg_x1 = reg_array[3'b001]; // X1
+    assign dbg_x1 = reg_array[3'b001]; // X
+    assign dbg_x2 = reg_array[3'b010]; // X2
+    assign dbg_x3 = reg_array[3'b011]; // X3
 endmodule
