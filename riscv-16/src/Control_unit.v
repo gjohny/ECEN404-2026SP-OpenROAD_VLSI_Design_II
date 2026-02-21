@@ -9,7 +9,7 @@ module Control_unit(
     output reg        MemWrite,     // memory write enable
     output reg  [3:0] ALUControl,   // ALU operation select
     output reg        ALUSrc,       // ALU source select
-    output reg  [1:0] ImmSrc,       // immediate type select
+    output reg  [2:0] ImmSrc,       // immediate type select
     output reg        RegWrite      // register file write enable
 );
 
@@ -20,7 +20,7 @@ module Control_unit(
         MemWrite   = 1'b0;
         ALUControl = 4'b0000;
         ALUSrc     = 1'b0;
-        ImmSrc     = 2'b00;
+        ImmSrc     = 3'b000;
         RegWrite   = 1'b0;
 
         case (opcode)
@@ -43,7 +43,7 @@ module Control_unit(
                 ALUSrc     = 1'b1;
                 RegWrite   = 1'b1;
                 ResultSrc  = 1'b0;
-                ImmSrc     = 2'b01;
+                ImmSrc     = 3'b001;
 
                 // Decode func field
                 case (func)
@@ -53,7 +53,7 @@ module Control_unit(
                     4'b0011: ALUControl = 4'b0100; // ANDI
                     4'b1101: begin                  // JALR
                                 ALUControl = 4'b0000; // ALU does addition (rs1 + imm)
-                                ImmSrc     = 2'b00;
+                                ImmSrc     = 3'b001; // JALR immediate format
                                 PCSrc      = 1'b1;
                             end
                     default: ALUControl = 4'b0000;
@@ -68,7 +68,7 @@ module Control_unit(
                 RegWrite   = 1'b1;
                 ResultSrc  = 1'b1; // writeback from memory
                 ALUControl = 4'b0000; // ADD base + offset
-                ImmSrc     = 2'b00;
+                ImmSrc     = 3'b001;
             end
 
             // ------------------------------------------------
@@ -78,7 +78,7 @@ module Control_unit(
                 ALUSrc     = 1'b1;
                 MemWrite   = 1'b1;
                 ALUControl = 4'b0000; // ADD base + offset
-                ImmSrc     = 2'b00;
+                ImmSrc     = 3'b001;
             end
 
             // ------------------------------------------------
@@ -88,7 +88,7 @@ module Control_unit(
             3'b100: begin
                 ALUSrc     = 1'b0;
                 ALUControl = 4'b0001; // SUB for comparison
-                ImmSrc     = 2'b01;
+                ImmSrc     = 3'b011;
                 RegWrite   = 1'b0;
 
                 // Branch condition
@@ -106,9 +106,22 @@ module Control_unit(
                 RegWrite   = 1'b1;
                 ALUSrc     = 1'b1;
                 ALUControl = 4'b0000; // Add PC + imm
-                ImmSrc     = 2'b10;
+                ImmSrc     = 3'b101;
                 ResultSrc  = 1'b0;
             end
+
+            // ------------------------------------------------
+            // U-TYPE: opcode = 110  (LUI)
+            // ------------------------------------------------
+            3'b110: begin
+                PCSrc      = 1'b0;        // No branch
+                RegWrite   = 1'b1;        // Write to rd
+                ALUSrc     = 1'b1;        // Use immediate
+                ALUControl = 4'b0000;     // ADD (x0 + imm)
+                ImmSrc     = 3'b100;       // Select U-type immediate
+                ResultSrc  = 1'b0;        // Write ALU result
+            end
+
 
             // ------------------------------------------------
             // Default (NOP)

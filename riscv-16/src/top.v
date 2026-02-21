@@ -75,8 +75,8 @@ module riscv16_top (
     wire [2:0] rd_r  = instruction[9:7];
 
     // ---------- I-Type ----------
-    wire [2:0] imm_i_raw = instruction[15:13];   // imm[2:0]
-    wire [2:0] rs1_i     = instruction[12:10];
+    wire [5:0] imm_i_raw = instruction[15:10];   // imm[2:0]
+    wire [2:0] rs1_i     = instruction[9:7];
     wire [2:0] rd_i      = instruction[9:7];
 
     // ---------- S-Type ----------
@@ -158,7 +158,7 @@ module riscv16_top (
     wire        MemWrite;
     wire        ALUSrc;
     wire        RegWrite;
-    wire [1:0]  ImmSrc;
+    wire [2:0]  ImmSrc;
     wire [3:0]  ALUControl;
     wire        zero;
 
@@ -204,12 +204,9 @@ module riscv16_top (
     ====================== */
     wire [15:0] imm_ext;
 
-    // Sign_Extender in the report expects ImmSrc[2:0], not [1:0] [1]
-    wire [2:0] ImmSrc_ext = {1'b0, ImmSrc};
-
     Sign_Extender SE (
         .instr(instruction),
-        .ImmSrc(ImmSrc_ext),
+        .ImmSrc(ImmSrc),
         .ImmExt(imm_ext)
     );
 

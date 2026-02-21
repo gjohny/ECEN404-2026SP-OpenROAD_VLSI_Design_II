@@ -97,8 +97,7 @@ module top_tb;
 
         // 1. Reset
         reset = 1'b1;
-        #20;
-        @(posedge clk);          
+        #10;
         @(posedge clk);
         #1;             // Small delay to move away from the edge
         reset = 1'b0;   
@@ -110,7 +109,7 @@ module top_tb;
         // 2. Monitoring Loop
         while ((dbg_pc >> 1) < PROGRAM_WORDS && watchdog < 100) begin
             @(negedge clk);
-            $display("Time=%0t | PC=0x%04h | Instr=0x%04h | ALU=0x%04h | x1=0x%04h | x2=0x%04h | x3=0x%04h",
+            $display("Time=%0t | PC=0x%04h | Instr=0x%04h | ALU=0x%04h | x1=0x%010h | x2=0x%010h | x3=0x%010h",
                     $time, dbg_pc, dbg_instr, dbg_alu_result, dbg_x1, dbg_x2, dbg_x3);
 
             watchdog = watchdog + 1;
