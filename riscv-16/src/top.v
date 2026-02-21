@@ -58,10 +58,10 @@ module riscv16_top (
 
     localparam OPC_R = 3'b000;
     localparam OPC_I = 3'b001;
-    localparam OPC_S = 3'b010;
-    localparam OPC_B = 3'b011;
-    localparam OPC_U = 3'b110;
-    localparam OPC_J = 3'b100;
+    localparam OPC_S = 3'b011;
+    localparam OPC_B = 3'b100;
+    localparam OPC_U = 3'b101;
+    localparam OPC_J = 3'b110;
 
     wire [3:0] func = instruction[6:3];
 

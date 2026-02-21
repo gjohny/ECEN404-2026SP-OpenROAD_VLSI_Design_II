@@ -78,7 +78,7 @@ module Control_unit(
                 ALUSrc     = 1'b1;
                 MemWrite   = 1'b1;
                 ALUControl = 4'b0000; // ADD base + offset
-                ImmSrc     = 3'b001;
+                ImmSrc     = 3'b010;
             end
 
             // ------------------------------------------------

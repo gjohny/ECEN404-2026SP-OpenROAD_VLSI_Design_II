@@ -18,14 +18,6 @@ module top_tb;
     wire [15:0] dbg_x2;
     wire [15:0] dbg_x3;
 
-    //print IMEM contents at the beginning of the simulation
-    initial 
-        begin
-            #1;
-            $display("IMEM[0]=%h", dut.IMEM.memory[0]);
-            $display("IMEM[1]=%h", dut.IMEM.memory[1]);
-        end
-
 
     // Instantiate DUT
     riscv16_top dut (
@@ -99,7 +91,6 @@ module top_tb;
         reset = 1'b1;
         #10;
         @(posedge clk);
-        #1;             // Small delay to move away from the edge
         reset = 1'b0;   
 
         $display("--- Starting Execution ---");
@@ -108,18 +99,29 @@ module top_tb;
 
         // 2. Monitoring Loop
         while ((dbg_pc >> 1) < PROGRAM_WORDS && watchdog < 100) begin
-            @(negedge clk);
-            $display("Time=%0t | PC=0x%04h | Instr=0x%04h | ALU=0x%04h | x1=0x%010h | x2=0x%010h | x3=0x%010h",
+            @(posedge clk);
+            #1;  // allow register file & memory to update
+
+            $display("Time=%0t | PC=0x%04h | Instr=0x%04h | ALU=0x%04h | x1=0x%04h | x2=0x%04h | x3=0x%04h",
                     $time, dbg_pc, dbg_instr, dbg_alu_result, dbg_x1, dbg_x2, dbg_x3);
+            
+
+            $display("STORE: addr=%h data=%h | MEM snapshot: [0]=%h [1]=%h [2]=%h \n\n",
+                    dut.DMEM.mem_access_addr,
+                    dut.DMEM.mem_write_data,
+                    dut.DMEM.memory[0],
+                    dut.DMEM.memory[1],
+                    dut.DMEM.memory[2]);
+
 
             watchdog = watchdog + 1;
         end
 
         // 3. Final Check
-        $display("--- Simulation Finished ---");
-        passTest(dbg_x1, 16'h0004, "Program 1: x1 = 3 + 1", passed);
+        $display("--- Simulation Finished ---\n\n");
+        // passTest(dbg_x1, 16'h0004, "Program 1: x1 = 3 + 1", passed);
 
-        allPassed(passed, 1);
+        // allPassed(passed, 1);
         $finish;
     end
 

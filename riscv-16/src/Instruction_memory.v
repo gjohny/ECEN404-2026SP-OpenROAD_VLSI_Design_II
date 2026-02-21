@@ -23,10 +23,7 @@ module Instruction_memory #(
     wire [15:0] word_index = pc[15:1];
 
     // Read memory on every clock
-    always @(posedge clk) begin
-        if (word_index < IMEM_WORDS)
-            instruction <= memory[word_index];
-        else
-            instruction <= 16'h0000; // Return 0 if out-of-bounds
-    end
+    assign instruction =
+        (word_index < IMEM_WORDS) ? memory[word_index] : 16'h0000;
+
 endmodule
