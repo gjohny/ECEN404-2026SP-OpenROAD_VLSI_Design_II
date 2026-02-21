@@ -17,7 +17,7 @@ always @(*) begin
         4'b0110: ALU_result = SrcA >> SrcB[3:0];           // SRL
         4'b0111: ALU_result = $signed(SrcA) >>> SrcB[3:0]; // SRA
         4'b1000: ALU_result = SrcA + 16'd2;               // JAL (PC + 2)
-        default: ALU_result = 16'h0000;
+        default: ALU_result = SrcB;   //pass through
     endcase
 end
 
