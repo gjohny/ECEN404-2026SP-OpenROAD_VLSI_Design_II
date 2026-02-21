@@ -39,6 +39,16 @@ module top_tb;
         .dbg_x3(dbg_x3)
     );
 
+    // =======================
+    // Memory write monitor
+    // =======================
+    always @(posedge clk) begin
+        begin
+            $display("Time=%0t | Memory write at addr=%0d | data=0x%04h", 
+                    $time, dut.DMEM.mem_access_addr[3:1], dut.DMEM.mem_write_data);
+        end
+    end
+
     // Waveform dump
     initial begin
         $dumpfile("./tb/waveform/top.vcd");
