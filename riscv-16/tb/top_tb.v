@@ -82,6 +82,9 @@ module top_tb;
     // Watchdog
     reg [15:0] watchdog;
 
+    // Number of instructions in program16.mem
+    localparam PROGRAM_WORDS = 8;
+
 
     // Main stimulus
     initial begin
@@ -97,14 +100,15 @@ module top_tb;
 
         $display("--- Starting Execution ---");
 
+
+
         // 2. Monitoring Loop
-        // We run until PC reaches 0x0008 or the watchdog hits 50 cycles
-        while (dbg_pc < 16'h0008 && watchdog < 50) begin 
-            @(negedge clk); 
+        while ((dbg_pc >> 1) < PROGRAM_WORDS && watchdog < 100) begin
+            @(negedge clk);
             $display("Time=%0t | PC=0x%04h | Instr=0x%04h | ALU=0x%04h | x1=0x%04h",
-                     $time, dbg_pc, dbg_instr, dbg_alu_result, dbg_x1);
-            
-            watchdog = watchdog + 1; // Standard Verilog increment
+                    $time, dbg_pc, dbg_instr, dbg_alu_result, dbg_x1);
+
+            watchdog = watchdog + 1;
         end
 
         // 3. Final Check
