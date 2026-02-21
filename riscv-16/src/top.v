@@ -8,7 +8,9 @@ module riscv16_top (
     output wire [15:0] dbg_pc,
     output wire [15:0] dbg_instr,
     output wire [15:0] dbg_alu_result,
-    output wire [15:0] dbg_x1
+    output wire [15:0] dbg_x1,
+    output wire [15:0] dbg_x2,
+    output wire [15:0] dbg_x3
 );
 
     /* =====================
@@ -179,6 +181,8 @@ module riscv16_top (
     ====================== */
     wire [15:0] RD1, RD2, WD3;
     wire [15:0] rf_dbg_x1;
+    wire [15:0] rf_dbg_x2;
+    wire [15:0] rf_dbg_x3;
 
     // Match your Register_file port names from the report [1]
     Register_file RF (
@@ -190,7 +194,9 @@ module riscv16_top (
         .RD1(RD1),
         .A2(rs2),
         .RD2(RD2),
-        .dbg_x1(rf_dbg_x1)   // this is your added debug port
+        .dbg_x1(rf_dbg_x1),   // this is your added debug port
+        .dbg_x2(rf_dbg_x2),
+        .dbg_x3(rf_dbg_x3)
     );
 
     /* =====================
@@ -264,5 +270,7 @@ module riscv16_top (
     assign dbg_instr      = instruction;
     assign dbg_alu_result = ALUResult;
     assign dbg_x1         = rf_dbg_x1;
+    assign dbg_x2         = rf_dbg_x2;
+    assign dbg_x3         = rf_dbg_x3;
 
 endmodule

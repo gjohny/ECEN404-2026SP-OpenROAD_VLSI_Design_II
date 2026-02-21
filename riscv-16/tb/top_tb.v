@@ -15,6 +15,8 @@ module top_tb;
     wire [15:0] dbg_instr;
     wire [15:0] dbg_alu_result;
     wire [15:0] dbg_x1;
+    wire [15:0] dbg_x2;
+    wire [15:0] dbg_x3;
 
     //print IMEM contents at the beginning of the simulation
     initial 
@@ -32,7 +34,9 @@ module top_tb;
         .dbg_pc(dbg_pc),
         .dbg_instr(dbg_instr),
         .dbg_alu_result(dbg_alu_result),
-        .dbg_x1(dbg_x1)
+        .dbg_x1(dbg_x1),
+        .dbg_x2(dbg_x2),
+        .dbg_x3(dbg_x3)
     );
 
     // Waveform dump
@@ -83,7 +87,7 @@ module top_tb;
     reg [15:0] watchdog;
 
     // Number of instructions in program16.mem
-    localparam PROGRAM_WORDS = 8;
+    localparam PROGRAM_WORDS = 20;
 
 
     // Main stimulus
@@ -93,7 +97,8 @@ module top_tb;
 
         // 1. Reset
         reset = 1'b1;
-        #20;            
+        #20;
+        @(posedge clk);          
         @(posedge clk);
         #1;             // Small delay to move away from the edge
         reset = 1'b0;   
@@ -105,8 +110,8 @@ module top_tb;
         // 2. Monitoring Loop
         while ((dbg_pc >> 1) < PROGRAM_WORDS && watchdog < 100) begin
             @(negedge clk);
-            $display("Time=%0t | PC=0x%04h | Instr=0x%04h | ALU=0x%04h | x1=0x%04h",
-                    $time, dbg_pc, dbg_instr, dbg_alu_result, dbg_x1);
+            $display("Time=%0t | PC=0x%04h | Instr=0x%04h | ALU=0x%04h | x1=0x%04h | x2=0x%04h | x3=0x%04h",
+                    $time, dbg_pc, dbg_instr, dbg_alu_result, dbg_x1, dbg_x2, dbg_x3);
 
             watchdog = watchdog + 1;
         end
