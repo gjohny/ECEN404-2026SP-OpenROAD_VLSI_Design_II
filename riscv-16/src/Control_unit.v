@@ -86,16 +86,12 @@ module Control_unit(
             // func = 000 (BEQ), 001 (BNE)
             // ------------------------------------------------
             3'b100: begin
-                ALUSrc     = 1'b0;
                 ALUControl = 4'b0001; // SUB for comparison
                 ImmSrc     = 3'b011;
-                RegWrite   = 1'b0;
 
                 // Branch condition
-                case (func[0])
-                    1'b0: PCSrc = (zero) ? 1'b1 : 1'b0;  // BEQ
-                    1'b1: PCSrc = (~zero) ? 1'b1 : 1'b0; // BNE
-                endcase
+                PCSrc = (zero) ? 1'b1 : 1'b0;  // BEQ
+
             end
 
             // ------------------------------------------------

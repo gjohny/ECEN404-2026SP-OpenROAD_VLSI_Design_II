@@ -21,6 +21,8 @@ module riscv16_top (
 
     assign PC_plus2 = PC + 16'd2;
 
+    wire signed [6:0] branch_imm_raw = {imm_b_hi, imm_b_lo};
+
     // NOTE: pc_counter_16 from the report does not take PC_next as an input [1].
     // It computes next PC internally based on branch/jal/jalr signals.
     // For now we tie branch/jal/jalr inactive so it behaves like PC := PC+2.
@@ -29,8 +31,8 @@ module riscv16_top (
         .reset(reset),
         .pc_en(1'b1),
 
-        .branch_taken(1'b0),
-        .branch_imm(7'sd0),
+        .branch_taken(PCSrc),
+        .branch_imm(branch_imm_raw),
 
         .jal_taken(1'b0),
         .jal_imm(10'sd0),

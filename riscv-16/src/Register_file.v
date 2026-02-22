@@ -10,7 +10,7 @@ module Register_file(
     output [15:0]    RD1,          // Data read from A1
     // Read port 2
     input  [2:0]     A2,           // Source register 2
-    output [15:0]    RD2,          // Data read from A2
+    output [15:0]    RD2,          // Data read from A2    
 
     // Debug: expose X1
     output [15:0]    dbg_x1,
