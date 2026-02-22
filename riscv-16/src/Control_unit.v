@@ -68,7 +68,7 @@ module Control_unit(
                 RegWrite   = 1'b1;
                 ResultSrc  = 1'b1; // writeback from memory
                 ALUControl = 4'b0000; // ADD base + offset
-                ImmSrc     = 3'b001;
+                ImmSrc     = 3'b010;
             end
 
             // ------------------------------------------------

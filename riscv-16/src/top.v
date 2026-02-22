@@ -58,6 +58,7 @@ module riscv16_top (
 
     localparam OPC_R = 3'b000;
     localparam OPC_I = 3'b001;
+    localparam OPC_L = 3'b010;
     localparam OPC_S = 3'b011;
     localparam OPC_B = 3'b100;
     localparam OPC_U = 3'b101;
@@ -84,6 +85,11 @@ module riscv16_top (
     wire [2:0] rs1_s     = instruction[8:6];
     wire [2:0] rs2_s     = instruction[5:3];
 
+    // ---------- L-Type ----------
+    wire [6:0] imm_l_raw = instruction[15:9];    // imm[6:0]
+    wire [2:0] rs1_l     = instruction[8:6];
+    wire [2:0] rd_l     = instruction[5:3];
+
     // ---------- B-Type ----------
     wire [2:0] imm_b_hi  = instruction[15:13];   // imm[6:4]
     wire [3:0] imm_b_lo  = instruction[12:9];    // imm[3:0]
@@ -108,6 +114,7 @@ module riscv16_top (
         (opcode == OPC_I) ? rs1_i :
         (opcode == OPC_S) ? rs1_s :
         (opcode == OPC_B) ? rs1_b :
+        (opcode == OPC_L) ? rs1_l :
         3'b000;
 
     wire [2:0] rs2 =
@@ -121,6 +128,7 @@ module riscv16_top (
         (opcode == OPC_I) ? rd_i :
         (opcode == OPC_U) ? rd_u :
         (opcode == OPC_J) ? rd_j :
+        (opcode == OPC_L) ? rd_l :
         3'b000;
 
 
