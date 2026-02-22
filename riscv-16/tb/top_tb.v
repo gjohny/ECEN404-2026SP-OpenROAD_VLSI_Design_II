@@ -79,7 +79,7 @@ module top_tb;
     reg [15:0] watchdog;
 
     // Number of instructions in program16.mem
-    localparam PROGRAM_WORDS = 20;
+    localparam PROGRAM_WORDS = 50;
 
 
     // Main stimulus

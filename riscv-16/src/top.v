@@ -23,34 +23,6 @@ module riscv16_top (
 
     wire signed [6:0] branch_imm_raw = {imm_b_hi, imm_b_lo};
 
-    // NOTE: pc_counter_16 from the report does not take PC_next as an input [1].
-    // It computes next PC internally based on branch/jal/jalr signals.
-    // For now we tie branch/jal/jalr inactive so it behaves like PC := PC+2.
-    pc_counter_16 PC_REG (
-        .clk(clk),
-        .reset(reset),
-        .pc_en(1'b1),
-
-        .branch_taken(PCSrc),
-        .branch_imm(branch_imm_raw),
-
-        .jal_taken(1'b0),
-        .jal_imm(10'sd0),
-
-        .jalr_taken(1'b0),
-        .jalr_target(16'h0000),
-
-        .pc(PC)
-    );
-
-    Instruction_memory #(
-        .IMEM_WORDS(256),
-        .MEMFILE("src/program16.mem")
-    ) IMEM (
-        .clk(clk),
-        .pc(PC),
-        .instruction(instruction)
-    );
 
     /* =====================
     Instruction Fields
@@ -63,8 +35,12 @@ module riscv16_top (
     localparam OPC_L = 3'b010;
     localparam OPC_S = 3'b011;
     localparam OPC_B = 3'b100;
-    localparam OPC_U = 3'b101;
-    localparam OPC_J = 3'b110;
+    localparam OPC_U = 3'b110;
+    localparam OPC_J = 3'b101;
+
+    wire jal_taken  = (opcode == OPC_J);
+    wire jalr_taken = (opcode == OPC_I) && (func == 4'b1101);   
+
 
     wire [3:0] func = instruction[6:3];
 
@@ -158,6 +134,40 @@ module riscv16_top (
         (opcode == OPC_U) ? imm_u :
         (opcode == OPC_J) ? imm_j :
         16'h0000;
+
+    wire [15:0] branch_target = PC + (imm_b << 1);
+    wire [15:0] jal_target    = PC + (imm_j << 1);
+    wire [15:0] jalr_sum = RD1 + imm_i;
+    wire [15:0] jalr_target = {jalr_sum[15:1], 1'b0};
+
+    /* =====================
+       PC Update Logic
+    ====================== */
+    // Keep these signals for naming consistency with your skeleton,
+    // but they are not currently feeding pc_counter_16 (see note above).
+    assign PC_target = PC + imm_ext;
+    assign PC_next = jalr_taken  ? jalr_target  :
+                     jal_taken   ? jal_target   :
+                     PCSrc       ? branch_target:
+                     PC_plus2;
+        
+
+    pc_counter_16 PC_REG (
+    .clk(clk),
+    .reset(reset),
+    .pc_en(1'b1),
+    .pc_next(PC_next),
+    .pc(PC)
+    );
+
+    Instruction_memory #(
+        .IMEM_WORDS(256),
+        .MEMFILE("src/program16.mem")
+    ) IMEM (
+        .clk(clk),
+        .pc(PC),
+        .instruction(instruction)
+    );
 
 
     /* =====================
@@ -262,13 +272,7 @@ module riscv16_top (
     // Replace WB_MUX module with a simple assign so it works now
     assign WD3 = (ResultSrc) ? ReadData : ALUResult;
 
-    /* =====================
-       PC Update Logic
-    ====================== */
-    // Keep these signals for naming consistency with your skeleton,
-    // but they are not currently feeding pc_counter_16 (see note above).
-    assign PC_target = PC + imm_ext;
-    assign PC_next   = (PCSrc) ? PC_target : PC_plus2;
+
 
     /* =====================
        Debug

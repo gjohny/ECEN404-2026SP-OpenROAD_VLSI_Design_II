@@ -114,7 +114,7 @@ module Control_unit(
                 RegWrite   = 1'b1;        // Write to rd
                 ALUSrc     = 1'b1;        // Use immediate
                 ALUControl = 4'b0000;     // ADD (x0 + imm)
-                ImmSrc     = 3'b100;       // Select U-type immediate
+                ImmSrc     = 3'b101;       // Select U-type immediate
                 ResultSrc  = 1'b0;        // Write ALU result
             end
 
