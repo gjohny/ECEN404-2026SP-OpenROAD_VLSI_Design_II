@@ -98,7 +98,7 @@ module top_tb;
         end
 
         // 3. Final Check (Adjust expected to 0x0004 or 0x0006 based on your .mem)
-        passTest(dbg_x1, 16'h0004, "Program 1: x1 = 3 + 1", passed);
+        passTest(dbg_x1, 16'h0001, "Program 1: x1 = 3 - 2", passed);
 
         allPassed(passed, 1);
         $finish;
