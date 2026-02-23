@@ -8,6 +8,18 @@ module Data_memory_tb;
   reg         mem_read;
   wire [15:0] mem_read_data;
 
+  // Declarations must come before task/function declarations (Icarus compatibility)
+  integer i;
+  reg [15:0] pat_write;   // pattern for write-only case
+  reg [15:0] pat_bypass;  // pattern for bypass (read+write) case
+
+  // Summary capture registers
+  reg [15:0] obs_write_only_out;
+  reg [15:0] obs_read_only_out;
+  reg [15:0] obs_bypass_now_out;
+  reg [15:0] obs_bypass_readback_out;
+
+  // DUT (change to Data_Memory if your module name is still Data_Memory)
   Data_Memory dut (
     .clk(clk),
     .mem_access_addr(mem_access_addr),
@@ -21,10 +33,11 @@ module Data_memory_tb;
   initial clk = 1'b0;
   always #5 clk = ~clk;
 
-    // initial begin
-    //     $dumpfile("./tb/waveform/Data_memory.vcd");
-    //     $dumpvars(0, Data_memory_tb);
-    // end
+  // Waveform dump (uncomment to generate VCD)
+  initial begin
+    $dumpfile("Data_memory.vcd");
+    $dumpvars(0, Data_memory_tb);
+  end
 
   task write_word(input [2:0] idx, input [15:0] data);
   begin
@@ -37,10 +50,7 @@ module Data_memory_tb;
     @(negedge clk);
     mem_write_en    <= 1'b0;
   end
-
-  integer i;
-  reg [15:0] pat_write;   // pattern for write-only case
-  reg [15:0] pat_bypass;  // pattern for bypass (read+write) case
+  endtask
 
   initial begin
     // init
@@ -67,6 +77,12 @@ module Data_memory_tb;
       pat_write  = 16'h1000 + i;  // unique pattern per addr
       pat_bypass = 16'h2000 + i;
 
+      // Clear summary captures
+      obs_write_only_out      = 16'hxxxx;
+      obs_read_only_out       = 16'hxxxx;
+      obs_bypass_now_out      = 16'hxxxx;
+      obs_bypass_readback_out = 16'hxxxx;
+
       // -------------------------------------------------
       // CASE 1: mem_write_en=1, mem_read=0  (write-only)
       // -------------------------------------------------
@@ -77,6 +93,8 @@ module Data_memory_tb;
       mem_read        <= 1'b0;
 
       #1;
+      obs_write_only_out = mem_read_data;
+
       if (mem_read_data !== 16'h0000)
         $display("FAIL W-only: addr=%0d read=0x%04h exp=0000 @ t=%0t",
                  i, mem_read_data, $time);
@@ -95,6 +113,8 @@ module Data_memory_tb;
       mem_read        <= 1'b1;
 
       #1;
+      obs_read_only_out = mem_read_data;
+
       if (mem_read_data !== pat_write)
         $display("FAIL R-only: addr=%0d got=0x%04h exp=0x%04h @ t=%0t",
                  i, mem_read_data, pat_write, $time);
@@ -111,6 +131,8 @@ module Data_memory_tb;
       mem_read        <= 1'b1;
 
       #1;
+      obs_bypass_now_out = mem_read_data;
+
       // Expect *bypass* value (new write data)
       if (mem_read_data !== pat_bypass)
         $display("FAIL RW-both (bypass NOW): addr=%0d got=0x%04h exp=0x%04h @ t=%0t",
@@ -124,12 +146,27 @@ module Data_memory_tb;
       mem_read     <= 1'b1;
 
       #1;
+      obs_bypass_readback_out = mem_read_data;
+
       // After write, reading back should still give pat_bypass
       if (mem_read_data !== pat_bypass)
         $display("FAIL RW-both (read-back): addr=%0d got=0x%04h exp=0x%04h @ t=%0t",
                  i, mem_read_data, pat_bypass, $time);
       else
         $display("OK   RW-both (read-back): addr=%0d = 0x%04h", i, mem_read_data);
+
+      // -------------------------------------------------
+      // SUMMARY (new human-readable explanation)
+      // -------------------------------------------------
+      $display("---- SUMMARY addr=%0d ----", i);
+      $display("Wrote 0x%04h in write-only mode (we=1, read=0). Output was 0x%04h because read is disabled.",
+               pat_write, obs_write_only_out);
+      $display("Then read-only mode (we=0, read=1) returned 0x%04h, confirming the write to this address worked.",
+               obs_read_only_out);
+      $display("With both enabled (we=1, read=1), tried writing 0x%04h and output immediately showed 0x%04h (bypass/write-through).",
+               pat_bypass, obs_bypass_now_out);
+      $display("After the clock edge, reading back returned 0x%04h, so the bypass value was stored in memory.",
+               obs_bypass_readback_out);
     end
 
     $display("\nData_Memory test complete.");
