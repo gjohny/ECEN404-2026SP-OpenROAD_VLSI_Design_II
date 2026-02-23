@@ -1,59 +1,125 @@
------------------------------------------------------------------------------------------------
-| Instr  |   SrcA   |   SrcB   | ALU Ctrl | Expected  | ALU Result | Zero | Zero Correct? | Pass? |
------------------------------------------------------------------------------------------------
-| ADD    |       10 |        5 |   0000    |       15 |         15 |   0  |      YES      |  YES  |
-| ADD_W  |     ffff |     0001 |   0000    |     0000 |       0000 |   1  |      YES      |  YES  |
-| ADD_SO |     7fff |     0001 |   0000    |     8000 |       8000 |   0  |      YES      |  YES  |
-| ADD_NO |     8000 |     8000 |   0000    |     0000 |       0000 |   1  |      YES      |  YES  |
-| ADD_X  |     8000 |     7fff |   0000    |     ffff |       ffff |   0  |      YES      |  YES  |
-| SUB    |     000a |     0005 |   0001    |     0005 |       0005 |   0  |      YES      |  YES  |
-| SUB0   |     000f |     000f |   0001    |     0000 |       0000 |   1  |      YES      |  YES  |
-| SUB_UF |     0000 |     0001 |   0001    |     ffff |       ffff |   0  |      YES      |  YES  |
-| SUB_L  |     8000 |     7fff |   0001    |     0001 |       0001 |   0  |      YES      |  YES  |
-| SUB_M0 |     ffff |     0000 |   0001    |     ffff |       ffff |   0  |      YES      |  YES  |
-| SUB_0M |     0000 |     ffff |   0001    |     0001 |       0001 |   0  |      YES      |  YES  |
-| XOR    |     000a |     0005 |   0010    |     000f |       000f |   0  |      YES      |  YES  |
-| XOR_Z  |     1234 |     0000 |   0010    |     1234 |       1234 |   0  |      YES      |  YES  |
-| XOR_F  |     aaaa |     ffff |   0010    |     5555 |       5555 |   0  |      YES      |  YES  |
-| XOR_0  |     55aa |     55aa |   0010    |     0000 |       0000 |   1  |      YES      |  YES  |
-| XOR_L  |     ffff |     8000 |   0010    |     7fff |       7fff |   0  |      YES      |  YES  |
-| XOR_X  |     aaaa |     5555 |   0010    |     ffff |       ffff |   0  |      YES      |  YES  |
-| OR0    |     0000 |     0000 |   0011    |     0000 |       0000 |   1  |      YES      |  YES  |
-| OR_PASS|     0000 |     ffff |   0011    |     ffff |       ffff |   0  |      YES      |  YES  |
-| OR_SAT  |     ffff |     ffff |   0011    |     ffff |       ffff |   0  |      YES      |  YES  |
-| OR_ALT |     aaaa |     5555 |   0011    |     ffff |       ffff |   0  |      YES      |  YES  |
-| OR_MSB |     8000 |     0000 |   0011    |     8000 |       8000 |   0  |      YES      |  YES  |
-| OR_LSB |     0001 |     0000 |   0011    |     0001 |       0001 |   0  |      YES      |  YES  |
-| AND0   |     0000 |     0000 |   0100    |     0000 |       0000 |   1  |      YES      |  YES  |
-| AND_ID |     ffff |     ffff |   0100    |     ffff |       ffff |   0  |      YES      |  YES  |
-| AND_Z  |     ffff |     0000 |   0100    |     0000 |       0000 |   1  |      YES      |  YES  |
-| AND_S  |     a5a5 |     a5a5 |   0100    |     a5a5 |       a5a5 |   0  |      YES      |  YES  |
-| AND_A  |     aaaa |     5555 |   0100    |     0000 |       0000 |   1  |      YES      |  YES  |
-| AND_M  |     8000 |     ffff |   0100    |     8000 |       8000 |   0  |      YES      |  YES  |
-| AND_L  |     0001 |     ffff |   0100    |     0001 |       0001 |   0  |      YES      |  YES  |
-| SLL0   |     1234 |     0000 |   0101    |     1234 |       1234 |   0  |      YES      |  YES  |
-| SLL1   |     0001 |     0001 |   0101    |     0002 |       0002 |   0  |      YES      |  YES  |
-| SLL_M  |     0001 |     000f |   0101    |     8000 |       8000 |   0  |      YES      |  YES  |
-| SLL_OV |     8000 |     0001 |   0101    |     0000 |       0000 |   1  |      YES      |  YES  |
-| SLL15  |     00ff |     000f |   0101    |     8000 |       8000 |   0  |      YES      |  YES  |
-| SLL_Z  |     0000 |     0007 |   0101    |     0000 |       0000 |   1  |      YES      |  YES  |
-| SLL_L  |     0003 |     0004 |   0101    |     0030 |       0030 |   0  |      YES      |  YES  |
-| SRL    |    49167 |        4 |   0110    |     3072 |       3072 |   0  |      YES      |  YES  |
-| SRL    |    12345 |        0 |   0110    |    12345 |      12345 |   0  |      YES      |  YES  |
-| SRL    |    32769 |        1 |   0110    |    16384 |      16384 |   0  |      YES      |  YES  |
-| SRL    |        1 |        4 |   0110    |        0 |          0 |   1  |      YES      |  YES  |
-| SRL    |        0 |        7 |   0110    |        0 |          0 |   1  |      YES      |  YES  |
-| SRL    |    65535 |        4 |   0110    |     4095 |       4095 |   0  |      YES      |  YES  |
-| SRL    |    32768 |       15 |   0110    |        1 |          1 |   0  |      YES      |  YES  |
-| SRA0      |        0 |        4 |   0111    |        0 |          0 |   1  |      YES      |  YES  |
-| SRA_MSB  |   -32768 |        4 |   0111    |    -2048 |      -2048 |   0  |      YES      |  YES  |
-| SRA_LSB  |        1 |        1 |   0111    |        0 |          0 |   1  |      YES      |  YES  |
-| SRA_NEG  |       -1 |        4 |   0111    |       -1 |         -1 |   0  |      YES      |  YES  |
-| SRA_ALT  |   -21846 |        1 |   0111    |   -10923 |     -10923 |   0  |      YES      |  YES  |
-| JAL       |      100 |        - |   1000    |      102 |        102 |   0  |      YES      |  YES  |
-| JAL_ZERO  |        0 |        - |   1000    |        2 |          2 |   0  |      YES      |  YES  |
-| JAL_MAX   |     ffff |        - |   1000    |     0001 |       0001 |   0  |      YES      |  YES  |
-| JAL_EDGE  |     7fff |        - |   1000    |     8001 |       8001 |   0  |      YES      |  YES  |
------------------------------------------------------------------------------------------------
-ALU Test Bench Completed.
-./tb/alu_tb.v:488: $finish called at 530000 (1ps)
+=================================================================
+ ALU Extended Test Bench
+=================================================================
+
+--- DEFAULT (pass-through, ctrl=1111) ---
+  [PASS] DEF_ZZ      SrcA=0000 SrcB=0000 Ctrl=1111  Result=0000 Zero=1
+  [PASS] DEF_NORM    SrcA=1234 SrcB=5678 Ctrl=1111  Result=5678 Zero=0
+  [PASS] DEF_MAX     SrcA=ffff SrcB=abcd Ctrl=1111  Result=abcd Zero=0
+  [PASS] DEF_FF      SrcA=0000 SrcB=ffff Ctrl=1111  Result=ffff Zero=0
+  [PASS] DEF_1010    SrcA=beef SrcB=cafe Ctrl=1010  Result=cafe Zero=0
+  [PASS] DEF_1110    SrcA=beef SrcB=cafe Ctrl=1110  Result=cafe Zero=0
+
+--- ADD (ctrl=0000) ---
+  [PASS] ADD_ZZ      SrcA=0000 SrcB=0000 Ctrl=0000  Result=0000 Zero=1
+  [PASS] ADD_MAX0    SrcA=ffff SrcB=0000 Ctrl=0000  Result=ffff Zero=0
+  [PASS] ADD_ZERO1   SrcA=0000 SrcB=0001 Ctrl=0000  Result=0001 Zero=0
+  [PASS] ADD_ALT     SrcA=aaaa SrcB=5555 Ctrl=0000  Result=ffff Zero=0
+  [PASS] ADD_ALT_C   SrcA=5555 SrcB=aaaa Ctrl=0000  Result=ffff Zero=0
+  [PASS] ADD_1P1     SrcA=0001 SrcB=0001 Ctrl=0000  Result=0002 Zero=0
+  [PASS] ADD_WRAP    SrcA=ffff SrcB=0001 Ctrl=0000  Result=0000 Zero=1
+  [PASS] ADD_WRAPZ   SrcA=fffe SrcB=0002 Ctrl=0000  Result=0000 Zero=1
+  [PASS] ADD_NEGOVF  SrcA=8000 SrcB=8000 Ctrl=0000  Result=0000 Zero=1
+  [PASS] ADD_SOVF    SrcA=7fff SrcB=0001 Ctrl=0000  Result=8000 Zero=0
+  [PASS] ADD_CROSS   SrcA=8000 SrcB=7fff Ctrl=0000  Result=ffff Zero=0
+  [PASS] ADD_COM1    SrcA=1234 SrcB=4321 Ctrl=0000  Result=5555 Zero=0
+  [PASS] ADD_COM2    SrcA=4321 SrcB=1234 Ctrl=0000  Result=5555 Zero=0
+
+--- SUB (ctrl=0001) ---
+  [PASS] SUB_ZZ      SrcA=0000 SrcB=0000 Ctrl=0001  Result=0000 Zero=1
+  [PASS] SUB_SELF    SrcA=aaaa SrcB=aaaa Ctrl=0001  Result=0000 Zero=1
+  [PASS] SUB_FFSELF  SrcA=ffff SrcB=ffff Ctrl=0001  Result=0000 Zero=1
+  [PASS] SUB_WRAPUP  SrcA=0001 SrcB=ffff Ctrl=0001  Result=0002 Zero=0
+  [PASS] SUB_SOVF    SrcA=7fff SrcB=8000 Ctrl=0001  Result=ffff Zero=0
+  [PASS] B_FFMINUS1  SrcA=ffff SrcB=0001 Ctrl=0001  Result=fffe Zero=0
+  [PASS] SUB_UNDER   SrcA=0001 SrcB=0002 Ctrl=0001  Result=ffff Zero=0
+  [PASS] SUB_MSB_1   SrcA=8000 SrcB=0001 Ctrl=0001  Result=7fff Zero=0
+
+--- XOR (ctrl=0010) ---
+  [PASS] XOR_ZZ      SrcA=0000 SrcB=0000 Ctrl=0010  Result=0000 Zero=1
+  [PASS] XOR_FFSELF  SrcA=ffff SrcB=ffff Ctrl=0010  Result=0000 Zero=1
+  [PASS] XOR_MID     SrcA=7fff SrcB=5a5a Ctrl=0010  Result=25a5 Zero=0
+  [PASS] XOR_FLIP    SrcA=aaaa SrcB=ffff Ctrl=0010  Result=5555 Zero=0
+  [PASS] XOR_FLIP2   SrcA=5555 SrcB=ffff Ctrl=0010  Result=aaaa Zero=0
+  [PASS] XOR_INV1    SrcA=1234 SrcB=abcd Ctrl=0010  Result=b9f9 Zero=0
+  [PASS] XOR_INV2    SrcA=b9f9 SrcB=abcd Ctrl=0010  Result=1234 Zero=0
+  [PASS] XOR_IDENT   SrcA=0000 SrcB=dead Ctrl=0010  Result=dead Zero=0
+
+--- OR (ctrl=0011) ---
+  [PASS] OR_COMP     SrcA=aaaa SrcB=5555 Ctrl=0011  Result=ffff Zero=0
+  [PASS] OR_SELF     SrcA=1234 SrcB=1234 Ctrl=0011  Result=1234 Zero=0
+  [PASS] OR_NIB      SrcA=0f0f SrcB=f0f0 Ctrl=0011  Result=ffff Zero=0
+  [PASS] OR_IDENT    SrcA=dead SrcB=0000 Ctrl=0011  Result=dead Zero=0
+  [PASS] OR_ABSORB   SrcA=dead SrcB=ffff Ctrl=0011  Result=ffff Zero=0
+  [PASS] OR_BITS     SrcA=1001 SrcB=0110 Ctrl=0011  Result=1111 Zero=0
+
+--- AND (ctrl=0100) ---
+  [PASS] AND_COMP    SrcA=aaaa SrcB=5555 Ctrl=0100  Result=0000 Zero=1
+  [PASS] AND_FFID    SrcA=5555 SrcB=ffff Ctrl=0100  Result=5555 Zero=0
+  [PASS] AND_ANNIL   SrcA=dead SrcB=0000 Ctrl=0100  Result=0000 Zero=1
+  [PASS] AND_NIB     SrcA=0f0f SrcB=f0f0 Ctrl=0100  Result=0000 Zero=1
+  [PASS] AND_SELF    SrcA=1234 SrcB=1234 Ctrl=0100  Result=1234 Zero=0
+  [PASS] AND_MASK    SrcA=ff00 SrcB=0ff0 Ctrl=0100  Result=0f00 Zero=0
+  [PASS] AND_BYTES   SrcA=00ff SrcB=ff00 Ctrl=0100  Result=0000 Zero=1
+
+--- SLL (ctrl=0101) ---
+  [PASS] SLL_4       SrcA=0001 SrcB=0004 Ctrl=0101  Result=0010 Zero=0
+  [PASS] SLL_8       SrcA=0001 SrcB=0008 Ctrl=0101  Result=0100 Zero=0
+  [PASS] SLL_FF8     SrcA=00ff SrcB=0008 Ctrl=0101  Result=ff00 Zero=0
+  [PASS] SLL_FF0     SrcA=00ff SrcB=0000 Ctrl=0101  Result=00ff Zero=0
+  [PASS] SLL_5A4     SrcA=555a SrcB=0004 Ctrl=0101  Result=55a0 Zero=0
+  [PASS] SLL_MASK    SrcA=0001 SrcB=0101 Ctrl=0101  Result=0002 Zero=0
+  [PASS] SLL_MASK2   SrcA=0001 SrcB=ff04 Ctrl=0101  Result=0010 Zero=0
+  [PASS] SLL_FFFF4   SrcA=ffff SrcB=0004 Ctrl=0101  Result=fff0 Zero=0
+  [PASS] SLL_ZERO    SrcA=0000 SrcB=000f Ctrl=0101  Result=0000 Zero=1
+  [PASS] SLL_3_14    SrcA=0003 SrcB=000e Ctrl=0101  Result=c000 Zero=0
+
+--- SRL (ctrl=0110) ---
+  [PASS] SRL_MSB1    SrcA=8000 SrcB=0001 Ctrl=0110  Result=4000 Zero=0
+  [PASS] SRL_FF8     SrcA=ff00 SrcB=0008 Ctrl=0110  Result=00ff Zero=0
+  [PASS] SRL_15Z     SrcA=0001 SrcB=000f Ctrl=0110  Result=0000 Zero=1
+  [PASS] SRL_ALL8    SrcA=ffff SrcB=0008 Ctrl=0110  Result=00ff Zero=0
+  [PASS] SRL_ALL4    SrcA=ffff SrcB=0004 Ctrl=0110  Result=0fff Zero=0
+  [PASS] SRL_IDENT   SrcA=abcd SrcB=0000 Ctrl=0110  Result=abcd Zero=0
+  [PASS] SRL_ZIN     SrcA=0000 SrcB=0008 Ctrl=0110  Result=0000 Zero=1
+  [PASS] SRL_NIB4    SrcA=f0f0 SrcB=0004 Ctrl=0110  Result=0f0f Zero=0
+  [PASS] SRL_MASK    SrcA=8000 SrcB=ff01 Ctrl=0110  Result=4000 Zero=0
+
+--- SRA (ctrl=0111) ---
+  [PASS] SRA_POS1    SrcA=7fff SrcB=0001 Ctrl=0111  Result=3fff Zero=0
+  [PASS] SRA_POS4    SrcA=7fff SrcB=0004 Ctrl=0111  Result=07ff Zero=0
+  [PASS] SRA_POS8    SrcA=2000 SrcB=0008 Ctrl=0111  Result=0020 Zero=0
+  [PASS] SRA_NEG1    SrcA=8000 SrcB=0001 Ctrl=0111  Result=c000 Zero=0
+  [PASS] SRA_NEG4    SrcA=8000 SrcB=0004 Ctrl=0111  Result=f800 Zero=0
+  [PASS] SRA_NEG15   SrcA=8000 SrcB=000f Ctrl=0111  Result=ffff Zero=0
+  [PASS] SRA_ALLF4   SrcA=ffff SrcB=0004 Ctrl=0111  Result=ffff Zero=0
+  [PASS] SRA_ALT1    SrcA=aaaa SrcB=0001 Ctrl=0111  Result=d555 Zero=0
+  [PASS] SRA_ALT4    SrcA=aaaa SrcB=0004 Ctrl=0111  Result=faaa Zero=0
+  [PASS] SRA_SH0     SrcA=dead SrcB=0000 Ctrl=0111  Result=dead Zero=0
+  [PASS] SRA_ZERO    SrcA=0000 SrcB=0004 Ctrl=0111  Result=0000 Zero=1
+  [PASS] SRA_LSB1    SrcA=0001 SrcB=0001 Ctrl=0111  Result=0000 Zero=1
+
+--- JAL (ctrl=1000) ---
+  [PASS] JAL_100     SrcA=0064 SrcB=0001 Ctrl=1000  Result=0066 Zero=0
+  [PASS] JAL_0       SrcA=0000 SrcB=0001 Ctrl=1000  Result=0002 Zero=0
+  [PASS] JAL_0100    SrcA=0100 SrcB=0001 Ctrl=1000  Result=0102 Zero=0
+  [PASS] JAL_8000    SrcA=8000 SrcB=0001 Ctrl=1000  Result=8002 Zero=0
+  [PASS] JAL_7FFF    SrcA=7fff SrcB=0001 Ctrl=1000  Result=8001 Zero=0
+  [PASS] JAL_FFFE    SrcA=fffe SrcB=0001 Ctrl=1000  Result=0000 Zero=1
+  [PASS] JAL_FFFD    SrcA=fffd SrcB=0001 Ctrl=1000  Result=ffff Zero=0
+  [PASS] JAL_FFFF    SrcA=ffff SrcB=0001 Ctrl=1000  Result=0001 Zero=0
+  [PASS] JAL_SRCB    SrcA=000a SrcB=dead Ctrl=1000  Result=000c Zero=0
+  [PASS] JAL_SRCB0   SrcA=000a SrcB=0000 Ctrl=1000  Result=000c Zero=0
+
+--- Zero-flag boundary checks ---
+  [PASS] ZERO_NO_1   SrcA=0000 SrcB=0001 Ctrl=0000  Result=0001 Zero=0
+  [PASS] ZERO_NO_FF  SrcA=ffff SrcB=0000 Ctrl=0000  Result=ffff Zero=0
+  [PASS] RO_YES_AND  SrcA=0000 SrcB=0000 Ctrl=0100  Result=0000 Zero=1
+  [PASS] ZERO_SUB    SrcA=abcd SrcB=abcd Ctrl=0001  Result=0000 Zero=1
+  [PASS] ERO_SLL_NO  SrcA=0001 SrcB=000f Ctrl=0101  Result=8000 Zero=0
+  [PASS] ZERO_SRL_Y  SrcA=0001 SrcB=000f Ctrl=0110  Result=0000 Zero=1
+
+=================================================================
+ RESULTS: 95 PASSED,  0 FAILED
+=================================================================
+./tb/alu_tb.v:420: $finish called at 950000 (1ps)
