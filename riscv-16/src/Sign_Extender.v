@@ -8,7 +8,7 @@ module Sign_Extender(
 always @(*) begin
     case (ImmSrc)
         3'b000: ImmExt = 16'b0;                                         // R-type: no immediate
-        3'b001: ImmExt = {{13{instr[15]}}, instr[15:13]};                // I-type (ALU immediate)
+        3'b001: ImmExt = {{10{instr[15]}}, instr[15:10]};                // I-type (ALU immediate)
         3'b010: ImmExt = {{9{instr[15]}}, instr[15:9]};                  // S-type (stores)
         3'b011: ImmExt = {{9{instr[15]}}, {instr[15:13], instr[12:9]}} << 1; // B-type (branches)
         3'b100: ImmExt = {instr[15:6], 6'b000000};                          // U-type (upper bits)

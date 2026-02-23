@@ -10,7 +10,11 @@ module riscv16_top (
     output wire [15:0] dbg_alu_result,
     output wire [15:0] dbg_x1,
     output wire [15:0] dbg_x2,
-    output wire [15:0] dbg_x3
+    output wire [15:0] dbg_x3,
+    output wire [15:0] dbg_x4,
+    output wire [15:0] dbg_x5,
+    output wire [15:0] dbg_x6,
+    output wire [15:0] dbg_x7
 );
 
     /* =====================
@@ -20,8 +24,6 @@ module riscv16_top (
     wire [15:0] instruction;
 
     assign PC_plus2 = PC + 16'd2;
-
-    wire signed [6:0] branch_imm_raw = {imm_b_hi, imm_b_lo};
 
 
     /* =====================
@@ -55,7 +57,6 @@ module riscv16_top (
 
     // ---------- I-Type ----------
     wire [5:0] imm_i_raw = instruction[15:10];   // imm[2:0]
-    wire [2:0] rs1_i     = instruction[9:7];
     wire [2:0] rd_i      = instruction[9:7];
 
     // ---------- S-Type ----------
@@ -89,7 +90,7 @@ module riscv16_top (
 
     wire [2:0] rs1 =
         (opcode == OPC_R) ? rs1_r :
-        (opcode == OPC_I) ? rs1_i :
+        (opcode == OPC_I) ? rd_i :
         (opcode == OPC_S) ? rs1_s :
         (opcode == OPC_B) ? rs1_b :
         (opcode == OPC_L) ? rs1_l :
@@ -116,12 +117,13 @@ module riscv16_top (
 
     // Sign-extend immediates to 16 bits
 
-    wire [15:0] imm_i = {{13{imm_i_raw[2]}}, imm_i_raw};              // 3-bit signed
+    wire [15:0] imm_i = {{10{imm_i_raw[5]}}, imm_i_raw};              // 3-bit signed
     wire [15:0] imm_s = {{9{imm_s_raw[6]}}, imm_s_raw};               // 7-bit signed
     wire [15:0] imm_b = {{9{imm_b_hi[2]}}, imm_b_hi, imm_b_lo};       // 7-bit signed
     wire [15:0] imm_u = {imm_u_raw, 6'b000000};                       // upper immediate
     wire [15:0] imm_j = {{6{imm_j_raw[9]}}, imm_j_raw};               // 10-bit signed
 
+        wire signed [6:0] branch_imm_raw = {imm_b_hi, imm_b_lo};
 
     /* =====================
     Unified Immediate Output
@@ -203,6 +205,10 @@ module riscv16_top (
     wire [15:0] rf_dbg_x1;
     wire [15:0] rf_dbg_x2;
     wire [15:0] rf_dbg_x3;
+    wire [15:0] rf_dbg_x4;
+    wire [15:0] rf_dbg_x5;
+    wire [15:0] rf_dbg_x6;
+    wire [15:0] rf_dbg_x7;
 
     // Match your Register_file port names from the report [1]
     Register_file RF (
@@ -216,7 +222,11 @@ module riscv16_top (
         .RD2(RD2),
         .dbg_x1(rf_dbg_x1),   // this is your added debug port
         .dbg_x2(rf_dbg_x2),
-        .dbg_x3(rf_dbg_x3)
+        .dbg_x3(rf_dbg_x3),
+        .dbg_x4(rf_dbg_x4),
+        .dbg_x5(rf_dbg_x5),
+        .dbg_x6(rf_dbg_x6),
+        .dbg_x7(rf_dbg_x7)
     );
 
     /* =====================
@@ -269,7 +279,6 @@ module riscv16_top (
     /* =====================
        Writeback
     ====================== */
-    // Replace WB_MUX module with a simple assign so it works now
     assign WD3 = (ResultSrc) ? ReadData : ALUResult;
 
 
@@ -283,5 +292,9 @@ module riscv16_top (
     assign dbg_x1         = rf_dbg_x1;
     assign dbg_x2         = rf_dbg_x2;
     assign dbg_x3         = rf_dbg_x3;
+    assign dbg_x4         = rf_dbg_x4;
+    assign dbg_x5         = rf_dbg_x5;
+    assign dbg_x6         = rf_dbg_x6;
+    assign dbg_x7         = rf_dbg_x7;
 
 endmodule
