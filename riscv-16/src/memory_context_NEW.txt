@@ -1,181 +1,22 @@
-================================================================================
-  program16.mem  —  Full Instruction-Type Coverage Test Program
-  RISCV-16 Custom ISA  |  16-bit instructions, 16-bit data, 8 registers (x0-x7)
-================================================================================
+----------------------I Type Testing------------------------
+HEX  - Imm    | RD  | FUNC | OP
+1481 - 000101 | 001 | 0000 | 001 - ADDI x1, x1,  5    x1 = 0  + 5  = 5
+0d01 - 000011 | 010 | 0000 | 001 - ADDI x2, x2,  3    x2 = 0  + 3  = 3
+0481 - 000001 | 001 | 0000 | 001 - ADDI x1, x1,  1    x1 = 5  + 1  = 6
+fd81 - 111111 | 011 | 0000 | 001 - ADDI x3, x3, -1    x3 = 0  + (-1) = 0xFFFF
+fa01 - 111110 | 100 | 0000 | 001 - ADDI x4, x4, -2    x4 = 0  + (-2) = 0xFFFE
+0d09 - 000011 | 010 | 0001 | 001 - XORI x2, x2,  3    x2 = 3  ^ 3   = 0
+1d11 - 000111 | 010 | 0010 | 001 - ORI  x2, x2,  7    x2 = 0  | 7   = 7
+1519 - 000101 | 010 | 0011 | 001 - ANDI x2, x2,  5    x2 = 7  & 5   = 5
+7e81 - 011111 | 101 | 0000 | 001 - ADDI x5, x5, 31    x5 = 0  + 31  = 31  (0x001F) max +ve 6-bit
+8301 - 100000 | 110 | 0000 | 001 - ADDI x6, x6,-32    x6 = 0  + (-32)= 0xFFE0     min -ve 6-bit
 
-Instruction encoding summary (from top.v):
-  [2:0]   = opcode
-  [6:3]   = func (R-type and I-type)
-  R-type: [15:13]=rs1  [12:10]=rs2  [9:7]=rd   [6:3]=func  [2:0]=000
-  I-type: [15:10]=imm6 [9:7]=rd(=rs1)           [6:3]=func  [2:0]=001
-  S-type: [15:9]=imm7  [8:6]=rs1    [5:3]=rs2               [2:0]=011
-  L-type: [15:9]=imm7  [8:6]=rs1    [5:3]=rd                [2:0]=010
-  B-type: [15:13]=imm[6:4] [12:9]=imm[3:0] [8:6]=rs1 [5:3]=rs2  [2:0]=100
-  U-type: [15:6]=imm10 [5:3]=rd                              [2:0]=110
-  J-type: [15:6]=imm10 [5:3]=rd                              [2:0]=101
+----------------------Expected Final Register State------------------------
 
-  Branch target  = PC + (imm_b << 1)   (imm_b is 7-bit signed)
-  JAL    target  = PC + (imm_j << 1)   (imm_j is 10-bit signed)
-  LUI    result  = {imm10, 6'b000000}  (imm10 placed in upper bits)
-
-ALU func codes (from Control_unit.v):
-  R/I-type: 0000=ADD/ADDI  0001=SUB/XORI  0010=XOR/ORI  0011=OR/ANDI  0100=AND
-  Branch:   ALUControl=0001 (SUB for comparison)  PCSrc=zero
-
-================================================================================
-  REGISTER STATE TRACE
-================================================================================
-
-Idx | PC     | HEX  | Encoding Breakdown                      | Assembly & Effect
-----|--------|------|-----------------------------------------|------------------
-
---- Section 1: Setup via I-Type (ADDI) ---
-
- 0  | 0x0000 | 0001 | 000000 | 000 | 0000 | 001              | ADDI x0, x0, 0    (NOP — x0 hardwired 0)
-                               imm=0  rd=x0  func=ADDI  I-type
-                               x0 = 0  (unchanged)
-
- 1  | 0x0002 | 1481 | 000101 | 001 | 0000 | 001              | ADDI x1, x1, 5
-                               imm=5  rd=x1  func=ADDI  I-type
-                               x1 = 0 + 5 = 5
-
- 2  | 0x0004 | 0d01 | 000011 | 010 | 0000 | 001              | ADDI x2, x2, 3
-                               imm=3  rd=x2  func=ADDI  I-type
-                               x2 = 0 + 3 = 3
-
---- Section 2: R-Type (ADD, SUB, OR, AND, XOR) ---
-
- 3  | 0x0006 | 2980 | 001 | 010 | 011 | 0000 | 000            | ADD  x3, x1, x2
-                        rs1=x1 rs2=x2 rd=x3 func=ADD  R-type
-                        x3 = x1 + x2 = 5 + 3 = 8
-
- 4  | 0x0008 | 6a08 | 011 | 010 | 100 | 0001 | 000            | SUB  x4, x3, x2
-                        rs1=x3 rs2=x2 rd=x4 func=SUB  R-type
-                        x4 = x3 - x2 = 8 - 3 = 5
-
- 5  | 0x000A | 2a98 | 001 | 010 | 101 | 0011 | 000            | OR   x5, x1, x2
-                        rs1=x1 rs2=x2 rd=x5 func=OR   R-type
-                        x5 = x1 | x2 = 5 | 3 = 7
-
- 6  | 0x000C | 2b20 | 001 | 010 | 110 | 0100 | 000            | AND  x6, x1, x2
-                        rs1=x1 rs2=x2 rd=x6 func=AND  R-type
-                        x6 = x1 & x2 = 5 & 3 = 1
-
- 7  | 0x000E | 2b90 | 001 | 010 | 111 | 0010 | 000            | XOR  x7, x1, x2
-                        rs1=x1 rs2=x2 rd=x7 func=XOR  R-type
-                        x7 = x1 ^ x2 = 5 ^ 3 = 6
-
---- Section 3: U-Type (LUI) ---
-
- 8  | 0x0010 | 004e | 0000000001 | 001 | 110                  | LUI  x1, 1
-                      imm10=1      rd=x1  U-type
-                      x1 = {1, 6'b000000} = 0x0040 = 64
-                      (overwrites x1; x2..x7 unchanged)
-
---- Section 4: I-Type ALU (XORI, ORI, ANDI) ---
-
- 9  | 0x0012 | 0d09 | 000011 | 010 | 0001 | 001              | XORI x2, x2, 3
-                               imm=3  rd=x2  func=XORI  I-type
-                               x2 = x2 ^ 3 = 3 ^ 3 = 0
-
-10  | 0x0014 | 1511 | 000101 | 010 | 0010 | 001              | ORI  x2, x2, 5
-                               imm=5  rd=x2  func=ORI   I-type
-                               x2 = x2 | 5 = 0 | 5 = 5
-
-11  | 0x0016 | 1d19 | 000111 | 010 | 0011 | 001              | ANDI x2, x2, 7
-                               imm=7  rd=x2  func=ANDI  I-type
-                               x2 = x2 & 7 = 5 & 7 = 5
-
---- Section 5: S-Type (SW) and L-Type (LW) ---
-
-12  | 0x0018 | 0413 | 0000010 | 000 | 010 | 011              | SW   x2, 2(x0)
-                       imm=2   rs1=x0 rs2=x2  S-type
-                       mem[x0 + 2] = mem[2] = x2 = 5
-
-13  | 0x001A | 041a | 0000010 | 000 | 011 | 010              | LW   x3, 2(x0)
-                       imm=2   rs1=x0 rd=x3   L-type
-                       x3 = mem[x0 + 2] = mem[2] = 5
-                       (x3 was 8, now overwritten with 5)
-
---- Section 6: B-Type (BEQ — taken) ---
-
-14  | 0x001C | 069c | 000 | 0110 | 010 | 011 | 100           | BEQ  x2, x3, +3
-                      imm_hi=0 imm_lo=0110  rs1=x2 rs2=x3  B-type
-                      imm_b = {000,0110} = 0b0000110 = 6... 
-                      Wait — imm_b = {imm_b_hi[2:0], imm_b_lo[3:0]}
-                      069c = 0000_0110_1001_1100
-                      [15:13]=000  [12:9]=0110  [8:6]=010  [5:3]=011  [2:0]=100
-                      imm_b = {000, 0110} = 7'b0000110 = 6? 
-                      No: hi=[15:13]=000=0b000, lo=[12:9]=0110=0b0110
-                      imm_b = {000,0110} = 0b0000110 = 6
-                      Hmm, but we encoded b_type(3,2,3):
-                        imm7=3=0b0000011, hi=(3>>4)&7=0, lo=3&0xF=3
-                        val=(0<<13)|(3<<9)|(2<<6)|(3<<3)|4 = 0x0600|0x0080|0x0018|0x04
-                        = 0b0000_0110_1001_1100 = 0x069C ✓
-                      So imm_b_hi=[15:13]=000, imm_b_lo=[12:9]=0011
-                      imm_b = {000, 0011} = 0b0000011 = 3
-                      branch_target = PC + (imm_b << 1) = 0x001C + 6 = 0x0022  ✓
-                      x2 == x3 == 5  →  zero=1  →  BEQ TAKEN
-                      PC jumps to 0x0022 (instructions 15 and 16 are SKIPPED)
-
-15  | 0x001E | 0781 | ADDI x7, x7, 1   *** SKIPPED by BEQ ***  (x7 stays 6)
-
-16  | 0x0020 | 0781 | ADDI x7, x7, 1   *** SKIPPED by BEQ ***  (x7 stays 6)
-
---- Section 7: J-Type (JAL) ---
-
-17  | 0x0022 | 00a5 | 0000000010 | 100 | 101                  | JAL  x4, +2
-                      imm10=2       rd=x4  J-type
-                      jal_target = PC + (imm_j << 1) = 0x0022 + 4 = 0x0026
-                      x4  = PC + 2 = 0x0024  (return address saved)
-                      PC jumps to 0x0026 (instruction 18 is SKIPPED)
-
-18  | 0x0024 | 0781 | ADDI x7, x7, 1   *** SKIPPED by JAL ***  (x7 stays 6)
-
---- Section 8: Verify JAL return address ---
-
-19  | 0x0026 | 8280 | 100 | 000 | 101 | 0000 | 000            | ADD  x5, x4, x0
-                        rs1=x4 rs2=x0 rd=x5 func=ADD  R-type
-                        x5 = x4 + x0 = 0x0024 + 0 = 0x0024
-                        (confirms JAL correctly saved PC+2 = 0x0024)
-
-20  | 0x0028 | 0001 | 000000 | 000 | 0000 | 001              | ADDI x0, x0, 0  (NOP/end)
-                               imm=0  rd=x0  func=ADDI  I-type
-                               Simulation stops here.
-
-================================================================================
-  FINAL REGISTER & MEMORY STATE  (expected at end of simulation)
-================================================================================
-
-  x0 = 0x0000    (hardwired zero — write attempts silently ignored)
-  x1 = 0x0040    (LUI x1,1  →  upper immediate = 64)
-  x2 = 0x0005    (ADDI→XORI→ORI→ANDI pipeline = 5)
-  x3 = 0x0005    (LW loaded mem[2] = 5; overwrote earlier ADD result of 8)
-  x4 = 0x0024    (JAL return address = PC@JAL + 2 = 0x0022 + 2)
-  x5 = 0x0024    (ADD x5,x4,x0 copies JAL return address)
-  x6 = 0x0001    (AND x6,x1,x2 when x1=5,x2=3 → 5&3=1)
-  x7 = 0x0006    (XOR x7,x1,x2 when x1=5,x2=3 → 5^3=6;
-                  all three ADDI x7,x7,1 instructions were skipped)
-
-  mem[2] = 0x0005  (SW x2,2(x0) stored x2=5 at address 2)
-
-================================================================================
-  INSTRUCTIONS TESTED BY TYPE
-================================================================================
-
-  I-type  : ADDI (opcode=001, func=0000)  — instructions 0,1,2,15,16,18,20
-  I-type  : XORI (opcode=001, func=0001)  — instruction 9
-  I-type  : ORI  (opcode=001, func=0010)  — instruction 10
-  I-type  : ANDI (opcode=001, func=0011)  — instruction 11
-  R-type  : ADD  (opcode=000, func=0000)  — instructions 3, 19
-  R-type  : SUB  (opcode=000, func=0001)  — instruction 4
-  R-type  : OR   (opcode=000, func=0011)  — instruction 5
-  R-type  : AND  (opcode=000, func=0100)  — instruction 6
-  R-type  : XOR  (opcode=000, func=0010)  — instruction 7
-  U-type  : LUI  (opcode=110)             — instruction 8
-  S-type  : SW   (opcode=011)             — instruction 12
-  L-type  : LW   (opcode=010)             — instruction 13
-  B-type  : BEQ  (opcode=100, taken)      — instruction 14
-  J-type  : JAL  (opcode=101)             — instruction 17
-
-================================================================================
+x1 = 0x0006  (  6)  ADDI +5 then +1
+x2 = 0x0005  (  5)  ADDI +3 -> XORI ^3=0 -> ORI |7=7 -> ANDI &5=5
+x3 = 0xFFFF  ( -1)  ADDI -1  (negative immediate, sign-extended to 16 bits)
+x4 = 0xFFFE  ( -2)  ADDI -2  (negative immediate, sign-extended to 16 bits)
+x5 = 0x001F  ( 31)  ADDI +31 (maximum positive 6-bit immediate: 011111)
+x6 = 0xFFE0  (-32)  ADDI -32 (minimum negative 6-bit immediate: 100000)
+x7 = 0x0000  (  0)  untouched

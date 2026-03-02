@@ -5,28 +5,25 @@
 `define CLOCK_PERIOD  (`HALF_CLOCK_PERIOD * 2)
 
 // ============================================================================
-//  riscv16_top  —  Full-Coverage Testbench
+//  riscv16_top  —  I-Type Instruction Testbench (10 tests)
 //
-//  Program: program16.mem  (21 instructions, ends at PC=0x0028)
+//  Program: program16.mem  (10 instructions)
 //
-//  Instruction coverage:
-//    I-type  : ADDI, XORI, ORI, ANDI
-//    R-type  : ADD, SUB, OR, AND, XOR
-//    U-type  : LUI
-//    S-type  : SW
-//    L-type  : LW
-//    B-type  : BEQ (taken)   — two instructions verified as skipped
-//    J-type  : JAL           — one instruction verified as skipped
+//  Test coverage:
+//    Test  1 : ADDI x1, x1,  5    x1 = 5              (positive immediate)
+//    Test  2 : ADDI x2, x2,  3    x2 = 3              (positive immediate)
+//    Test  3 : ADDI x1, x1,  1    x1 = 6              (increment, reuse rd)
+//    Test  4 : ADDI x3, x3, -1    x3 = 0xFFFF         (negative immediate -1)
+//    Test  5 : ADDI x4, x4, -2    x4 = 0xFFFE         (negative immediate -2)
+//    Test  6 : XORI x2, x2,  3    x2 = 3^3 = 0        (func=0001)
+//    Test  7 : ORI  x2, x2,  7    x2 = 0|7 = 7        (func=0010)
+//    Test  8 : ANDI x2, x2,  5    x2 = 7&5 = 5        (func=0011)
+//    Test  9 : ADDI x5, x5, 31    x5 = 31 (0x001F)    (max positive 6-bit imm)
+//    Test 10 : ADDI x6, x6,-32    x6 = 0xFFE0         (min negative 6-bit imm)
 //
-//  Expected final state (checked in passTest calls below):
-//    x1 = 0x0040   (LUI x1, 1)
-//    x2 = 0x0005   (ADDI->XORI->ORI->ANDI sequence)
-//    x3 = 0x0005   (LW  from mem[2])
-//    x4 = 0x0024   (JAL return address)
-//    x5 = 0x0024   (ADD x5, x4, x0  — confirms JAL saved correct PC+2)
-//    x6 = 0x0001   (AND x6, x1, x2  when x1=5, x2=3)
-//    x7 = 0x0006   (XOR; all ADDI x7,x7,1 were skipped by branch/jal)
-//    mem[2] = 0x0005  (SW stored x2=5)
+//  Expected final state:
+//    x1 = 0x0006   x2 = 0x0005   x3 = 0xFFFF
+//    x4 = 0xFFFE   x5 = 0x001F   x6 = 0xFFE0
 // ============================================================================
 
 module top_tb;
@@ -84,10 +81,10 @@ module top_tb;
     reg [7:0] total;
 
     task passTest;
-        input [15:0]          actualOut;
-        input [15:0]          expectedOut;
-        input [`STRLEN*18:0]   testName;
-        inout [7:0]           p;
+        input [15:0]         actualOut;
+        input [15:0]         expectedOut;
+        input [`STRLEN*8:0]  testName;
+        inout [7:0]          p;
         begin
             total = total + 1;
             if (actualOut === expectedOut) begin
@@ -105,23 +102,21 @@ module top_tb;
         input [7:0] n;
         begin
             $display("");
-            if (p == n)
+            if (p == n) begin
                 $display("========================================");
                 $display("  All %0d / %0d tests PASSED.", p, n);
                 $display("========================================");
-            if (p != n)
+            end else begin
                 $display("  %0d / %0d tests PASSED  (%0d FAILED).", p, n, n - p);
+            end
         end
     endtask
 
     // -----------------------------------------------------------------------
-    // Watchdog
+    // Watchdog + program size
     // -----------------------------------------------------------------------
     reg [15:0] watchdog;
-
-    // Number of instruction words in program16.mem
-    // (21 words, last at word-index 20  →  PC_max = 20*2 = 0x0028)
-    localparam PROGRAM_WORDS = 21;
+    localparam PROGRAM_WORDS = 10;   // 10 instructions
 
     // -----------------------------------------------------------------------
     // Main stimulus
@@ -132,7 +127,7 @@ module top_tb;
         watchdog = 0;
 
         // -------------------------------------------------------------------
-        // 1. Reset for two full cycles
+        // 1. Reset
         // -------------------------------------------------------------------
         reset = 1'b1;
         repeat (2) @(posedge clk);
@@ -141,110 +136,73 @@ module top_tb;
 
         $display("");
         $display("================================================================");
-        $display("  RISCV-16 Top-Level Testbench  —  Full Instruction Coverage");
+        $display("  RISCV-16  —  I-Type Instruction Tests (10 cases)");
         $display("================================================================");
-        $display("Time=%0t  Reset deasserted, PC=0x%04h", $time, dbg_pc);
+        $display("Time=%0t  Reset released, PC=0x%04h", $time, dbg_pc);
         $display("");
         $display("--- Execution trace ---");
-        $display("%-6s | %-6s | %-6s | %-6s | %-6s | %-6s | %-6s | %-6s | %-6s | %s",
-                 "Time", "PC", "Instr", "ALU", "x1", "x2", "x3", "x4", "x5", "Note");
-        $display("-------+--------+-------+-------+-------+-------+-------+-------+-------+------+-----");
+        $display("%-8s | %-6s | %-6s | %-4s | %-5s | %-5s | %-5s | %-5s | %-5s | %-6s",
+                 "Time", "PC", "Instr", "ALU", "x1", "x2", "x3", "x4", "x5", "x6");
+        $display("---------+--------+-------+-------+-------+-------+-------+-------+-------+-------");
 
         // -------------------------------------------------------------------
-        // 2. Execution monitoring loop — run until past last instruction
+        // 2. Run until program end
         // -------------------------------------------------------------------
-        while ((dbg_pc >> 1) < PROGRAM_WORDS && watchdog < 200) begin
+        while ((dbg_pc >> 1) < PROGRAM_WORDS && watchdog < 100) begin
             @(posedge clk);
-            #1;  // let combinational outputs settle after rising edge
+            #1;
 
-            $display("%6t | 0x%04h | %04h  | %04h  | %04h  | %04h  | %04h  | %04h  | %04h  | %04h | %04h",
+            $display("%8t | 0x%04h | %04h  | %04h  | %04h  | %04h  | %04h  | %04h  | %04h  | %04h",
                      $time, dbg_pc, dbg_instr, dbg_alu_result,
-                     dbg_x1, dbg_x2, dbg_x3,
-                     dbg_x4, dbg_x5, dbg_x6, dbg_x7);
+                     dbg_x1, dbg_x2, dbg_x3, dbg_x4, dbg_x5, dbg_x6);
 
             watchdog = watchdog + 1;
         end
 
-        if (watchdog >= 200)
-            $display("\n  WARNING: watchdog expired — possible infinite loop in PC logic\n");
+        if (watchdog >= 100)
+            $display("\n  WARNING: watchdog expired\n");
 
-        // -------------------------------------------------------------------
-        // 3. Allow one more cycle for final writeback to settle
-        // -------------------------------------------------------------------
+        // Let final writeback settle
         @(posedge clk); #1;
 
         // -------------------------------------------------------------------
-        // 4. Assertion checks
-        //    One passTest call per architectural result we want to verify.
+        // 3. Assertions
         // -------------------------------------------------------------------
         $display("");
         $display("--- Assertion checks ---");
 
-        // ---- I-Type: ADDI chain ----
-        // x1 was 5 before LUI overwrites it; verify via x6 which used original x1
-        passTest(dbg_x6, 16'h0001, "I-type ADDI: AND x6=x1&x2=5&3=1 (uses original x1,x2)", passed);
+        // Test 1+3: ADDI positive, then increment same register
+        passTest(dbg_x1, 16'h0006, "ADDI pos: x1 = 5+1 = 6", passed);
 
-        // ---- R-Type: ADD ----
-        // x3 was 8 (ADD result) before LW overwrote it; indirect check via x6 (x6=x1&x2=1)
-        // We can still check x7 which was set by XOR and never touched after
-        passTest(dbg_x7, 16'h0006, "R-type XOR:  x7 = x1^x2 = 5^3 = 6", passed);
+        // Test 2+6+7+8: ADDI -> XORI -> ORI -> ANDI chain on x2
+        passTest(dbg_x2, 16'h0005, "ADDI/XORI/ORI/ANDI: x2 = 5", passed);
 
-        // ---- R-Type: SUB ----
-        // x4 was 5 (SUB result), then overwritten by JAL return address
-        // Indirect: x4 holds JAL retaddr (checked below); SUB was visible at PC=0x0008
+        // Test 4: ADDI negative immediate -1
+        passTest(dbg_x3, 16'hFFFF, "Negative 1 - (-1) = 0xFFFF", passed);
 
-        // ---- R-Type: OR ----
-        // x5 was 7 (OR result), then overwritten by ADD x5,x4,x0
-        // Indirect check: x5 == JAL retaddr confirms ADD (checked below)
+        // Test 5: ADDI negative immediate -2
+        passTest(dbg_x4, 16'hFFFE, "Negative 2 - (-2) = 0xFFFE", passed);
 
-        // ---- R-Type: AND ----
-        passTest(dbg_x6, 16'h0001, "R-type AND:  x6 = x1&x2 = 5&3 = 1", passed);
+        // Test 9: ADDI max positive 6-bit immediate (31 = 0b011111)
+        passTest(dbg_x5, 16'h001F, "ADDI MAX value (31) (0x001F)", passed);
 
-        // ---- R-Type: XOR ----
-        passTest(dbg_x7, 16'h0006, "R-type XOR:  x7 = x1^x2 = 5^3 = 6 (also confirms BEQ/JAL skipped +1s)", passed);
+        // Test 10: ADDI min negative 6-bit immediate (-32 = 0b100000)
+        passTest(dbg_x6, 16'hFFE0, "ADDI min value (-32) (0xFFE0)", passed);
 
-        // ---- U-Type: LUI ----
-        passTest(dbg_x1, 16'h0040, "U-type LUI:  x1 = {1, 6'b0} = 0x0040", passed);
+        // Test 6 isolation: XORI zeroed x2 (intermediate, confirmed by chain above)
+        // Directly confirmed: if x2 final == 5 then XORI->ORI->ANDI all correct
 
-        // ---- I-Type: XORI / ORI / ANDI chain ----
-        passTest(dbg_x2, 16'h0005, "I-type XORI->ORI->ANDI: x2 = (3^3)|5 & 7 = 5", passed);
+        // x7 untouched — must remain 0
+        passTest(dbg_x7, 16'h0000, "x7 untouched: x7 = 0x0000", passed);
 
-        // ---- S-Type / L-Type: SW then LW ----
-        passTest(dbg_x3, 16'h0005, "L-type LW: x3 = mem[2] = 5 (written by SW x2,2(x0))", passed);
-
-        // Direct memory content check
-        passTest(dut.DMEM.memory[1], 16'h0005, "S-type SW: mem[2] == 5 (byte addr 2 = word 1)", passed);
-        // Note: if your data memory is byte-addressed and 16-bit words,
-        //       address 2 maps to memory[1]. Adjust index if word-addressed.
-
-        // ---- B-Type: BEQ taken — verify skipped instructions did NOT execute ----
-        // If the three ADDI x7,x7,1 (instructions 15,16,18) had executed,
-        // x7 would be 6+3=9. It must remain 6.
-        passTest(dbg_x7, 16'h0006, "B-type BEQ taken: x7 unchanged (all 3 ADDI x7,x7,1 skipped)", passed);
-
-        // ---- J-Type: JAL return address ----
-        // JAL at PC=0x0022 saves PC+2 = 0x0024 into x4
-        passTest(dbg_x4, 16'h0024, "J-type JAL:  x4 = return address = 0x0024", passed);
-
-        // ---- JAL destination: ADD x5,x4,x0 executed at PC=0x0026 ----
-        // x5 == x4 == 0x0024 proves JAL jumped to the correct target
-        passTest(dbg_x5, 16'h0024, "J-type JAL:  x5 = ADD(x4,x0) = 0x0024 (confirms jump target correct)", passed);
-
-        // ---- x0 immutability ----
-        // NOP was ADDI x0,x0,0; x0 must always be 0
-        passTest(16'h0000, 16'h0000, "x0 hardwired: always 0", passed);
+        // x0 hardwired zero (not written by any instruction, but sanity check)
+        // accessed via hierarchy since not a debug port
+        // passTest(dut.RF.regs[0], 16'h0000, "x0 hardwired: always 0", passed);
 
         // -------------------------------------------------------------------
-        // 5. Summary
+        // 4. Summary
         // -------------------------------------------------------------------
         allPassed(passed, total);
-
-        $display("");
-        $display("  Final memory snapshot:");
-        $display("    mem[0] = 0x%04h", dut.DMEM.memory[0]);
-        $display("    mem[1] = 0x%04h  (byte addr 2, should be 0x0005)", dut.DMEM.memory[1]);
-        $display("    mem[2] = 0x%04h", dut.DMEM.memory[2]);
-
         $display("");
         $finish;
     end

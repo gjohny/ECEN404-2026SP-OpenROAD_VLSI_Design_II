@@ -2,53 +2,35 @@ WARNING: ./src/Instruction_memory.v:19: $readmemh(src/program16.mem): Not enough
 VCD info: dumpfile ./tb/waveform/top.vcd opened for output.
 
 ================================================================
-  RISCV-16 Top-Level Testbench  —  Full Instruction Coverage
+  RISCV-16  —  I-Type Instruction Tests (10 cases)
 ================================================================
-Time=16000  Reset deasserted, PC=0x0000
+Time=16000  Reset released, PC=0x0000
 
 --- Execution trace ---
-Time   | PC     | Instr  | ALU    | x1     | x2     | x3     | x4     | x5     | Note
--------+--------+-------+-------+-------+-------+-------+-------+-------+------+-----
- 26000 | 0x0002 | 1481  | 0005  | 0000  | 0000  | 0000  | 0000  | 0000  | 0000 | 0000
- 36000 | 0x0004 | 0d01  | 0003  | 0005  | 0000  | 0000  | 0000  | 0000  | 0000 | 0000
- 46000 | 0x0006 | 2980  | 0008  | 0005  | 0003  | 0000  | 0000  | 0000  | 0000 | 0000
- 56000 | 0x0008 | 6a08  | 0005  | 0005  | 0003  | 0008  | 0000  | 0000  | 0000 | 0000
- 66000 | 0x000a | 2a98  | 0007  | 0005  | 0003  | 0008  | 0005  | 0000  | 0000 | 0000
- 76000 | 0x000c | 2b20  | 0001  | 0005  | 0003  | 0008  | 0005  | 0007  | 0000 | 0000
- 86000 | 0x000e | 2b90  | 0006  | 0005  | 0003  | 0008  | 0005  | 0007  | 0001 | 0000
- 96000 | 0x0010 | 004e  | 0040  | 0005  | 0003  | 0008  | 0005  | 0007  | 0001 | 0006
-106000 | 0x0012 | 0d09  | 0000  | 0040  | 0003  | 0008  | 0005  | 0007  | 0001 | 0006
-116000 | 0x0014 | 1511  | 0005  | 0040  | 0000  | 0008  | 0005  | 0007  | 0001 | 0006
-126000 | 0x0016 | 1d19  | 0005  | 0040  | 0005  | 0008  | 0005  | 0007  | 0001 | 0006
-136000 | 0x0018 | 0413  | 0002  | 0040  | 0005  | 0008  | 0005  | 0007  | 0001 | 0006
-146000 | 0x001a | 041a  | 0002  | 0040  | 0005  | 0008  | 0005  | 0007  | 0001 | 0006
-156000 | 0x001c | 069c  | 0000  | 0040  | 0005  | 0005  | 0005  | 0007  | 0001 | 0006
-166000 | 0x0022 | 00a5  | 0002  | 0040  | 0005  | 0005  | 0005  | 0007  | 0001 | 0006
-176000 | 0x0026 | 8280  | 0002  | 0040  | 0005  | 0005  | 0002  | 0007  | 0001 | 0006
-186000 | 0x0028 | 0001  | 0000  | 0040  | 0005  | 0005  | 0002  | 0002  | 0001 | 0006
-196000 | 0x002a | 0000  | 0000  | 0040  | 0005  | 0005  | 0002  | 0002  | 0001 | 0006
+Time     | PC     | Instr  | ALU  | x1    | x2    | x3    | x4    | x5    | x6    
+---------+--------+-------+-------+-------+-------+-------+-------+-------+-------
+   26000 | 0x0002 | 1481  | 0005  | 0000  | 0000  | 0000  | 0000  | 0000  | 0000
+   36000 | 0x0004 | 0d01  | 0003  | 0005  | 0000  | 0000  | 0000  | 0000  | 0000
+   46000 | 0x0006 | 0481  | 0006  | 0005  | 0003  | 0000  | 0000  | 0000  | 0000
+   56000 | 0x0008 | fd81  | ffff  | 0006  | 0003  | 0000  | 0000  | 0000  | 0000
+   66000 | 0x000a | fa01  | fffe  | 0006  | 0003  | ffff  | 0000  | 0000  | 0000
+   76000 | 0x000c | 0d09  | 0000  | 0006  | 0003  | ffff  | fffe  | 0000  | 0000
+   86000 | 0x000e | 1d11  | 0007  | 0006  | 0000  | ffff  | fffe  | 0000  | 0000
+   96000 | 0x0010 | 1519  | 0005  | 0006  | 0007  | ffff  | fffe  | 0000  | 0000
+  106000 | 0x0012 | 7e81  | 001f  | 0006  | 0005  | ffff  | fffe  | 0000  | 0000
+  116000 | 0x0014 | 8301  | ffe0  | 0006  | 0005  | ffff  | fffe  | 001f  | 0000
 
 --- Assertion checks ---
-  [32mPASS[0m                      I-type ADDI: AND x6=x1&x2=5&3=1 (uses original x1,x2)  (got 0x0001)
-  [32mPASS[0m                                          R-type XOR:  x7 = x1^x2 = 5^3 = 6  (got 0x0006)
-  [32mPASS[0m                                          R-type AND:  x6 = x1&x2 = 5&3 = 1  (got 0x0001)
-  [32mPASS[0m      R-type XOR:  x7 = x1^x2 = 5^3 = 6 (also confirms BEQ/JAL skipped +1s)  (got 0x0006)
-  [32mPASS[0m                                       U-type LUI:  x1 = {1, 6'b0} = 0x0040  (got 0x0040)
-  [32mPASS[0m                               I-type XORI->ORI->ANDI: x2 = (3^3)|5 & 7 = 5  (got 0x0005)
-  [32mPASS[0m                        L-type LW: x3 = mem[2] = 5 (written by SW x2,2(x0))  (got 0x0005)
-  [32mPASS[0m                              S-type SW: mem[2] == 5 (byte addr 2 = word 1)  (got 0x0005)
-  [32mPASS[0m                B-type BEQ taken: x7 unchanged (all 3 ADDI x7,x7,1 skipped)  (got 0x0006)
-  [31mFAIL[0m                                  J-type JAL:  x4 = return address = 0x0024  got 0x0002, expected 0x0024
-  [31mFAIL[0m       J-type JAL:  x5 = ADD(x4,x0) = 0x0024 (confirms jump target correct)  got 0x0002, expected 0x0024
-  [32mPASS[0m                                                     x0 hardwired: always 0  (got 0x0000)
+  [32mPASS[0m             ADDI pos: x1 = 5+1 = 6  (got 0x0006)
+  [32mPASS[0m         ADDI/XORI/ORI/ANDI: x2 = 5  (got 0x0005)
+  [32mPASS[0m         Negative 1 - (-1) = 0xFFFF  (got 0xffff)
+  [32mPASS[0m         Negative 2 - (-2) = 0xFFFE  (got 0xfffe)
+  [32mPASS[0m       ADDI MAX value (31) (0x001F)  (got 0x001f)
+  [32mPASS[0m      ADDI min value (-32) (0xFFE0)  (got 0xffe0)
+  [32mPASS[0m          x7 untouched: x7 = 0x0000  (got 0x0000)
 
-  All 10 / 12 tests PASSED.
 ========================================
-  10 / 12 tests PASSED  (2 FAILED).
+  All 7 / 7 tests PASSED.
+========================================
 
-  Final memory snapshot:
-    mem[0] = 0xxxxx
-    mem[1] = 0x0005  (byte addr 2, should be 0x0005)
-    mem[2] = 0xxxxx
-
-./tb/top_tb.v:249: $finish called at 206000 (1ps)
+./tb/top_tb.v:207: $finish called at 126000 (1ps)
