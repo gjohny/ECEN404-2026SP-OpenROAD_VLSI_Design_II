@@ -5,8 +5,9 @@ module Control_unit(
     input  [3:0] func,        // function field (R-type, I-type)
     input        zero,        // ALU zero flag (for branches)
     output reg        PCSrc,        // PC source select
-    output reg        ResultSrc,    // result source select
+    output reg  [1:0] ResultSrc,    // result source select
     output reg        MemWrite,     // memory write enable
+    output reg        MemRead,
     output reg  [3:0] ALUControl,   // ALU operation select
     output reg        ALUSrc,       // ALU source select
     output reg  [2:0] ImmSrc,       // immediate type select
@@ -16,8 +17,9 @@ module Control_unit(
     always @(*) begin
         // Default values (NOP-safe)
         PCSrc      = 1'b0;
-        ResultSrc  = 1'b0;
+        ResultSrc  = 2'b00;
         MemWrite   = 1'b0;
+        MemRead    = 1'b0;
         ALUControl = 4'b0000;
         ALUSrc     = 1'b0;
         ImmSrc     = 3'b000;
@@ -31,7 +33,7 @@ module Control_unit(
             3'b000: begin
                 RegWrite   = 1'b1;
                 ALUSrc     = 1'b0;
-                ResultSrc  = 1'b0;
+                ResultSrc  = 2'b00;
                 ALUControl = func; // func directly controls ALU op
             end
 
@@ -42,7 +44,7 @@ module Control_unit(
             3'b001: begin
                 ALUSrc     = 1'b1;
                 RegWrite   = 1'b1;
-                ResultSrc  = 1'b0;
+                ResultSrc  = 2'b00;
                 ImmSrc     = 3'b001;
 
                 // Decode func field
@@ -66,7 +68,8 @@ module Control_unit(
             3'b010: begin
                 ALUSrc     = 1'b1;
                 RegWrite   = 1'b1;
-                ResultSrc  = 1'b1; // writeback from memory
+                MemRead    = 1'b1;
+                ResultSrc  = 2'b01; // writeback from memory
                 ALUControl = 4'b0000; // ADD base + offset
                 ImmSrc     = 3'b010;
             end
@@ -90,7 +93,12 @@ module Control_unit(
                 ImmSrc     = 3'b011;
 
                 // Branch condition
-                PCSrc = (zero) ? 1'b1 : 1'b0;  // BEQ
+                case(func[1:0])
+                    2'b00: PCSrc = zero;                // BEQ
+                    2'b01: PCSrc = ~zero;               // BNE
+                    2'b10: PCSrc = negative;            // BLT
+                    2'b11: PCSrc = ~negative & ~zero;   // BGT
+                endcase
 
             end
 
@@ -103,7 +111,19 @@ module Control_unit(
                 ALUSrc     = 1'b1;
                 ALUControl = 4'b0000; // Add PC + imm
                 ImmSrc     = 3'b101;
-                ResultSrc  = 1'b0;
+                ResultSrc  = 2'b10; // Write back PC + 2
+            end
+
+            // ------------------------------------------------
+            // JR: opcode = 111
+            // ------------------------------------------------
+            3'b111: begin
+                PCSrc      = 1'b1;
+                RegWrite   = 1'b1;
+                ALUSrc     = 1'b1;
+                ALUControl = 4'b0000; // Add rs1 + imm
+                ImmSrc     = 3'b110;
+                ResultSrc  = 2'b10; // Write back PC + 2
             end
 
             // ------------------------------------------------
@@ -115,7 +135,7 @@ module Control_unit(
                 ALUSrc     = 1'b1;        // Use immediate
                 ALUControl = 4'b0000;     // ADD (x0 + imm)
                 ImmSrc     = 3'b101;       // Select U-type immediate
-                ResultSrc  = 1'b0;        // Write ALU result
+                ResultSrc  = 2'b00;        // Write ALU result
             end
 
 
@@ -124,8 +144,9 @@ module Control_unit(
             // ------------------------------------------------
             default: begin
                 PCSrc      = 1'b0;
-                ResultSrc  = 1'b0;
+                ResultSrc  = 2'b00;
                 MemWrite   = 1'b0;
+                MemRead    = 1'b0;
                 ALUControl = 4'b0000;
                 ALUSrc     = 1'b0;
                 ImmSrc     = 2'b00;

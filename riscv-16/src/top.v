@@ -37,9 +37,10 @@ module riscv16_top (
     localparam OPC_B = 3'b100;
     localparam OPC_U = 3'b110;
     localparam OPC_J = 3'b101;
+    localparam OPC_JR = 3'b111;
 
     wire jal_taken  = (opcode == OPC_J);
-    wire jalr_taken = (opcode == OPC_I) && (func == 4'b1101);   
+    wire jalr_taken = (opcode == OPC_JR);  
 
 
     wire [3:0] func = instruction[6:3];
@@ -82,6 +83,11 @@ module riscv16_top (
     wire [9:0] imm_j_raw = instruction[15:6];    // imm[15:6]
     wire [2:0] rd_j      = instruction[5:3];
 
+    // ---------- JR-Type ----------
+    wire [6:0] imm_jr_raw = instruction[15:9];    // imm[15:6]
+    wire [2:0] rs1_jr    = instruction[7:5];
+    wire [2:0] rd_jr      = instruction[5:3];
+
 
     /* =====================
     Register Selection
@@ -93,6 +99,7 @@ module riscv16_top (
         (opcode == OPC_S) ? rs1_s :
         (opcode == OPC_B) ? rs1_b :
         (opcode == OPC_L) ? rs1_l :
+        (opcode == OPC_JR) ? rs1_jr :
         3'b000;
 
     wire [2:0] rs2 =
@@ -107,6 +114,7 @@ module riscv16_top (
         (opcode == OPC_U) ? rd_u :
         (opcode == OPC_J) ? rd_j :
         (opcode == OPC_L) ? rd_l :
+        (opcode == OPC_JR) ? rd_jr :
         3'b000;
 
 
@@ -137,7 +145,7 @@ module riscv16_top (
 
     wire [15:0] branch_target = PC + (imm_b << 1);
     wire [15:0] jal_target    = PC + (imm_j << 1);
-    wire [15:0] jalr_sum = RD1 + imm_i;
+    wire [15:0] jalr_sum = RD1 + imm_ext;
     wire [15:0] jalr_target = {jalr_sum[15:1], 1'b0};
 
     /* =====================
@@ -174,8 +182,9 @@ module riscv16_top (
        Control Unit
     ====================== */
     wire        PCSrc;
-    wire        ResultSrc;
+    wire [1:0]  ResultSrc;
     wire        MemWrite;
+    wire        MemRead; 
     wire        ALUSrc;
     wire        RegWrite;
     wire [2:0]  ImmSrc;
@@ -190,6 +199,7 @@ module riscv16_top (
         .PCSrc(PCSrc),
         .ResultSrc(ResultSrc),
         .MemWrite(MemWrite),
+        .MemRead(MemRead),
         .ALUControl(ALUControl),
         .ALUSrc(ALUSrc),
         .ImmSrc(ImmSrc),
@@ -262,7 +272,7 @@ module riscv16_top (
         .mem_access_addr(ALUResult),
         .mem_write_data(RD2),
         .mem_write_en(MemWrite),
-        .mem_read(ResultSrc),
+        .mem_read(MemRead),
         .mem_read_data(ReadData)
     );
 
@@ -270,8 +280,13 @@ module riscv16_top (
        Writeback
     ====================== */
     // Replace WB_MUX module with a simple assign so it works now
-    assign WD3 = (ResultSrc) ? ReadData : ALUResult;
-
+    Writeback_mux WB_MUX (
+        .ALUResult(ALUResult),
+        .MemData(ReadData),
+        .PcPlus2(PC_plus2),
+        .MemtoReg(ResultSrc),
+        .WD3(WD3)
+    );
 
 
     /* =====================
