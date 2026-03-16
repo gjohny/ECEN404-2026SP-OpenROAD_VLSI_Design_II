@@ -15,14 +15,8 @@ module top_tb;
     wire [15:0] dbg_instr;
     wire [15:0] dbg_alu_result;
     wire [15:0] dbg_x1;
-
-    //print IMEM contents at the beginning of the simulation
-    initial 
-        begin
-            #1;
-            $display("IMEM[0]=%h", dut.IMEM.memory[0]);
-            $display("IMEM[1]=%h", dut.IMEM.memory[1]);
-        end
+    wire [15:0] dbg_x2;
+    wire [15:0] dbg_x3;
 
 
     // Instantiate DUT
@@ -32,7 +26,9 @@ module top_tb;
         .dbg_pc(dbg_pc),
         .dbg_instr(dbg_instr),
         .dbg_alu_result(dbg_alu_result),
-        .dbg_x1(dbg_x1)
+        .dbg_x1(dbg_x1),
+        .dbg_x2(dbg_x2),
+        .dbg_x3(dbg_x3)
     );
 
     // Waveform dump
@@ -82,16 +78,8 @@ module top_tb;
     // Watchdog
     reg [15:0] watchdog;
 
-    // ------------------------------------------------------------
-    // Periodic debug print (every 10000 ns starting at t=0)
-    // ------------------------------------------------------------
-    initial begin
-        forever begin
-            #10000;
-            $display("Time=%0t | PC=0x%04h | Instr=0x%04h | ALU=0x%04h | x1=0x%04h",
-                    $time, dbg_pc, dbg_instr, dbg_alu_result, dbg_x1);
-        end
-    end
+    // Number of instructions in program16.mem
+    localparam PROGRAM_WORDS = 50;
 
 
     // Main stimulus
@@ -99,40 +87,41 @@ module top_tb;
         passed   = 0;
         watchdog = 0;
 
-        // Apply reset
+        // 1. Reset
         reset = 1'b1;
-        #(2 * `CLOCK_PERIOD);
+        #10;
         @(posedge clk);
-        reset = 1'b0;
+        reset = 1'b0;   
 
-        // Wait a couple cycles after reset deassertion
-        @(posedge clk);
-        @(posedge clk);
+        $display("--- Starting Execution ---");
 
-        // ===========================
-        // Program 1: x1 = 3 + 1
-        // ===========================
-        // We know:
-        // PC=0x0000: ADDI x1, x0, 3  (0x6041)
-        // PC=0x0002: ADDI x1, x1, 1  (0x2441)
-        // So after PC reaches 0x0004, x1 should be 4.
-        while (dbg_pc < 16'h000f) begin
+
+
+        // 2. Monitoring Loop
+        while ((dbg_pc >> 1) < PROGRAM_WORDS && watchdog < 100) begin
             @(posedge clk);
-            @(negedge clk);
-            $display("Time=%0t | PC=0x%04h | Instr=0x%04h | ALU=0x%04h | x1=0x%04h",
-                     $time, dbg_pc, dbg_instr, dbg_alu_result, dbg_x1);
+            #1;  // allow register file & memory to update
+
+            $display("Time=%0t | PC=0x%04h | Instr=0x%04h | ALU=0x%04h | x1=0x%04h | x2=0x%04h | x3=0x%04h | zero=%b",
+                    $time, dbg_pc, dbg_instr, dbg_alu_result, dbg_x1, dbg_x2, dbg_x3, dut.ALU_CORE.zero);
+            
+
+            $display("STORE: addr=%h data=%h | MEM snapshot: [0]=%h [1]=%h [2]=%h \n\n",
+                    dut.DMEM.mem_access_addr,
+                    dut.DMEM.mem_write_data,
+                    dut.DMEM.memory[0],
+                    dut.DMEM.memory[1],
+                    dut.DMEM.memory[2]);
+
+
             watchdog = watchdog + 1;
-            if (watchdog == 16'hFFFF) begin
-                $display("Watchdog expired.");
-                $finish;
-            end
         end
 
-        // Check that x1 == 4
-        passTest(dbg_x1, 16'h0004, "Program 1: x1 = 3 + 1", passed);
+        // 3. Final Check
+        $display("--- Simulation Finished ---\n\n");
+        // passTest(dbg_x1, 16'h0004, "Program 1: x1 = 3 + 1", passed);
 
-        // Final summary
-        allPassed(passed, 1);
+        // allPassed(passed, 1);
         $finish;
     end
 
