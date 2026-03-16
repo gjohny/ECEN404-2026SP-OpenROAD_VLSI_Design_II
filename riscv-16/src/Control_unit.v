@@ -4,6 +4,7 @@ module Control_unit(
     input  [2:0] opcode,      // primary opcode
     input  [3:0] func,        // function field (R-type, I-type)
     input        zero,        // ALU zero flag (for branches)
+    input       negative,    // ALU negative flag (for branches)
     output reg        PCSrc,        // PC source select
     output reg  [1:0] ResultSrc,    // result source select
     output reg        MemWrite,     // memory write enable
@@ -149,7 +150,7 @@ module Control_unit(
                 MemRead    = 1'b0;
                 ALUControl = 4'b0000;
                 ALUSrc     = 1'b0;
-                ImmSrc     = 2'b00;
+                ImmSrc     = 3'b000;
                 RegWrite   = 1'b0;
             end
         endcase

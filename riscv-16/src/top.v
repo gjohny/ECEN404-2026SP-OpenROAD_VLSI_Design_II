@@ -21,9 +21,6 @@ module riscv16_top (
 
     assign PC_plus2 = PC + 16'd2;
 
-    wire signed [6:0] branch_imm_raw = {imm_b_hi, imm_b_lo};
-
-
     /* =====================
     Instruction Fields
     ===================== */
@@ -70,10 +67,9 @@ module riscv16_top (
     wire [2:0] rd_l     = instruction[5:3];
 
     // ---------- B-Type ----------
-    wire [2:0] imm_b_hi  = instruction[15:13];   // imm[6:4]
-    wire [3:0] imm_b_lo  = instruction[12:9];    // imm[3:0]
-    wire [2:0] rs1_b     = instruction[8:6];
-    wire [2:0] rs2_b     = instruction[5:3];
+    wire [4:0] imm_b_raw = instruction[15:11];  
+    wire [2:0] rs1_b     = instruction[10:8];
+    wire [2:0] rs2_b     = instruction[7:5];
 
     // ---------- U-Type ----------
     wire [9:0] imm_u_raw = instruction[15:6];    // imm[12:3]
@@ -126,7 +122,7 @@ module riscv16_top (
 
     wire [15:0] imm_i = {{13{imm_i_raw[2]}}, imm_i_raw};              // 3-bit signed
     wire [15:0] imm_s = {{9{imm_s_raw[6]}}, imm_s_raw};               // 7-bit signed
-    wire [15:0] imm_b = {{9{imm_b_hi[2]}}, imm_b_hi, imm_b_lo};       // 7-bit signed
+    wire [15:0] imm_b = {{11{imm_b_raw[4]}}, imm_b_raw};              // 5-bit signed
     wire [15:0] imm_u = {imm_u_raw, 6'b000000};                       // upper immediate
     wire [15:0] imm_j = {{6{imm_j_raw[9]}}, imm_j_raw};               // 10-bit signed
 
@@ -190,12 +186,14 @@ module riscv16_top (
     wire [2:0]  ImmSrc;
     wire [3:0]  ALUControl;
     wire        zero;
+    wire        negative;
 
     // Use the actual module name Control_Unit from the report [1]
     Control_unit CU (
         .opcode(opcode),
         .func(func),
         .zero(zero),
+        .negative(negative),
         .PCSrc(PCSrc),
         .ResultSrc(ResultSrc),
         .MemWrite(MemWrite),
@@ -259,7 +257,8 @@ module riscv16_top (
         .SrcB(ALU_B),
         .ALU_control(ALUControl),
         .ALU_result(ALUResult),
-        .zero(zero)
+        .zero(zero),
+        .negative(negative)
     );
 
     /* =====================

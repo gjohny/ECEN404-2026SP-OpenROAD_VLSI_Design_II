@@ -3,7 +3,8 @@ module ALU (
     input  [15:0] SrcB,
     input  [3:0]  ALU_control,
     output reg [15:0] ALU_result,
-    output           zero
+    output           zero,
+    output           negative
 );
 
 always @(*) begin
@@ -22,5 +23,6 @@ always @(*) begin
 end
 
 assign zero = (ALU_result == 16'd0);
+assign negative = ALU_result[15]; // Check the sign bit for negative
 
 endmodule
