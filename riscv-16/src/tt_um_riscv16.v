@@ -12,17 +12,13 @@ module tt_um_riscv16 (
     input  wire       rst_n     // reset_n - low to reset
 );
 
-    // ── all bidir pins are outputs ─────────────────────────────────────
-    assign uio_oe = 8'hFF;
+    assign uio_oe = 8'hFF; //make bidirectional pins as output pins
 
-    // ── convert active-low reset to active-high ────────────────────────
     wire reset = ~rst_n;
 
-    // ── debug bus from the core ────────────────────────────────────────
     wire [15:0] dbg_pc, dbg_instr, dbg_alu_result;
     wire [15:0] dbg_x1, dbg_x2, dbg_x3;
 
-    // ── instantiate your processor (completely unmodified) ─────────────
     riscv16_top CPU (
         .clk           (clk),
         .reset         (reset),
@@ -34,32 +30,23 @@ module tt_um_riscv16 (
         .dbg_x3        (dbg_x3)
     );
 
-    // ── debug multiplexer ──────────────────────────────────────────────
-    // ui_in[2:0] selects which 16-bit word to display:
-    //   000 → PC           001 → Instruction
-    //   010 → ALU result   011 → x1
-    //   100 → x2           101 → x3
-    //
-    // uo_out  = selected word [7:0]  (low byte)
-    // uio_out = selected word [15:8] (high byte)
-
     reg [15:0] dbg_word;
     always @(*) begin
         case (ui_in[2:0])
-            3'd0: dbg_word = dbg_pc;
-            3'd1: dbg_word = dbg_instr;
-            3'd2: dbg_word = dbg_alu_result;
-            3'd3: dbg_word = dbg_x1;
-            3'd4: dbg_word = dbg_x2;
-            3'd5: dbg_word = dbg_x3;
+            3'd0: dbg_word = dbg_pc; //show pc
+            3'd1: dbg_word = dbg_instr; //show specific instruction
+            3'd2: dbg_word = dbg_alu_result; //show alu result
+            3'd3: dbg_word = dbg_x1; //show reg x1
+            3'd4: dbg_word = dbg_x2; ////show reg x2
+            3'd5: dbg_word = dbg_x3; ////show reg x3
             default: dbg_word = 16'hDEAD;
         endcase
     end
 
+    //split output into 2 8-bit outputs
     assign uo_out  = dbg_word[7:0];
     assign uio_out = dbg_word[15:8];
 
-    // ── suppress unused input warnings ────────────────────────────────
     wire _unused = &{ena, uio_in, ui_in[7:3], 1'b0};
 
 endmodule
