@@ -1,235 +1,236 @@
-`timescale 1ns / 1ps
-
+`timescale 1ns/1ps
 module riscv16_top_tb;
 
-    //===========================================================================
-    // Testbench Signals
-    //===========================================================================
-    reg         clk;
-    reg         reset;
-    
-    // Debug outputs from DUT
-    wire [15:0] dbg_pc;
-    wire [15:0] dbg_instr;
-    wire [15:0] dbg_alu_result;
-    wire [15:0] dbg_x1;
-    wire [15:0] dbg_x2;
-    wire [15:0] dbg_x3;
-    
-    // Test control
-    integer     cycle_count;
-    integer     test_num;
-    integer     errors;
-    
-    //===========================================================================
-    // Clock Generation - 100MHz (10ns period)
-    //===========================================================================
-    parameter CLK_PERIOD = 10;
-    
-    initial begin
-        clk = 0;
-        forever #(CLK_PERIOD/2) clk = ~clk;
+  //===========================================================================
+  // DUT I/O
+  //===========================================================================
+  reg         clk;
+  reg         reset;
+
+  wire [15:0] dbg_pc;
+  wire [15:0] dbg_instr;
+  wire [15:0] dbg_alu_result;
+  wire [15:0] dbg_x1;
+  wire [15:0] dbg_x2;
+  wire [15:0] dbg_x3;
+
+  //===========================================================================
+  // Clock
+  //===========================================================================
+  localparam CLK_PERIOD = 10;
+  initial clk = 1'b0;
+  always #(CLK_PERIOD/2) clk = ~clk;
+
+  //===========================================================================
+  // Instantiate DUT
+  //===========================================================================
+  riscv16_top dut (
+    .clk(clk),
+    .reset(reset),
+    .dbg_pc(dbg_pc),
+    .dbg_instr(dbg_instr),
+    .dbg_alu_result(dbg_alu_result),
+    .dbg_x1(dbg_x1),
+    .dbg_x2(dbg_x2),
+    .dbg_x3(dbg_x3)
+  );
+
+  //===========================================================================
+  // VCD
+  //===========================================================================
+  initial begin
+    $dumpfile("riscv16_pipeline_tb.vcd");
+    $dumpvars(0, riscv16_top_tb);
+  end
+
+  //===========================================================================
+  // Helpers
+  //===========================================================================
+  integer cycles;
+  integer total, passed, failed;
+
+  task automatic wait_cycles(input integer n);
+    integer i;
+    begin
+      for (i = 0; i < n; i = i + 1) @(posedge clk);
     end
-    
-    //===========================================================================
-    // DUT Instantiation
-    //===========================================================================
-    riscv16_top DUT (
-        .clk(clk),
-        .reset(reset),
-        .dbg_pc(dbg_pc),
-        .dbg_instr(dbg_instr),
-        .dbg_alu_result(dbg_alu_result),
-        .dbg_x1(dbg_x1),
-        .dbg_x2(dbg_x2),
-        .dbg_x3(dbg_x3)
-    );
-    
-    //===========================================================================
-    // Waveform Dump for GTKWave / ModelSim
-    //===========================================================================
-    initial begin
-        $dumpfile("riscv16_pipeline_tb.vcd");
-        $dumpvars(0, riscv16_top_tb);
+  endtask
+
+  task automatic pass(input [255:0] name);
+    begin
+      total = total + 1;
+      passed = passed + 1;
+      $display("[PASS] %0s", name);
     end
-    
-    //===========================================================================
-    // Cycle Counter
-    //===========================================================================
-    always @(posedge clk or posedge reset) begin
-        if (reset)
-            cycle_count <= 0;
-        else
-            cycle_count <= cycle_count + 1;
+  endtask
+
+  task automatic fail(input [255:0] name);
+    begin
+      total = total + 1;
+      failed = failed + 1;
+      $display("[FAIL] %0s", name);
     end
-    
-    //===========================================================================
-    // Monitor Task - Display pipeline state each cycle
-    //===========================================================================
-    task display_state;
-        begin
-            $display("================================================================================");
-            $display("Cycle: %0d | Time: %0t", cycle_count, $time);
-            $display("--------------------------------------------------------------------------------");
-            $display("  PC         = 0x%04h", dbg_pc);
-            $display("  Instruction= 0x%04h", dbg_instr);
-            $display("  ALU Result = 0x%04h (%0d)", dbg_alu_result, $signed(dbg_alu_result));
-            $display("  x1         = 0x%04h (%0d)", dbg_x1, $signed(dbg_x1));
-            $display("  x2         = 0x%04h (%0d)", dbg_x2, $signed(dbg_x2));
-            $display("  x3         = 0x%04h (%0d)", dbg_x3, $signed(dbg_x3));
-            $display("================================================================================");
-        end
-    endtask
-    
-    //===========================================================================
-    // Monitor - Automatic display on each clock edge
-    //===========================================================================
-    always @(posedge clk) begin
-        if (!reset) begin
-            display_state();
-        end
+  endtask
+
+  function automatic bit no_x16(input [15:0] v);
+    begin
+      no_x16 = (^v !== 1'bx); // reduction XOR becomes X if any bit is X/Z
     end
-    
-    //===========================================================================
-    // Instruction Decoder for Debug Display
-    //===========================================================================
-    function [8*20:1] decode_opcode;
-        input [2:0] opcode;
-        begin
-            case (opcode)
-                3'b000: decode_opcode = "R-type";
-                3'b001: decode_opcode = "I-type";
-                3'b010: decode_opcode = "Load";
-                3'b011: decode_opcode = "Store";
-                3'b100: decode_opcode = "Branch";
-                3'b101: decode_opcode = "JAL";
-                3'b110: decode_opcode = "LUI/AUIPC";
-                3'b111: decode_opcode = "JALR";
-                default: decode_opcode = "Unknown";
-            endcase
-        end
-    endfunction
-    
-    //===========================================================================
-    // Test Stimulus
-    //===========================================================================
-    initial begin
-        // Initialize
-        $display("\n");
-        $display("########################################################################");
-        $display("#                                                                      #");
-        $display("#          RISC-V 16-bit 3-Stage Pipeline Testbench                   #");
-        $display("#                                                                      #");
-        $display("########################################################################");
-        $display("\n");
-        
-        errors = 0;
-        test_num = 0;
-        
-        // Apply Reset
-        $display("[%0t] Applying reset...", $time);
-        reset = 1;
-        #(CLK_PERIOD * 5);
-        
-        // Release Reset
-        $display("[%0t] Releasing reset...", $time);
-        reset = 0;
-        #(CLK_PERIOD);
-        
-        //=======================================================================
-        // Test 1: Basic Instruction Fetch
-        //=======================================================================
-        test_num = 1;
-        $display("\n=== TEST %0d: Basic Instruction Fetch ===", test_num);
-        
-        // Let pipeline run for several cycles
-        repeat (10) @(posedge clk);
-        
-        // Check that PC is incrementing
-        if (dbg_pc == 16'h0000) begin
-            $display("[ERROR] PC stuck at 0x0000");
-            errors = errors + 1;
-        end else begin
-            $display("[PASS] PC is advancing: 0x%04h", dbg_pc);
-        end
-        
-        //=======================================================================
-        // Test 2: Run for more cycles to observe register changes
-        //=======================================================================
-        test_num = 2;
-        $display("\n=== TEST %0d: Register File Updates ===", test_num);
-        
-        repeat (20) @(posedge clk);
-        
-        $display("Register state after 30 cycles:");
-        $display("  x1 = 0x%04h", dbg_x1);
-        $display("  x2 = 0x%04h", dbg_x2);
-        $display("  x3 = 0x%04h", dbg_x3);
-        
-        //=======================================================================
-        // Test 3: Extended Run
-        //=======================================================================
-        test_num = 3;
-        $display("\n=== TEST %0d: Extended Pipeline Operation ===", test_num);
-        
-        repeat (50) @(posedge clk);
-        
-        //=======================================================================
-        // Test 4: Check for Pipeline Stalls/Hazards
-        //=======================================================================
-        test_num = 4;
-        $display("\n=== TEST %0d: Pipeline Hazard Handling ===", test_num);
-        
-        // Run more cycles
-        repeat (20) @(posedge clk);
-        
-        //=======================================================================
-        // Final Summary
-        //=======================================================================
-        $display("\n");
-        $display("########################################################################");
-        $display("#                        TEST SUMMARY                                  #");
-        $display("########################################################################");
-        $display("  Total Cycles Run : %0d", cycle_count);
-        $display("  Final PC         : 0x%04h", dbg_pc);
-        $display("  Final x1         : 0x%04h", dbg_x1);
-        $display("  Final x2         : 0x%04h", dbg_x2);
-        $display("  Final x3         : 0x%04h", dbg_x3);
-        $display("  Errors           : %0d", errors);
-        $display("########################################################################");
-        
-        if (errors == 0)
-            $display(">>> ALL TESTS PASSED <<<");
-        else
-            $display(">>> TESTS FAILED <<<");
-        
-        $display("\n");
-        
-        #(CLK_PERIOD * 5);
-        $finish;
+  endfunction
+
+  // Track which instruction types are observed on dbg_instr (best-effort)
+  reg seen_R, seen_I, seen_L, seen_S, seen_B, seen_U, seen_J, seen_JR;
+  wire [2:0] op = dbg_instr[2:0];
+
+  always @(posedge clk) begin
+    if (!reset) begin
+      case (op)
+        3'b000: seen_R  <= 1'b1;
+        3'b001: seen_I  <= 1'b1;
+        3'b010: seen_L  <= 1'b1;
+        3'b011: seen_S  <= 1'b1;
+        3'b100: seen_B  <= 1'b1;
+        3'b101: seen_J  <= 1'b1;
+        3'b110: seen_U  <= 1'b1;
+        3'b111: seen_JR <= 1'b1;
+      endcase
     end
-    
-    //===========================================================================
-    // Timeout Watchdog
-    //===========================================================================
-    initial begin
-        #(CLK_PERIOD * 500);
-        $display("\n[TIMEOUT] Simulation exceeded maximum time!");
-        $finish;
+  end
+
+  //===========================================================================
+  // Main
+  //===========================================================================
+  reg [15:0] pc0, pc1, pc2;
+  reg [15:0] x1_0, x2_0, x3_0;
+
+  initial begin
+    // init counters/flags
+    cycles = 0;
+    total  = 0;
+    passed = 0;
+    failed = 0;
+
+    seen_R = 0; seen_I = 0; seen_L = 0; seen_S = 0;
+    seen_B = 0; seen_U = 0; seen_J = 0; seen_JR = 0;
+
+    // Reset
+    reset = 1'b1;
+    wait_cycles(5);
+    reset = 1'b0;
+
+    // Give pipeline a couple cycles to start
+    wait_cycles(2);
+
+    // ------------------------------
+    // Test 1: No X in key outputs
+    // ------------------------------
+    if (no_x16(dbg_pc) && no_x16(dbg_instr) && no_x16(dbg_alu_result) &&
+        no_x16(dbg_x1) && no_x16(dbg_x2) && no_x16(dbg_x3))
+      pass("No X values on dbg_pc/dbg_instr/dbg_alu_result/dbg_x1..x3");
+    else
+      fail("No X values on dbg_pc/dbg_instr/dbg_alu_result/dbg_x1..x3");
+
+    // ------------------------------
+    // Test 2: PC advances over time
+    // (allows branches/jumps; just must change)
+    // ------------------------------
+    pc0 = dbg_pc;
+    wait_cycles(5);
+    pc1 = dbg_pc;
+    wait_cycles(5);
+    pc2 = dbg_pc;
+
+    if ((pc1 !== pc0) && (pc2 !== pc1))
+      pass("PC changes over time (pipeline running)");
+    else
+      fail("PC changes over time (pipeline running)");
+
+    // ------------------------------
+    // Test 3: IF is not frozen (instruction changes)
+    // ------------------------------
+    // Note: if program is all NOPs, this can still change due to address.
+    // If instruction memory returns constant, it may fail; that's OK.
+    begin : instr_change_test
+      reg [15:0] i0, i1;
+      i0 = dbg_instr;
+      wait_cycles(6);
+      i1 = dbg_instr;
+      if (i1 !== i0) pass("Instruction fetch changes over time");
+      else           fail("Instruction fetch changes over time");
     end
-    
-    //===========================================================================
-    // Optional: Check for X/Z values
-    //===========================================================================
-    always @(posedge clk) begin
-        if (!reset) begin
-            if (^dbg_pc === 1'bx) begin
-                $display("[WARNING] Cycle %0d: PC contains X values!", cycle_count);
-            end
-            if (^dbg_instr === 1'bx) begin
-                $display("[WARNING] Cycle %0d: Instruction contains X values!", cycle_count);
-            end
-        end
+
+    // ------------------------------
+    // Test 4: Register activity (best-effort)
+    // If your program writes registers, at least one should change.
+    // If your program doesn't write x1..x3, this can fail even if CPU works.
+    // ------------------------------
+    x1_0 = dbg_x1; x2_0 = dbg_x2; x3_0 = dbg_x3;
+    wait_cycles(50);
+
+    if ((dbg_x1 !== x1_0) || (dbg_x2 !== x2_0) || (dbg_x3 !== x3_0))
+      pass("At least one of x1/x2/x3 changes (program executed writes)");
+    else
+      fail("At least one of x1/x2/x3 changes (program executed writes)");
+
+    // ------------------------------
+    // Test 5: Pipeline continues after longer run (not stuck)
+    // ------------------------------
+    pc0 = dbg_pc;
+    wait_cycles(50);
+    if (dbg_pc !== pc0) pass("Still running after extended cycles");
+    else                fail("Still running after extended cycles");
+
+    // ------------------------------
+    // Summary (including instruction types observed)
+    // ------------------------------
+    $display("");
+    $display("============================================================");
+    $display("                    PIPELINE TB SUMMARY");
+    $display("============================================================");
+    $display("  Total tests : %0d", total);
+    $display("  Passed      : %0d", passed);
+    $display("  Failed      : %0d", failed);
+    if (total != 0) $display("  Pass rate   : %0d%%", (passed*100)/total);
+    $display("");
+    $display("  Instruction types OBSERVED on dbg_instr[2:0]:");
+    $display("    R  (000) : %s", seen_R  ? "YES" : "NO");
+    $display("    I  (001) : %s", seen_I  ? "YES" : "NO");
+    $display("    L  (010) : %s", seen_L  ? "YES" : "NO");
+    $display("    S  (011) : %s", seen_S  ? "YES" : "NO");
+    $display("    B  (100) : %s", seen_B  ? "YES" : "NO");
+    $display("    J  (101) : %s", seen_J  ? "YES" : "NO");
+    $display("    U  (110) : %s", seen_U  ? "YES" : "NO");
+    $display("    JR (111) : %s", seen_JR ? "YES" : "NO");
+    $display("============================================================");
+    $display("  Final: PC=0x%04h Instr=0x%04h ALU=0x%04h x1=0x%04h x2=0x%04h x3=0x%04h",
+             dbg_pc, dbg_instr, dbg_alu_result, dbg_x1, dbg_x2, dbg_x3);
+    $display("============================================================");
+    $display("");
+
+    // Make simulation return non-zero-ish via message; Icarus doesn't set exit
+    if (failed == 0) $display("ALL TESTS PASSED");
+    else             $display("SOME TESTS FAILED");
+
+    wait_cycles(5);
+    $finish;
+  end
+
+  // Simple cycle counter + optional live monitor (comment out if too noisy)
+  always @(posedge clk) begin
+    if (!reset) begin
+      cycles <= cycles + 1;
+      // $display("t=%0t pc=%04h instr=%04h x1=%04h x2=%04h x3=%04h alu=%04h",
+      //          $time, dbg_pc, dbg_instr, dbg_x1, dbg_x2, dbg_x3, dbg_alu_result);
+    end else begin
+      cycles <= 0;
     end
+  end
+
+  // Timeout
+  initial begin
+    #(CLK_PERIOD*1000);
+    $display("[TIMEOUT] simulation timed out");
+    $finish;
+  end
 
 endmodule
