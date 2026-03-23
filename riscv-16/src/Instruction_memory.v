@@ -8,9 +8,9 @@ module Instruction_memory #(
 
     // load ports
     input  wire        load_mode,
-    input  wire [6:0]  load_data,
+    input  wire [7:0]  load_data,
     input  wire        load_hibyte,
-    input  wire [6:0]  load_addr,
+    input  wire [7:0]  load_addr,
     output reg         load_ack
 );
 
@@ -34,9 +34,9 @@ module Instruction_memory #(
     localparam ACK      = 3'd4;
 
     reg [2:0]  state;
-    reg [6:0]  lo_byte;   // holds low  byte while waiting for high
-    reg [6:0]  hi_byte;   // holds high byte before write
-    reg [6:0]  addr_latch;// latches address at receive time
+    reg [7:0]  lo_byte;   // holds low  byte while waiting for high
+    reg [7:0]  hi_byte;   // holds high byte before write
+    reg [7:0]  addr_latch;// latches address at receive time
 
     always @(posedge clk) begin
         load_ack <= 0; // default: ack is low
