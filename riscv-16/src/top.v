@@ -10,7 +10,15 @@ module riscv16_top (
     output wire [15:0] dbg_alu_result,
     output wire [15:0] dbg_x1,
     output wire [15:0] dbg_x2,
-    output wire [15:0] dbg_x3
+    output wire [15:0] dbg_x3,
+
+
+    //Load ports (used for the pins)
+    input  wire        load_mode,
+    input  wire [6:0]  load_data,
+    input  wire        load_hibyte,
+    input  wire [6:0]  load_addr,
+    output wire        load_ack
 );
 
     /* =====================
