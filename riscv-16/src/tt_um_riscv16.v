@@ -76,16 +76,21 @@ module tt_um_riscv16 (
     wire [15:0] dbg_x1, dbg_x2, dbg_x3;
     wire load_ack;
 
-    riscv16_top CPU (
-        .clk           (clk),
-        .reset         (reset),
-        .dbg_pc        (dbg_pc),
-        .dbg_instr     (dbg_instr),
-        .dbg_alu_result(dbg_alu_result),
-        .dbg_x1        (dbg_x1),
-        .dbg_x2        (dbg_x2),
-        .dbg_x3        (dbg_x3)
-    );
+riscv16_top CPU (
+    .clk           (clk),
+    .reset         (reset),
+    .dbg_pc        (dbg_pc),
+    .dbg_instr     (dbg_instr),
+    .dbg_alu_result(dbg_alu_result),
+    .dbg_x1        (dbg_x1),
+    .dbg_x2        (dbg_x2),
+    .dbg_x3        (dbg_x3),
+    .load_mode     (load_mode),
+    .load_data     (uio_in[6:0]),   // 7 bits from bidir pins
+    .load_hibyte   (uio_in[7]),     // bit 7 = hi/lo flag
+    .load_addr     (ui_in[6:0]),    // address from ui_in
+    .load_ack      (load_ack)
+);
 
     reg [15:0] dbg_word;
     always @(*) begin
@@ -104,5 +109,5 @@ module tt_um_riscv16 (
     assign uo_out  = load_mode ? {7'b0, load_ack} : dbg_word[7:0];
     assign uio_out = run_mode  ? dbg_word[15:8]   : 8'h00;
 
-    wire _unused = &{ena, 1'b0};
+    wire _unused = &{ena, uio_in, ui_in[7:3], 1'b0};
 endmodule

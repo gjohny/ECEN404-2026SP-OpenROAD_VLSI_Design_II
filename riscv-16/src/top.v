@@ -167,19 +167,23 @@ module riscv16_top (
     pc_counter_16 PC_REG (
     .clk(clk),
     .reset(reset),
-    .pc_en(1'b1),
+    .pc_en(~load_mode),
     .pc_next(PC_next),
     .pc(PC)
     );
 
-    Instruction_memory #(
-        .IMEM_WORDS(256),
-        .MEMFILE("src/program16.mem")
-    ) IMEM (
-        .clk(clk),
-        .pc(PC),
-        .instruction(instruction)
-    );
+Instruction_memory #(
+    .IMEM_WORDS(256)
+) IMEM (
+    .clk        (clk),
+    .pc         (PC),
+    .instruction(instruction),
+    .load_mode  (load_mode),
+    .load_data  (load_data),
+    .load_hibyte(load_hibyte),
+    .load_addr  (load_addr),
+    .load_ack   (load_ack)
+);
 
 
     /* =====================
