@@ -139,7 +139,7 @@ module riscv16_top (
         (opcode == OPC_J) ? imm_j :
         16'h0000;
 
-    wire [15:0] branch_target = PC + (imm_b << 1);
+    wire [15:0] branch_target = PC + imm_b;
     wire [15:0] jal_target    = PC + (imm_j << 1);
     wire [15:0] jalr_sum = RD1 + imm_ext;
     wire [15:0] jalr_target = {jalr_sum[15:1], 1'b0};

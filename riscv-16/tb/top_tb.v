@@ -98,7 +98,7 @@ module top_tb;
 
 
         // 2. Monitoring Loop
-        while ((dbg_pc >> 1) < PROGRAM_WORDS && watchdog < 100) begin
+        while ((dbg_pc >> 1) < PROGRAM_WORDS && watchdog < 20) begin
             @(posedge clk);
             #1;  // allow register file & memory to update
 

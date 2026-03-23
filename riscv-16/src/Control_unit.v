@@ -87,7 +87,7 @@ module Control_unit(
 
             // ------------------------------------------------
             // Branches: opcode = 100
-            // func = 000 (BEQ), 001 (BNE)
+            // func = 00 (BEQ), 01 (BNE), 10 (BLT), 11 (BGT)
             // ------------------------------------------------
             3'b100: begin
                 ALUControl = 4'b0001; // SUB for comparison
@@ -98,7 +98,7 @@ module Control_unit(
                     2'b00: PCSrc = zero;                // BEQ
                     2'b01: PCSrc = ~zero;               // BNE
                     2'b10: PCSrc = negative;            // BLT
-                    2'b11: PCSrc = ~negative & ~zero;   // BGT
+                    2'b11: PCSrc = (~negative) & (~zero);   // BGT
                 endcase
 
             end
