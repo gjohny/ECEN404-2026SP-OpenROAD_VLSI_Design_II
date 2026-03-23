@@ -20,8 +20,8 @@ module Data_Memory(
   end
 
 
-  assign mem_read_data =
-      (mem_read == 2'b01)
+assign mem_read_data =
+      (mem_read)
         ? (mem_write_en ? mem_write_data : memory[addr])
         : 16'h0000;
 
