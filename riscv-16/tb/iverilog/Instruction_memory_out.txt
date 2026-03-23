@@ -1,54 +1,77 @@
-WARNING: ./src/Instruction_memory.v:23: $readmemh(src/program16.mem): Not enough words in the file for the requested range [0:255].
-VCD info: dumpfile tb/waveform/rtl.vcd opened for output.
+VCD info: dumpfile ./tb/waveform/Instruction_memory.vcd opened for output.
 
-========================================
- Instruction Memory RTL Testbench
-========================================
+═══════════════════════════════════════════════
+TEST 1: RAM initialised to zero
+═══════════════════════════════════════════════
+  ✅ PASS | AM init = 0x0000                    | got 0x0000
+  ✅ PASS | AM init = 0x0000                    | got 0x0000
+  ✅ PASS | AM init = 0x0000                    | got 0x0000
+  ✅ PASS | AM init = 0x0000                    | got 0x0000
+  ✅ PASS | AM init = 0x0000                    | got 0x0000
+  ✅ PASS | AM init = 0x0000                    | got 0x0000
+  ✅ PASS | AM init = 0x0000                    | got 0x0000
+  ✅ PASS | AM init = 0x0000                    | got 0x0000
 
-TEST 1: Sequential Memory Read
-+----------+----------+--------------+--------+
-| PC (hex) | Word Idx | Instruction | Status |
-+----------+----------+--------------+--------+
-| 0000 | 0000 | 1234 | OK |
-| 0002 | 0001 | 5678 | OK |
-| 0004 | 0002 | 9abc | OK |
-| 0006 | 0003 | def0 | OK |
-| 0008 | 0004 | aaaa | OK |
-| 000a | 0005 | 5555 | OK |
-| 000c | 0006 | ffff | OK |
-| 000e | 0007 | 0000 | OK |
-| 0010 | 0008 | 1111 | OK |
-| 0012 | 0009 | 2222 | OK |
-| 0014 | 000a | 3333 | OK |
-| 0016 | 000b | 4444 | OK |
-| 0018 | 000c | beef | OK |
-| 001a | 000d | cafe | OK |
-| 001c | 000e | dead | OK |
-| 001e | 000f | c0de | OK |
-+----------+----------+--------------+--------+
-RESULT: PASS (16/16 reads successful)
+═══════════════════════════════════════════════
+TEST 2: FSM stays IDLE without load_mode
+═══════════════════════════════════════════════
+  ✅ PASS | tays low in IDLE                    | got 0
+  ✅ PASS | ys in IDLE state                    | got 0x0000
 
-TEST 2: Random Access
-+----------+----------+--------------+--------+
-| PC (hex) | Word Idx | Instruction | Status |
-+----------+----------+--------------+--------+
-| 0020 | 0010 | 0001 | PASS |
-| 0050 | 0028 | 0000 | PASS |
-| 00f0 | 0078 | 0000 | PASS |
-+----------+----------+--------------+--------+
-RESULT: PASS (3/3 random accesses)
+═══════════════════════════════════════════════
+TEST 3: Load single instruction at address 0
+═══════════════════════════════════════════════
+  ✅ PASS | lsed after write                    | got 1
+  ✅ PASS | t addr 0 correct                    | got 0x2468
 
-TEST 3: Boundary Conditions
- [PASS] First location: PC=0x0000 -> Instr=0x1234
- [PASS] Last location: PC=0x01fe -> Instr=0x0000
-RESULT: PASS (2/2 boundary checks)
+═══════════════════════════════════════════════
+TEST 4: Load instruction at address 5
+═══════════════════════════════════════════════
+  ✅ PASS | lsed after write                    | got 1
+  ✅ PASS | t addr 5 correct                    | got 0x3f81
 
-========================================
- FINAL TEST SUMMARY
-========================================
- Total Tests: 21
- Passed: 21
- Failed: 0
-========================================
+═══════════════════════════════════════════════
+TEST 5: Load 5 instructions back to back
+═══════════════════════════════════════════════
+  ✅ PASS | lsed after write                    | got 1
+  ✅ PASS | lsed after write                    | got 1
+  ✅ PASS | lsed after write                    | got 1
+  ✅ PASS | lsed after write                    | got 1
+  ✅ PASS | lsed after write                    | got 1
+  ✅ PASS | al instr correct                    | got 0x0000
+  ✅ PASS | al instr correct                    | got 0x0055
+  ✅ PASS | al instr correct                    | got 0x00aa
+  ✅ PASS | al instr correct                    | got 0x0123
+  ✅ PASS | al instr correct                    | got 0x1234
 
-./tb/Instruction_memory_tb.v:113: $finish called at 260000 (1ps)
+═══════════════════════════════════════════════
+TEST 6: load_mode drops mid-transfer
+═══════════════════════════════════════════════
+  ✅ PASS | r load_mode drop                    | got 0x0000
+  ✅ PASS |  low after abort                    | got 0
+  ✅ PASS | te not committed                    | got 0x0000
+
+═══════════════════════════════════════════════
+TEST 7: ACK pulses for exactly one cycle
+═══════════════════════════════════════════════
+  ✅ PASS | igh on ACK cycle                    | got 1
+  ✅ PASS |  after ACK cycle                    | got 0
+
+═══════════════════════════════════════════════
+TEST 8: RUN mode reads loaded instructions
+═══════════════════════════════════════════════
+  ✅ PASS | ds correct instr                    | got 0x0000
+  ✅ PASS | ds correct instr                    | got 0x0055
+  ✅ PASS | ds correct instr                    | got 0x00aa
+  ✅ PASS | ds correct instr                    | got 0x0123
+  ✅ PASS | ds correct instr                    | got 0x1234
+
+═══════════════════════════════════════════════
+FINAL REPORT
+═══════════════════════════════════════════════
+  Total PASS: 34
+  Total FAIL: 0
+  ✅ ALL TESTS PASSED
+═══════════════════════════════════════════════
+
+./tb/Instruction_memory_tb.v:407: $finish called at 596000 (1ps)
