@@ -84,7 +84,7 @@ module top_tb;
     endtask
 
     initial begin
-        $dumpfile("./tb/waveform/top_tb.vcd");
+        $dumpfile("./tb/waveform/top.vcd");
         $dumpvars(0, top_tb);
     end
 
