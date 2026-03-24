@@ -56,6 +56,10 @@ module top_tb;
     );
 
     // x4-x7 tapped directly from register file array (named reg_array in Register_file.v)
+    wire [15:0] dbg_x0 = DUT.RF.reg_array[0];
+    // wire [15:0] dbg_x1 = DUT.RF.reg_array[1]; //add when cleanup
+    // wire [15:0] dbg_x2 = DUT.RF.reg_array[2]; //add when cleanup
+    // wire [15:0] dbg_x3 = DUT.RF.reg_array[3]; //add when cleanup
     wire [15:0] dbg_x4 = DUT.RF.reg_array[4];
     wire [15:0] dbg_x5 = DUT.RF.reg_array[5];
     wire [15:0] dbg_x6 = DUT.RF.reg_array[6];
@@ -129,7 +133,7 @@ module top_tb;
         // [0004] ADD x3,x1,x2 = 5   [0006] SUB x4,x1,x2 = 1
         // [0008] AND x5,x1,x2 = 2   [000A] OR  x6,x1,x2 = 3
         // [000C] XOR x7,x1,x2 = 1
-        chk("ADD  x3 = 5  (3+2)",       dbg_x3, 16'h0005);
+        chk("ADD  x3 = 5  (3+2)",       dbg_x0, 16'h0005);
         chk("SUB  x4 = 1  (3-2)",       dbg_x4, 16'h0001);
         chk("AND  x5 = 2  (3&2)",       dbg_x5, 16'h0002);
         // x6 is overwritten by JAL, check x7 for XOR
