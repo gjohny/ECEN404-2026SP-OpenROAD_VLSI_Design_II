@@ -3,7 +3,7 @@
 //  riscv16_pipeline_top.v  –  3-Stage Pipelined RISC-V16 CPU
 // =============================================================================
 
-module riscv16_pipeline_top (
+module top(
     input  wire        clk,
     input  wire        reset,
 

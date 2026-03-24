@@ -29,7 +29,7 @@
 //    vvp build.vvp
 // =============================================================================
 
-module tb_riscv16_pipeline;
+module top_tb;
 
     reg         clk;
     reg         reset;
@@ -40,7 +40,7 @@ module tb_riscv16_pipeline;
     wire [15:0] dbg_x2;
     wire [15:0] dbg_x3;
 
-    riscv16_pipeline_top DUT (
+    top DUT (
         .clk           (clk),
         .reset         (reset),
         .dbg_pc        (dbg_pc),
@@ -84,8 +84,8 @@ module tb_riscv16_pipeline;
     endtask
 
     initial begin
-        $dumpfile("tb_riscv16_pipeline.vcd");
-        $dumpvars(0, tb_riscv16_pipeline);
+        $dumpfile("./tb/waveform/top_tb.vcd");
+        $dumpvars(0, top_tb);
     end
 
     // Cycle-by-cycle monitor
