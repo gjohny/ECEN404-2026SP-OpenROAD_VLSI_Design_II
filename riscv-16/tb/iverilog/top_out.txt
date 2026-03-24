@@ -1,88 +1,296 @@
 WARNING: ./src/Instruction_memory.v:19: $readmemh(src/program16.mem): Not enough words in the file for the requested range [0:255].
-VCD info: dumpfile ./tb/waveform/top.vcd opened for output.
+==============================================
+  RISC-V 16-bit 3-Stage Pipeline Testbench  
+==============================================
+
+--- Group 1: R-type instructions ---
+VCD info: dumpfile ./tb/waveform/top_tb.vcd opened for output.
 WARNING: ./src/Instruction_memory.v:19: $readmemh(src/program16.mem): Not enough words in the file for the requested range [0:255].
---- Starting Execution ---
-Time=26000 | PC=0x0002 | Instr=0x2901 | ALU=0x0001 | x1=0x0000 | x2=0x0000 | x3=0x0000 | zero=0
-STORE: addr=0001 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
+  t=15000  PC=0000  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=45000  PC=0000  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=55000  PC=0002  instr=1481  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=65000  PC=0004  instr=0d01  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=75000  PC=0006  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=85000  PC=0008  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=95000  PC=000a  instr=2980  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=105000  PC=000c  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=115000  PC=000e  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=125000  PC=0010  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=135000  PC=0012  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=145000  PC=0014  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=155000  PC=0016  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  [FAIL] Test 0: x3=x1+x2 (5+3=8)  got=0x0000  expected=0x0008
+  t=185000  PC=0000  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=195000  PC=0002  instr=1481  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=205000  PC=0004  instr=0d01  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=215000  PC=0006  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=225000  PC=0008  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=235000  PC=000a  instr=2988  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=245000  PC=000c  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=255000  PC=000e  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=265000  PC=0010  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=275000  PC=0012  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=285000  PC=0014  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=295000  PC=0016  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  [FAIL] Test 1: x3=x1-x2 (5-3=2)  got=0x0000  expected=0x0002
+  t=325000  PC=0000  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=335000  PC=0002  instr=1481  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=345000  PC=0004  instr=0d01  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=355000  PC=0006  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=365000  PC=0008  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=375000  PC=000a  instr=29a0  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=385000  PC=000c  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=395000  PC=000e  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=405000  PC=0010  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=415000  PC=0012  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=425000  PC=0014  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=435000  PC=0016  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  [FAIL] Test 2:     AND x3=5&3=1  got=0x0000  expected=0x0001
+  t=465000  PC=0000  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=475000  PC=0002  instr=1481  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=485000  PC=0004  instr=0d01  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=495000  PC=0006  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=505000  PC=0008  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=515000  PC=000a  instr=2998  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=525000  PC=000c  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=535000  PC=000e  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=545000  PC=0010  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=555000  PC=0012  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=565000  PC=0014  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=575000  PC=0016  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  [FAIL] Test 3:     OR  x3=5|3=7  got=0x0000  expected=0x0007
+  t=605000  PC=0000  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=615000  PC=0002  instr=1481  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=625000  PC=0004  instr=0d01  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=635000  PC=0006  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=645000  PC=0008  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=655000  PC=000a  instr=2990  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=665000  PC=000c  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=675000  PC=000e  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=685000  PC=0010  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=695000  PC=0012  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=705000  PC=0014  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=715000  PC=0016  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  [FAIL] Test 4:     XOR x3=5^3=6  got=0x0000  expected=0x0006
 
+--- Group 2: I-type (immediate) ---
+  t=745000  PC=0000  instr=0000  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=755000  PC=0002  instr=2881  ALU=0000  x1=0000  x2=0000  x3=0000
+  t=765000  PC=0004  instr=0000  ALU=0001  x1=0000  x2=0000  x3=0000
+  t=775000  PC=0006  instr=0000  ALU=0000  x1=0001  x2=0000  x3=0000
+  t=785000  PC=0008  instr=0000  ALU=0000  x1=0001  x2=0000  x3=0000
+  t=795000  PC=000a  instr=0000  ALU=0000  x1=0001  x2=0000  x3=0000
+  t=805000  PC=000c  instr=0000  ALU=0000  x1=0001  x2=0000  x3=0000
+  t=815000  PC=000e  instr=0000  ALU=0000  x1=0001  x2=0000  x3=0000
+  t=825000  PC=0010  instr=0000  ALU=0000  x1=0001  x2=0000  x3=0000
+  t=835000  PC=0012  instr=0000  ALU=0000  x1=0001  x2=0000  x3=0000
+  [FAIL] Test 5:       ADDI x1=10  got=0x0001  expected=0x000a
+  t=865000  PC=0000  instr=0000  ALU=0000  x1=0001  x2=0000  x3=0000
+  t=875000  PC=0002  instr=2881  ALU=0000  x1=0001  x2=0000  x3=0000
+  t=885000  PC=0004  instr=0000  ALU=0002  x1=0001  x2=0000  x3=0000
+  t=895000  PC=0006  instr=0000  ALU=0000  x1=0002  x2=0000  x3=0000
+  t=905000  PC=0008  instr=f881  ALU=0000  x1=0002  x2=0000  x3=0000
+  t=915000  PC=000a  instr=0000  ALU=0001  x1=0002  x2=0000  x3=0000
+  t=925000  PC=000c  instr=0000  ALU=0000  x1=0001  x2=0000  x3=0000
+  t=935000  PC=000e  instr=0000  ALU=0000  x1=0001  x2=0000  x3=0000
+  t=945000  PC=0010  instr=0000  ALU=0000  x1=0001  x2=0000  x3=0000
+  t=955000  PC=0012  instr=0000  ALU=0000  x1=0001  x2=0000  x3=0000
+  t=965000  PC=0014  instr=0000  ALU=0000  x1=0001  x2=0000  x3=0000
+  t=975000  PC=0016  instr=0000  ALU=0000  x1=0001  x2=0000  x3=0000
+  t=985000  PC=0018  instr=0000  ALU=0000  x1=0001  x2=0000  x3=0000
+  t=995000  PC=001a  instr=0000  ALU=0000  x1=0001  x2=0000  x3=0000
+  [FAIL] Test 6: DDI x1=10+(-2)=8  got=0x0001  expected=0x0008
 
-Time=36000 | PC=0x0004 | Instr=0x6881 | ALU=0x0003 | x1=0x0000 | x2=0x0001 | x3=0x0000 | zero=0
-STORE: addr=0003 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
+--- Group 3: Store / Load ---
+  t=1025000  PC=0000  instr=0000  ALU=0000  x1=0001  x2=0000  x3=0000
+  t=1035000  PC=0002  instr=a881  ALU=0000  x1=0001  x2=0000  x3=0000
+  t=1045000  PC=0004  instr=0000  ALU=fffe  x1=0001  x2=0000  x3=0000
+  t=1055000  PC=0006  instr=0000  ALU=0000  x1=fffe  x2=0000  x3=0000
+  t=1065000  PC=0008  instr=000b  ALU=0000  x1=fffe  x2=0000  x3=0000
+  t=1075000  PC=000a  instr=0000  ALU=0000  x1=fffe  x2=0000  x3=0000
+  t=1085000  PC=000c  instr=0012  ALU=0000  x1=fffe  x2=0000  x3=0000
+  t=1095000  PC=000e  instr=0000  ALU=0000  x1=fffe  x2=0000  x3=0000
+  t=1105000  PC=0010  instr=0000  ALU=0000  x1=fffe  x2=fffe  x3=0000
+  t=1115000  PC=0012  instr=0000  ALU=0000  x1=fffe  x2=fffe  x3=0000
+  t=1125000  PC=0014  instr=0000  ALU=0000  x1=fffe  x2=fffe  x3=0000
+  t=1135000  PC=0016  instr=0000  ALU=0000  x1=fffe  x2=fffe  x3=0000
+  t=1145000  PC=0018  instr=0000  ALU=0000  x1=fffe  x2=fffe  x3=0000
+  t=1155000  PC=001a  instr=0000  ALU=0000  x1=fffe  x2=fffe  x3=0000
+  t=1165000  PC=001c  instr=0000  ALU=0000  x1=fffe  x2=fffe  x3=0000
+  t=1175000  PC=001e  instr=0000  ALU=0000  x1=fffe  x2=fffe  x3=0000
+  t=1185000  PC=0020  instr=0000  ALU=0000  x1=fffe  x2=fffe  x3=0000
+  t=1195000  PC=0022  instr=0000  ALU=0000  x1=fffe  x2=fffe  x3=0000
+  [FAIL] Test 7:  round-trip (42)  got=0xfffe  expected=0x002a
 
+--- Group 4: Load-use stall ---
+  t=1225000  PC=0000  instr=0000  ALU=0000  x1=fffe  x2=fffe  x3=0000
+  t=1235000  PC=0002  instr=8e01  ALU=0000  x1=fffe  x2=fffe  x3=0000
+  t=1245000  PC=0004  instr=0000  ALU=fffc  x1=fffe  x2=fffe  x3=0000
+  t=1255000  PC=0006  instr=0000  ALU=0000  x1=fffe  x2=fffe  x3=0000
+  t=1265000  PC=0008  instr=0023  ALU=0000  x1=fffe  x2=fffe  x3=0000
+  t=1275000  PC=000a  instr=0000  ALU=0000  x1=fffe  x2=fffe  x3=0000
+  t=1285000  PC=000c  instr=0000  ALU=0000  x1=fffe  x2=fffe  x3=0000
+  t=1295000  PC=000e  instr=0d01  ALU=0000  x1=fffe  x2=fffe  x3=0000
+  t=1305000  PC=0010  instr=0000  ALU=fffe  x1=fffe  x2=fffe  x3=0000
+  t=1315000  PC=0012  instr=0000  ALU=0000  x1=fffe  x2=fffe  x3=0000
+  t=1325000  PC=0014  instr=000a  ALU=0000  x1=fffe  x2=fffe  x3=0000
+  t=1335000  PC=0016  instr=2980  ALU=0000  x1=fffe  x2=fffe  x3=0000
+  t=1345000  PC=0016  instr=2980  ALU=0000  x1=fffc  x2=fffe  x3=0000
+  t=1355000  PC=0018  instr=0000  ALU=fffa  x1=fffc  x2=fffe  x3=0000
+  t=1365000  PC=001a  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1375000  PC=001c  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1385000  PC=001e  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1395000  PC=0020  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1405000  PC=0022  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1415000  PC=0024  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1425000  PC=0026  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1435000  PC=0028  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  [FAIL] Test 8: all: x3=99+3=102  got=0xfffa  expected=0x0066
 
-Time=46000 | PC=0x0006 | Instr=0x3101 | ALU=0x0002 | x1=0x0003 | x2=0x0001 | x3=0x0000 | zero=0
-STORE: addr=0002 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
+--- Group 5: Branch taken (beq) ---
+  t=1465000  PC=0000  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1475000  PC=0002  instr=1481  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1485000  PC=0004  instr=1501  ALU=fffc  x1=fffc  x2=fffe  x3=fffa
+  t=1495000  PC=0006  instr=0000  ALU=fffe  x1=fffc  x2=fffe  x3=fffa
+  t=1505000  PC=0008  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1515000  PC=000a  instr=2144  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1525000  PC=000c  instr=0581  ALU=fffe  x1=fffc  x2=fffe  x3=fffa
+  t=1535000  PC=000e  instr=1d81  ALU=fffa  x1=fffc  x2=fffe  x3=fffa
+  t=1545000  PC=0010  instr=0000  ALU=fffa  x1=fffc  x2=fffe  x3=fffa
+  t=1555000  PC=0012  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1565000  PC=0014  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1575000  PC=0016  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1585000  PC=0018  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1595000  PC=001a  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1605000  PC=001c  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1615000  PC=001e  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1625000  PC=0020  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1635000  PC=0022  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  [FAIL] Test 9: 3=7 (skip word5)  got=0xfffa  expected=0x0007
 
+--- Group 5b: Branch not taken ---
+  t=1665000  PC=0000  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1675000  PC=0002  instr=1481  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1685000  PC=0004  instr=0d01  ALU=fffc  x1=fffc  x2=fffe  x3=fffa
+  t=1695000  PC=0006  instr=0000  ALU=fffe  x1=fffc  x2=fffe  x3=fffa
+  t=1705000  PC=0008  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1715000  PC=000a  instr=2144  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1725000  PC=000c  instr=2581  ALU=fffe  x1=fffc  x2=fffe  x3=fffa
+  t=1735000  PC=000e  instr=1d81  ALU=fffb  x1=fffc  x2=fffe  x3=fffa
+  t=1745000  PC=0010  instr=0000  ALU=fffa  x1=fffc  x2=fffe  x3=fffb
+  t=1755000  PC=0012  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1765000  PC=0014  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1775000  PC=0016  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1785000  PC=0018  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1795000  PC=001a  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1805000  PC=001c  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1815000  PC=001e  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1825000  PC=0020  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1835000  PC=0022  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  [FAIL] Test 10:  not taken: x3=9  got=0xfffa  expected=0x0009
 
-Time=56000 | PC=0x0008 | Instr=0x3101 | ALU=0x0003 | x1=0x0003 | x2=0x0002 | x3=0x0000 | zero=0
-STORE: addr=0003 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
+--- Group 6: JAL ---
+  t=1865000  PC=0000  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1875000  PC=0002  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1885000  PC=0004  instr=0000  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1895000  PC=0006  instr=00cd  ALU=0000  x1=fffc  x2=fffe  x3=fffa
+  t=1905000  PC=0008  instr=0581  ALU=0003  x1=fffc  x2=fffe  x3=fffa
+  t=1915000  PC=000a  instr=0000  ALU=fffa  x1=0006  x2=fffe  x3=fffa
+  t=1925000  PC=000c  instr=1581  ALU=0000  x1=0006  x2=fffe  x3=fffa
+  t=1935000  PC=000e  instr=0000  ALU=fffa  x1=0006  x2=fffe  x3=fffa
+  t=1945000  PC=0010  instr=0000  ALU=0000  x1=0006  x2=fffe  x3=fffa
+  t=1955000  PC=0012  instr=0000  ALU=0000  x1=0006  x2=fffe  x3=fffa
+  t=1965000  PC=0014  instr=0000  ALU=0000  x1=0006  x2=fffe  x3=fffa
+  t=1975000  PC=0016  instr=0000  ALU=0000  x1=0006  x2=fffe  x3=fffa
+  t=1985000  PC=0018  instr=0000  ALU=0000  x1=0006  x2=fffe  x3=fffa
+  t=1995000  PC=001a  instr=0000  ALU=0000  x1=0006  x2=fffe  x3=fffa
+  t=2005000  PC=001c  instr=0000  ALU=0000  x1=0006  x2=fffe  x3=fffa
+  t=2015000  PC=001e  instr=0000  ALU=0000  x1=0006  x2=fffe  x3=fffa
+  t=2025000  PC=0020  instr=0000  ALU=0000  x1=0006  x2=fffe  x3=fffa
+  t=2035000  PC=0022  instr=0000  ALU=0000  x1=0006  x2=fffe  x3=fffa
+  [FAIL] Test 11: JAL target: x3=5  got=0xfffa  expected=0x0005
+  [PASS] Test 12: f JAL instr (=6)
 
+--- Group 7: JALR ---
+  t=2065000  PC=0000  instr=0000  ALU=0000  x1=0006  x2=fffe  x3=fffa
+  t=2075000  PC=0002  instr=2901  ALU=0000  x1=0006  x2=fffe  x3=fffa
+  t=2085000  PC=0004  instr=0000  ALU=ffff  x1=0006  x2=fffe  x3=fffa
+  t=2095000  PC=0006  instr=0000  ALU=0000  x1=0006  x2=ffff  x3=fffa
+  t=2105000  PC=0008  instr=008f  ALU=0000  x1=0006  x2=ffff  x3=fffa
+  t=2115000  PC=000a  instr=0581  ALU=fffc  x1=0006  x2=ffff  x3=fffa
+  t=2125000  PC=fffc  instr=0000  ALU=fffa  x1=0008  x2=ffff  x3=fffa
+  t=2135000  PC=fffe  instr=0000  ALU=0000  x1=0008  x2=ffff  x3=fffa
+  t=2145000  PC=0000  instr=0000  ALU=0000  x1=0008  x2=ffff  x3=fffa
+  t=2155000  PC=0002  instr=2901  ALU=0000  x1=0008  x2=ffff  x3=fffa
+  t=2165000  PC=0004  instr=0000  ALU=0000  x1=0008  x2=ffff  x3=fffa
+  t=2175000  PC=0006  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2185000  PC=0008  instr=008f  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2195000  PC=000a  instr=0581  ALU=fffc  x1=0008  x2=0000  x3=fffa
+  t=2205000  PC=fffc  instr=0000  ALU=fffa  x1=0008  x2=0000  x3=fffa
+  t=2215000  PC=fffe  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2225000  PC=0000  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2235000  PC=0002  instr=2901  ALU=0000  x1=0008  x2=0000  x3=fffa
+  [FAIL] Test 13: LR target: x3=11  got=0xfffa  expected=0x000b
+  [PASS] Test 14: C+2 of JALR (=8)
 
-Time=66000 | PC=0x000a | Instr=0x3101 | ALU=0x0004 | x1=0x0003 | x2=0x0003 | x3=0x0000 | zero=0
-STORE: addr=0004 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
+--- Group 8: Branch flush (delay-slot not executed) ---
+  t=2265000  PC=0000  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2275000  PC=0002  instr=0481  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2285000  PC=0004  instr=0501  ALU=0008  x1=0008  x2=0000  x3=fffa
+  t=2295000  PC=0006  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2305000  PC=0008  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2315000  PC=000a  instr=2144  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2325000  PC=000c  instr=3d81  ALU=0008  x1=0008  x2=0000  x3=fffa
+  t=2335000  PC=000e  instr=0981  ALU=fffb  x1=0008  x2=0000  x3=fffa
+  t=2345000  PC=0010  instr=0000  ALU=fffa  x1=0008  x2=0000  x3=fffb
+  t=2355000  PC=0012  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2365000  PC=0014  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2375000  PC=0016  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2385000  PC=0018  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2395000  PC=001a  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2405000  PC=001c  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2415000  PC=001e  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2425000  PC=0020  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2435000  PC=0022  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  [FAIL] Test 15: 5 (slot flushed)  got=0xfffa  expected=0x0002
 
+--- Group 9: x0 always zero ---
+  t=2465000  PC=0000  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2475000  PC=0002  instr=fc01  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2485000  PC=0004  instr=0000  ALU=ffff  x1=0008  x2=0000  x3=fffa
+  t=2495000  PC=0006  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2505000  PC=0008  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2515000  PC=000a  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2525000  PC=000c  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2535000  PC=000e  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2545000  PC=0010  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2555000  PC=0012  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  [FAIL] Test 16:  attempted write  got=0x0008  expected=0x0000
 
-Time=76000 | PC=0x000c | Instr=0x3101 | ALU=0x0005 | x1=0x0003 | x2=0x0004 | x3=0x0000 | zero=0
-STORE: addr=0005 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
+--- Group 10: Mid-execution reset ---
+  t=2565000  PC=0014  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2575000  PC=0016  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2585000  PC=0018  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2595000  PC=001a  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2625000  PC=0000  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2635000  PC=0002  instr=7c81  ALU=0000  x1=0008  x2=0000  x3=fffa
+  [FAIL] Test 17: fter reset: PC=0  got=0x0004  expected=0x0000
 
+--- Group 11: Load port smoke test ---
+  t=2665000  PC=0000  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2675000  PC=0002  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2685000  PC=0004  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2695000  PC=0006  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2705000  PC=0008  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2715000  PC=000a  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2725000  PC=000c  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  t=2735000  PC=000e  instr=0000  ALU=0000  x1=0008  x2=0000  x3=fffa
+  [PASS] Test 18:  still advancing
 
-Time=86000 | PC=0x000e | Instr=0x3101 | ALU=0x0006 | x1=0x0003 | x2=0x0005 | x3=0x0000 | zero=0
-STORE: addr=0006 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
+==============================================
+  Results: 3 passed,  16 failed
+==============================================
+  SOME TESTS FAILED — review output above
+==============================================
 
-
-Time=96000 | PC=0x0010 | Instr=0x3101 | ALU=0x0007 | x1=0x0003 | x2=0x0006 | x3=0x0000 | zero=0
-STORE: addr=0007 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
-
-
-Time=106000 | PC=0x0012 | Instr=0x4154 | ALU=0xfffc | x1=0x0003 | x2=0x0007 | x3=0x0000 | zero=0
-STORE: addr=fffc data=0007 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
-
-
-Time=116000 | PC=0x001a | Instr=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0007 | x3=0x0000 | zero=1
-STORE: addr=0000 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
-
-
-Time=126000 | PC=0x001c | Instr=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0007 | x3=0x0000 | zero=1
-STORE: addr=0000 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
-
-
-Time=136000 | PC=0x001e | Instr=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0007 | x3=0x0000 | zero=1
-STORE: addr=0000 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
-
-
-Time=146000 | PC=0x0020 | Instr=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0007 | x3=0x0000 | zero=1
-STORE: addr=0000 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
-
-
-Time=156000 | PC=0x0022 | Instr=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0007 | x3=0x0000 | zero=1
-STORE: addr=0000 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
-
-
-Time=166000 | PC=0x0024 | Instr=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0007 | x3=0x0000 | zero=1
-STORE: addr=0000 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
-
-
-Time=176000 | PC=0x0026 | Instr=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0007 | x3=0x0000 | zero=1
-STORE: addr=0000 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
-
-
-Time=186000 | PC=0x0028 | Instr=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0007 | x3=0x0000 | zero=1
-STORE: addr=0000 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
-
-
-Time=196000 | PC=0x002a | Instr=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0007 | x3=0x0000 | zero=1
-STORE: addr=0000 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
-
-
-Time=206000 | PC=0x002c | Instr=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0007 | x3=0x0000 | zero=1
-STORE: addr=0000 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
-
-
-Time=216000 | PC=0x002e | Instr=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0007 | x3=0x0000 | zero=1
-STORE: addr=0000 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
-
-
---- Simulation Finished ---
-
-
-./tb/top_tb.v:125: $finish called at 216000 (1ps)
+./tb/top_tb.v:679: $finish called at 2736000 (1ps)

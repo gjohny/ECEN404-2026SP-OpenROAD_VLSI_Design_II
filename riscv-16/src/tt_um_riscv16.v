@@ -76,7 +76,7 @@ module tt_um_riscv16 (
     wire [15:0] dbg_x1, dbg_x2, dbg_x3;
     wire load_ack;
 
-    riscv16_top CPU (
+    top CPU (
         .clk           (clk),
         .reset         (reset),
         .dbg_pc        (dbg_pc),
