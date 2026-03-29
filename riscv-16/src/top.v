@@ -13,11 +13,11 @@ module riscv16_top (
     output wire [15:0] dbg_x3,
 
 
-    //Load ports (used for the pins)
+    // Load ports
     input  wire        load_mode,
-    input  wire [6:0]  load_data,
-    input  wire        load_hibyte,
-    input  wire [6:0]  load_addr,
+    input  wire        load_transfer,  // 0=transfer1, 1=transfer2
+    input  wire [5:0]  load_ui,        // ui_in[5:0]
+    input  wire [7:0]  load_uio,       // uio_in[7:0]
     output wire        load_ack
 );
 
@@ -175,14 +175,14 @@ module riscv16_top (
 Instruction_memory #(
     .IMEM_WORDS(256)
 ) IMEM (
-    .clk        (clk),
-    .pc         (PC),
-    .instruction(instruction),
-    .load_mode  (load_mode),
-    .load_data  (load_data),
-    .load_hibyte(load_hibyte),
-    .load_addr  (load_addr),
-    .load_ack   (load_ack)
+    .clk          (clk),
+    .pc           (PC),
+    .instruction  (instruction),
+    .load_mode    (load_mode),
+    .load_transfer(load_transfer),  // ← new
+    .load_ui      (load_ui),        // ← new
+    .load_uio     (load_uio),       // ← new
+    .load_ack     (load_ack)
 );
 
 

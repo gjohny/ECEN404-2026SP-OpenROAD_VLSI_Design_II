@@ -22,13 +22,13 @@ TEST 2: FSM stays IDLE without load_mode
 TEST 3: Load single instruction at address 0
 ═══════════════════════════════════════════════
   ✅ PASS | lsed after write                    | got 1
-  ✅ PASS | t addr 0 correct                    | got 0x2468
+  ✅ PASS | t addr 0 correct                    | got 0x91a3
 
 ═══════════════════════════════════════════════
-TEST 4: Load instruction at address 5
+TEST 4: Load instruction at address 1
 ═══════════════════════════════════════════════
   ✅ PASS | lsed after write                    | got 1
-  ✅ PASS | t addr 5 correct                    | got 0x3f81
+  ✅ PASS | t addr 1 correct                    | got 0xfe05
 
 ═══════════════════════════════════════════════
 TEST 5: Load 5 instructions back to back
@@ -54,8 +54,14 @@ TEST 6: load_mode drops mid-transfer
 ═══════════════════════════════════════════════
 TEST 7: ACK pulses for exactly one cycle
 ═══════════════════════════════════════════════
-  ✅ PASS | igh on ACK cycle                    | got 1
-  ✅ PASS |  after ACK cycle                    | got 0
+  ✅ PASS | low before pulse                    | got 0
+  ✅ PASS | during ACK state                    | got 1
+  ✅ PASS |  after ACK state                    | got 0
+  ✅ PASS | lsed after write                    | got 1
+  ✅ PASS | lsed after write                    | got 1
+  ✅ PASS | lsed after write                    | got 1
+  ✅ PASS | lsed after write                    | got 1
+  ✅ PASS | lsed after write                    | got 1
 
 ═══════════════════════════════════════════════
 TEST 8: RUN mode reads loaded instructions
@@ -67,11 +73,17 @@ TEST 8: RUN mode reads loaded instructions
   ✅ PASS | ds correct instr                    | got 0x1234
 
 ═══════════════════════════════════════════════
+TEST 9: Address counter reset
+═══════════════════════════════════════════════
+  ✅ PASS | lsed after write                    | got 1
+  ✅ PASS | tten after reset                    | got 0xcafe
+
+═══════════════════════════════════════════════
 FINAL REPORT
 ═══════════════════════════════════════════════
-  Total PASS: 34
+  Total PASS: 42
   Total FAIL: 0
   ✅ ALL TESTS PASSED
 ═══════════════════════════════════════════════
 
-./tb/Instruction_memory_tb.v:407: $finish called at 596000 (1ps)
+./tb/Instruction_memory_tb.v:389: $finish called at 1257000 (1ps)
