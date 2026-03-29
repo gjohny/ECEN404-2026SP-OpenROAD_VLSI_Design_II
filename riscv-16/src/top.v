@@ -15,9 +15,9 @@ module top(
     output wire [15:0] dbg_x3,
 
     input  wire        load_mode,
-    input  wire [6:0]  load_data,
-    input  wire        load_hibyte,
-    input  wire [6:0]  load_addr,
+    input  wire        load_transfer,  // ← new
+    input  wire [5:0]  load_ui,        // ← new
+    input  wire [7:0]  load_uio,       // ← new
     output wire        load_ack
 );
 
