@@ -123,40 +123,35 @@
 
 `timescale 1ns/1ps
 module Instruction_memory_tb;
-
     // ── DUT ports ─────────────────────────────────────────────────────
     reg         clk;
     reg  [15:0] pc;
     wire [15:0] instruction;
     reg         load_mode;
-    reg  [6:0]  load_data;
-    reg         load_hibyte;
-    reg  [6:0]  load_addr;
+    reg         load_transfer;
+    reg  [5:0]  load_ui;
+    reg  [7:0]  load_uio;
     wire        load_ack;
-
-    // ── pass/fail tracking ────────────────────────────────────────────
+    
     integer pass_count;
     integer fail_count;
-
-    // ── instantiate DUT ───────────────────────────────────────────────
+    
     Instruction_memory #(
         .IMEM_WORDS(256)
     ) DUT (
-        .clk        (clk),
-        .pc         (pc),
-        .instruction(instruction),
-        .load_mode  (load_mode),
-        .load_data  (load_data),
-        .load_hibyte(load_hibyte),
-        .load_addr  (load_addr),
-        .load_ack   (load_ack)
+        .clk          (clk),
+        .pc           (pc),
+        .instruction  (instruction),
+        .load_mode    (load_mode),
+        .load_transfer(load_transfer),
+        .load_ui      (load_ui),
+        .load_uio     (load_uio),
+        .load_ack     (load_ack)
     );
-
-    // ── clock ─────────────────────────────────────────────────────────
+    
     initial clk = 0;
     always #5 clk = ~clk;
-
-    // ── check tasks ───────────────────────────────────────────────────
+    
     task check;
         input [15:0] actual;
         input [15:0] expected;
@@ -172,7 +167,7 @@ module Instruction_memory_tb;
             end
         end
     endtask
-
+    
     task check_bit;
         input actual;
         input expected;
@@ -188,71 +183,54 @@ module Instruction_memory_tb;
             end
         end
     endtask
-
-    // ── load one full 16-bit instruction ──────────────────────────────
+    
     task load_instruction;
-        input [6:0]  addr;
-        input [13:0] instr;
+        input [15:0] instr;
         begin
-            // reset to clean state first
-            load_mode   = 0;
-            load_hibyte = 0;
-            load_data   = 7'h00;
+            load_mode     = 1;
+            load_transfer = 0;
+            load_ui       = instr[5:0];
+            load_uio      = instr[13:6];
             @(posedge clk); #1;
-
-            // send low byte
-            load_mode   = 1;
-            load_hibyte = 0;
-            load_addr   = addr;
-            load_data   = instr[6:0];
+            
+            load_transfer = 1;
+            load_ui[5:4]  = instr[15:14];
+            load_ui[3:0]  = 4'b0000;
+            load_uio      = 8'h00;
             @(posedge clk); #1;
-
-            // send high byte
-            load_hibyte = 1;
-            load_addr   = addr;
-            load_data   = instr[13:7];
-            @(posedge clk); #1; // RECV_LO → WRITE
-            @(posedge clk); #1; // WRITE   → ACK
-            @(posedge clk); #1; // now in ACK state
-
+            
+            wait(load_ack == 1);
+            #1;
             check_bit(load_ack, 1, "load_ack pulsed after write");
-
-            @(posedge clk); #1; // ACK → IDLE
+            
+            @(posedge clk); #1;
+            repeat(1) @(posedge clk);
         end
     endtask
-
-    // ── known test instructions ───────────────────────────────────────
-    reg [13:0] test_instrs [0:4];
-
-    // ══════════════════════════════════════════════════════════════════
-    // MAIN TEST
-    // ══════════════════════════════════════════════════════════════════
+    
+    reg [15:0] test_instrs [0:4];
+    
     initial begin
         $dumpfile("./tb/waveform/Instruction_memory.vcd");
         $dumpvars(0, Instruction_memory_tb);
-
-        pass_count  = 0;
-        fail_count  = 0;
-        pc          = 16'h0000;
-        load_mode   = 0;
-        load_data   = 7'h00;
-        load_hibyte = 0;
-        load_addr   = 7'h00;
-
-        // known hardcoded values — no arithmetic ambiguity
-        test_instrs[0] = 14'h0000;
-        test_instrs[1] = 14'h0055;
-        test_instrs[2] = 14'h00AA;
-        test_instrs[3] = 14'h0123;
-        test_instrs[4] = 14'h1234;
-
-        // ══════════════════════════════════════════════════════════════
-        // TEST 1: RAM initialised to zero
-        // ══════════════════════════════════════════════════════════════
+        
+        pass_count    = 0;
+        fail_count    = 0;
+        pc            = 16'h0000;
+        load_mode     = 0;
+        load_transfer = 0;
+        load_ui       = 6'h00;
+        load_uio      = 8'h00;
+        
+        test_instrs[0] = 16'h0000;
+        test_instrs[1] = 16'h0055;
+        test_instrs[2] = 16'h00AA;
+        test_instrs[3] = 16'h0123;
+        test_instrs[4] = 16'h1234;
+        
         $display("\n═══════════════════════════════════════════════");
         $display("TEST 1: RAM initialised to zero");
         $display("═══════════════════════════════════════════════");
-
         begin : zero_check
             integer addr;
             for (addr = 0; addr < 8; addr = addr + 1) begin
@@ -261,138 +239,142 @@ module Instruction_memory_tb;
                 check(instruction, 16'h0000, "RAM init = 0x0000");
             end
         end
-
-        // ══════════════════════════════════════════════════════════════
-        // TEST 2: FSM stays IDLE without load_mode
-        // ══════════════════════════════════════════════════════════════
+        
         $display("\n═══════════════════════════════════════════════");
         $display("TEST 2: FSM stays IDLE without load_mode");
         $display("═══════════════════════════════════════════════");
-
         load_mode = 0;
         repeat(5) @(posedge clk);
         #1;
         check_bit(load_ack, 0, "load_ack stays low in IDLE");
         check(DUT.state, 3'd0, "FSM stays in IDLE state");
-
-        // ══════════════════════════════════════════════════════════════
-        // TEST 3: Load single instruction at address 0
-        // ══════════════════════════════════════════════════════════════
+        
         $display("\n═══════════════════════════════════════════════");
         $display("TEST 3: Load single instruction at address 0");
         $display("═══════════════════════════════════════════════");
-
-        load_instruction(7'd0, 14'b10010001101000);
+        load_mode = 0;
+        repeat(3) @(posedge clk);
+        
+        load_instruction(16'b1001000110100011);
         pc = 16'h0000; #2;
-        check(instruction, {7'b1001000, 7'b1101000}, "instr at addr 0 correct");
-
-        // ══════════════════════════════════════════════════════════════
-        // TEST 4: Load instruction at address 5
-        // ══════════════════════════════════════════════════════════════
+        check(instruction, 16'b1001000110100011, "instr at addr 0 correct");
+        
         $display("\n═══════════════════════════════════════════════");
-        $display("TEST 4: Load instruction at address 5");
+        $display("TEST 4: Load instruction at address 1");
         $display("═══════════════════════════════════════════════");
-
-        load_instruction(7'd5, 14'b11111110000001);
-        pc = 16'd10; #2;
-        check(instruction, {7'b1111111, 7'b0000001}, "instr at addr 5 correct");
-
-        // ══════════════════════════════════════════════════════════════
-        // TEST 5: Load 5 instructions back to back
-        // ══════════════════════════════════════════════════════════════
+        load_instruction(16'b1111111000000101);
+        pc = 16'd2; #2;
+        check(instruction, 16'b1111111000000101, "instr at addr 1 correct");
+        
         $display("\n═══════════════════════════════════════════════");
         $display("TEST 5: Load 5 instructions back to back");
         $display("═══════════════════════════════════════════════");
-
+        load_mode = 0;
+        repeat(3) @(posedge clk);
+        
         begin : multi_load
             integer idx;
             for (idx = 0; idx < 5; idx = idx + 1)
-                load_instruction(idx, test_instrs[idx]);
-
+                load_instruction(test_instrs[idx]);
+            
             for (idx = 0; idx < 5; idx = idx + 1) begin
                 pc = idx * 2; #2;
-                check(instruction,
-                      {test_instrs[idx][13:7], test_instrs[idx][6:0]},
-                      "sequential instr correct");
+                check(instruction, test_instrs[idx], "sequential instr correct");
             end
         end
-
-        // ══════════════════════════════════════════════════════════════
-        // TEST 6: load_mode drops mid-transfer
-        // ══════════════════════════════════════════════════════════════
+        
         $display("\n═══════════════════════════════════════════════");
         $display("TEST 6: load_mode drops mid-transfer");
         $display("═══════════════════════════════════════════════");
-
-        load_mode   = 0;
-        load_hibyte = 0;
+        load_mode     = 0;
+        load_transfer = 0;
         @(posedge clk); #1;
-
-        load_mode   = 1;
-        load_hibyte = 0;
-        load_addr   = 7'd10;
-        load_data   = 7'h55;
+        
+        load_mode     = 1;
+        load_transfer = 0;
+        load_ui       = 6'h3F;
+        load_uio      = 8'hAA;
         @(posedge clk); #1;
-
-        // drop load_mode before sending high byte
+        
         load_mode = 0;
-        @(posedge clk); #1;
-
+        repeat(3) @(posedge clk); #1;
+        
         check(DUT.state, 3'd0, "FSM reset to IDLE after load_mode drop");
         check_bit(load_ack, 0, "load_ack low after abort");
-        pc = 16'd20; #2;
+        
+        pc = 16'd10; #2;
         check(instruction, 16'h0000, "incomplete write not committed");
-
-        // ══════════════════════════════════════════════════════════════
-        // TEST 7: ACK pulses for exactly one cycle
-        // ══════════════════════════════════════════════════════════════
+        
         $display("\n═══════════════════════════════════════════════");
         $display("TEST 7: ACK pulses for exactly one cycle");
         $display("═══════════════════════════════════════════════");
 
-        load_mode   = 0;
-        load_hibyte = 0;
-        @(posedge clk); #1;
+        load_mode = 0;
+        repeat(3) @(posedge clk);
 
-        load_mode   = 1;
-        load_hibyte = 0;
-        load_addr   = 7'd20;
-        load_data   = 7'h01;
-        @(posedge clk); #1;
+        load_mode     = 1;
+        load_transfer = 0;
+        load_ui       = 6'h01;
+        load_uio      = 8'h02;
+        @(posedge clk);
 
-        load_hibyte = 1;
-        load_data   = 7'h02;
-        @(posedge clk); #1; // RECV_LO → WRITE
-        @(posedge clk); #1; // WRITE   → ACK
-        @(posedge clk); #1; // now in ACK state
+        load_transfer = 1;
+        load_ui[5:4]  = 2'b11;
+        load_ui[3:0]  = 4'b0000;
+        load_uio      = 8'h00;
+        @(posedge clk);
 
-        check_bit(load_ack, 1, "ACK high on ACK cycle");
+        // Check ACK low before pulse
+        #1;
+        check_bit(load_ack, 0, "ACK low before pulse");
 
-        @(posedge clk); #1; // ACK → IDLE
-        check_bit(load_ack, 0, "ACK low after ACK cycle");
+        // Wait 3 cycles: GOT_T2 → WRITE → ACK
+        @(posedge clk);  // GOT_T2 → WRITE
+        @(posedge clk);  // WRITE → ACK
+        @(posedge clk);  // Now in ACK state
+        #1;
+        check_bit(load_ack, 1, "ACK high during ACK state");
+
+        // Check it drops
+        @(posedge clk);  // ACK → IDLE
+        #1;
+        check_bit(load_ack, 0, "ACK low after ACK state");
 
         // ══════════════════════════════════════════════════════════════
-        // TEST 8: RUN mode reads loaded instructions
+        // RELOAD DATA for TEST 8 (since TEST 7 overwrote address 0)
         // ══════════════════════════════════════════════════════════════
+        load_mode = 0;
+        repeat(3) @(posedge clk);
+
+        begin : reload_test5
+            integer idx;
+            for (idx = 0; idx < 5; idx = idx + 1)
+                load_instruction(test_instrs[idx]);
+        end
+
         $display("\n═══════════════════════════════════════════════");
         $display("TEST 8: RUN mode reads loaded instructions");
         $display("═══════════════════════════════════════════════");
-
         load_mode = 0;
+        repeat(3) @(posedge clk);
 
         begin : run_check
             integer idx;
             for (idx = 0; idx < 5; idx = idx + 1) begin
                 pc = idx * 2; #2;
-                check(instruction,
-                      {test_instrs[idx][13:7], test_instrs[idx][6:0]},
-                      "RUN mode reads correct instr");
+                check(instruction, test_instrs[idx], "RUN mode reads correct instr");
             end
         end
-
-        // ══════════════════════════════════════════════════════════════
-        // FINAL REPORT
-        // ══════════════════════════════════════════════════════════════
+        
+        $display("\n═══════════════════════════════════════════════");
+        $display("TEST 9: Address counter reset");
+        $display("═══════════════════════════════════════════════");
+        load_instruction(16'hCAFE);
+        
+        load_mode = 0;
+        pc = 16'h0000; #2;
+        check(instruction, 16'hCAFE, "addr 0 overwritten after reset");
+        
         $display("\n═══════════════════════════════════════════════");
         $display("FINAL REPORT");
         $display("═══════════════════════════════════════════════");
@@ -403,8 +385,7 @@ module Instruction_memory_tb;
         else
             $display("  ❌ %0d TEST(S) FAILED", fail_count);
         $display("═══════════════════════════════════════════════\n");
-
+        
         $finish;
     end
-
 endmodule
