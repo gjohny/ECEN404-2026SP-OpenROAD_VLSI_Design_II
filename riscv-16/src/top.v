@@ -3,25 +3,21 @@
 //  riscv16_pipeline_top.v  –  3-Stage Pipelined RISC-V16 CPU
 // =============================================================================
 
-module top(
-    input  wire        clk,
-    input  wire        reset,
-
+module top (
+    input  wire       clk,
+    input  wire       reset,
     output wire [15:0] dbg_pc,
     output wire [15:0] dbg_instr,
     output wire [15:0] dbg_alu_result,
     output wire [15:0] dbg_x1,
     output wire [15:0] dbg_x2,
     output wire [15:0] dbg_x3,
-
     input  wire        load_mode,
-    input  wire        load_transfer,  // ← new
-    input  wire [5:0]  load_ui,        // ← new
-    input  wire [7:0]  load_uio,       // ← new
+    input  wire        load_transfer,
+    input  wire [5:0]  load_ui,
+    input  wire [7:0]  load_uio,
     output wire        load_ack
 );
-
-    assign load_ack = 1'b0;
 
     localparam OPC_R  = 3'b000;
     localparam OPC_I  = 3'b001;
@@ -39,14 +35,18 @@ module top(
     wire [15:0] IF_PC_plus2 = IF_PC + 16'd2;
     wire [15:0] IF_instr;
 
-    Instruction_memory #(
-        .IMEM_WORDS(256),
-        .MEMFILE("src/program16.mem")
-    ) IMEM (
-        .clk        (clk),
-        .pc         (IF_PC),
-        .instruction(IF_instr)
-    );
+Instruction_memory #(
+    .IMEM_WORDS(256)
+) IMEM (
+    .clk          (clk),
+    .pc           (IF_PC),
+    .instruction  (IF_instr),
+    .load_mode    (load_mode),
+    .load_transfer(load_transfer),
+    .load_ui      (load_ui),
+    .load_uio     (load_uio),
+    .load_ack     (load_ack)
+);
 
     // =========================================================================
     //  IF/EX Pipeline Register

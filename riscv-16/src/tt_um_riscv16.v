@@ -100,7 +100,7 @@ module tt_um_riscv16 (
     //   ui_in[2:0]   = debug channel selector
     //   uo_out[7:0]  = low  byte of selected signal
     //   uio_out[7:0] = high byte of selected signal
-    riscv16_top CPU (
+    top CPU (
         .clk           (clk),
         .reset         (reset),
         .dbg_pc        (dbg_pc),
