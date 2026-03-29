@@ -1,10 +1,12 @@
 `timescale 1ns / 1ps
+// =============================================================================
+//  riscv16_pipeline_top.v  –  3-Stage Pipelined RISC-V16 CPU
+// =============================================================================
 
-module riscv16_top (
-    input  wire       clk,
-    input  wire       reset,
+module top(
+    input  wire        clk,
+    input  wire        reset,
 
-    // Debug outputs
     output wire [15:0] dbg_pc,
     output wire [15:0] dbg_instr,
     output wire [15:0] dbg_alu_result,
@@ -12,300 +14,341 @@ module riscv16_top (
     output wire [15:0] dbg_x2,
     output wire [15:0] dbg_x3,
 
-
-    // Load ports
     input  wire        load_mode,
-    input  wire        load_transfer,  // 0=transfer1, 1=transfer2
-    input  wire [5:0]  load_ui,        // ui_in[5:0]
-    input  wire [7:0]  load_uio,       // uio_in[7:0]
+    input  wire [6:0]  load_data,
+    input  wire        load_hibyte,
+    input  wire [6:0]  load_addr,
     output wire        load_ack
 );
 
-    /* =====================
-       IF Stage
-    ====================== */
-    wire [15:0] PC, PC_next, PC_plus2, PC_target;
-    wire [15:0] instruction;
+    assign load_ack = 1'b0;
 
-    assign PC_plus2 = PC + 16'd2;
-
-    /* =====================
-    Instruction Fields
-    ===================== */
-
-    wire [2:0] opcode = instruction[2:0];
-
-    localparam OPC_R = 3'b000;
-    localparam OPC_I = 3'b001;
-    localparam OPC_L = 3'b010;
-    localparam OPC_S = 3'b011;
-    localparam OPC_B = 3'b100;
-    localparam OPC_U = 3'b110;
-    localparam OPC_J = 3'b101;
+    localparam OPC_R  = 3'b000;
+    localparam OPC_I  = 3'b001;
+    localparam OPC_L  = 3'b010;
+    localparam OPC_S  = 3'b011;
+    localparam OPC_B  = 3'b100;
+    localparam OPC_J  = 3'b101;
+    localparam OPC_U  = 3'b110;
     localparam OPC_JR = 3'b111;
 
-    wire jal_taken  = (opcode == OPC_J);
-    wire jalr_taken = (opcode == OPC_JR);  
+    // =========================================================================
+    //  IF STAGE
+    // =========================================================================
+    reg  [15:0] IF_PC;
+    wire [15:0] IF_PC_plus2 = IF_PC + 16'd2;
+    wire [15:0] IF_instr;
 
-
-    wire [3:0] func = instruction[6:3];
-
-    /* =====================
-    Raw Field Extraction
-    ===================== */
-
-    // ---------- R-Type ----------
-    wire [2:0] rs1_r = instruction[15:13];
-    wire [2:0] rs2_r = instruction[12:10];
-    wire [2:0] rd_r  = instruction[9:7];
-
-    // ---------- I-Type ----------
-    wire [5:0] imm_i_raw = instruction[15:10];   // imm[2:0]
-    wire [2:0] rs1_i     = instruction[9:7];
-    wire [2:0] rd_i      = instruction[9:7];
-
-    // ---------- S-Type ----------
-    wire [6:0] imm_s_raw = instruction[15:9];    // imm[6:0]
-    wire [2:0] rs1_s     = instruction[8:6];
-    wire [2:0] rs2_s     = instruction[5:3];
-
-    // ---------- L-Type ----------
-    wire [6:0] imm_l_raw = instruction[15:9];    // imm[6:0]
-    wire [2:0] rs1_l     = instruction[8:6];
-    wire [2:0] rd_l     = instruction[5:3];
-
-    // ---------- B-Type ----------
-    wire [4:0] imm_b_raw = instruction[15:11];  
-    wire [2:0] rs1_b     = instruction[10:8];
-    wire [2:0] rs2_b     = instruction[7:5];
-
-    // ---------- U-Type ----------
-    wire [9:0] imm_u_raw = instruction[15:6];    // imm[12:3]
-    wire [2:0] rd_u      = instruction[5:3];
-
-    // ---------- J-Type ----------
-    wire [9:0] imm_j_raw = instruction[15:6];    // imm[15:6]
-    wire [2:0] rd_j      = instruction[5:3];
-
-    // ---------- JR-Type ----------
-    wire [6:0] imm_jr_raw = instruction[15:9];    // imm[15:6]
-    wire [2:0] rs1_jr    = instruction[7:5];
-    wire [2:0] rd_jr      = instruction[5:3];
-
-
-    /* =====================
-    Register Selection
-    ===================== */
-
-    wire [2:0] rs1 =
-        (opcode == OPC_R) ? rs1_r :
-        (opcode == OPC_I) ? rs1_i :
-        (opcode == OPC_S) ? rs1_s :
-        (opcode == OPC_B) ? rs1_b :
-        (opcode == OPC_L) ? rs1_l :
-        (opcode == OPC_JR) ? rs1_jr :
-        3'b000;
-
-    wire [2:0] rs2 =
-        (opcode == OPC_R) ? rs2_r :
-        (opcode == OPC_S) ? rs2_s :
-        (opcode == OPC_B) ? rs2_b :
-        3'b000;
-
-    wire [2:0] rd =
-        (opcode == OPC_R) ? rd_r :
-        (opcode == OPC_I) ? rd_i :
-        (opcode == OPC_U) ? rd_u :
-        (opcode == OPC_J) ? rd_j :
-        (opcode == OPC_L) ? rd_l :
-        (opcode == OPC_JR) ? rd_jr :
-        3'b000;
-
-
-    /* =====================
-    Immediate Construction
-    ===================== */
-
-    // Sign-extend immediates to 16 bits
-
-    wire [15:0] imm_i = {{13{imm_i_raw[2]}}, imm_i_raw};              // 3-bit signed
-    wire [15:0] imm_s = {{9{imm_s_raw[6]}}, imm_s_raw};               // 7-bit signed
-    wire [15:0] imm_b = {{11{imm_b_raw[4]}}, imm_b_raw};              // 5-bit signed
-    wire [15:0] imm_u = {imm_u_raw, 6'b000000};                       // upper immediate
-    wire [15:0] imm_j = {{6{imm_j_raw[9]}}, imm_j_raw};               // 10-bit signed
-
-
-    /* =====================
-    Unified Immediate Output
-    ===================== */
-
-    wire [15:0] imm =
-        (opcode == OPC_I) ? imm_i :
-        (opcode == OPC_S) ? imm_s :
-        (opcode == OPC_B) ? imm_b :
-        (opcode == OPC_U) ? imm_u :
-        (opcode == OPC_J) ? imm_j :
-        16'h0000;
-
-    wire [15:0] branch_target = PC + (imm_b << 1);
-    wire [15:0] jal_target    = PC + (imm_j << 1);
-    wire [15:0] jalr_sum = RD1 + imm_ext;
-    wire [15:0] jalr_target = {jalr_sum[15:1], 1'b0};
-
-    /* =====================
-       PC Update Logic
-    ====================== */
-    // Keep these signals for naming consistency with your skeleton,
-    // but they are not currently feeding pc_counter_16 (see note above).
-    assign PC_target = PC + imm_ext;
-    assign PC_next = jalr_taken  ? jalr_target  :
-                     jal_taken   ? jal_target   :
-                     PCSrc       ? branch_target:
-                     PC_plus2;
-        
-
-    pc_counter_16 PC_REG (
-    .clk(clk),
-    .reset(reset),
-    .pc_en(~load_mode),
-    .pc_next(PC_next),
-    .pc(PC)
+    Instruction_memory #(
+        .IMEM_WORDS(256),
+        .MEMFILE("src/program16.mem")
+    ) IMEM (
+        .clk        (clk),
+        .pc         (IF_PC),
+        .instruction(IF_instr)
     );
 
-Instruction_memory #(
-    .IMEM_WORDS(256)
-) IMEM (
-    .clk          (clk),
-    .pc           (PC),
-    .instruction  (instruction),
-    .load_mode    (load_mode),
-    .load_transfer(load_transfer),  // ← new
-    .load_ui      (load_ui),        // ← new
-    .load_uio     (load_uio),       // ← new
-    .load_ack     (load_ack)
-);
+    // =========================================================================
+    //  IF/EX Pipeline Register
+    // =========================================================================
+    reg [15:0] IFEX_pc;
+    reg [15:0] IFEX_pc_plus2;
+    reg [15:0] IFEX_instr;
 
+    // =========================================================================
+    //  EX STAGE
+    // =========================================================================
+    wire [2:0] EX_opcode = IFEX_instr[2:0];
+    wire [3:0] EX_func   = IFEX_instr[6:3];
 
-    /* =====================
-       Control Unit
-    ====================== */
-    wire        PCSrc;
-    wire [1:0]  ResultSrc;
-    wire        MemWrite;
-    wire        MemRead; 
-    wire        ALUSrc;
-    wire        RegWrite;
-    wire [2:0]  ImmSrc;
-    wire [3:0]  ALUControl;
-    wire        zero;
-    wire        negative;
+    wire [2:0] EX_rs1_r = IFEX_instr[15:13];
+    wire [2:0] EX_rs2_r = IFEX_instr[12:10];
+    wire [2:0] EX_rd_r  = IFEX_instr[9:7];
+    wire [2:0] EX_rs1_i = IFEX_instr[9:7];
+    wire [2:0] EX_rd_i  = IFEX_instr[9:7];
+    wire [2:0] EX_rs1_s = IFEX_instr[8:6];
+    wire [2:0] EX_rs2_s = IFEX_instr[5:3];
+    wire [2:0] EX_rs1_l = IFEX_instr[8:6];
+    wire [2:0] EX_rd_l  = IFEX_instr[5:3];
+    wire [2:0] EX_rs1_b = IFEX_instr[10:8];
+    wire [2:0] EX_rs2_b = IFEX_instr[7:5];
+    wire [2:0] EX_rd_u  = IFEX_instr[5:3];
+    wire [2:0] EX_rd_j  = IFEX_instr[5:3];
+    wire [2:0] EX_rs1_jr = IFEX_instr[7:5];
+    wire [2:0] EX_rd_jr  = IFEX_instr[5:3];
 
-    // Use the actual module name Control_Unit from the report [1]
-    Control_unit CU (
-        .opcode(opcode),
-        .func(func),
-        .zero(zero),
-        .negative(negative),
-        .PCSrc(PCSrc),
-        .ResultSrc(ResultSrc),
-        .MemWrite(MemWrite),
-        .MemRead(MemRead),
-        .ALUControl(ALUControl),
-        .ALUSrc(ALUSrc),
-        .ImmSrc(ImmSrc),
-        .RegWrite(RegWrite)
-    );
+    wire [2:0] EX_rs1 =
+        (EX_opcode == OPC_R)  ? EX_rs1_r  :
+        (EX_opcode == OPC_I)  ? EX_rs1_i  :
+        (EX_opcode == OPC_S)  ? EX_rs1_s  :
+        (EX_opcode == OPC_B)  ? EX_rs1_b  :
+        (EX_opcode == OPC_L)  ? EX_rs1_l  :
+        (EX_opcode == OPC_JR) ? EX_rs1_jr :
+        3'b000;
 
-    /* =====================
-       Register File
-    ====================== */
-    wire [15:0] RD1, RD2, WD3;
-    wire [15:0] rf_dbg_x1;
-    wire [15:0] rf_dbg_x2;
-    wire [15:0] rf_dbg_x3;
+    wire [2:0] EX_rs2 =
+        (EX_opcode == OPC_R) ? EX_rs2_r :
+        (EX_opcode == OPC_S) ? EX_rs2_s :
+        (EX_opcode == OPC_B) ? EX_rs2_b :
+        3'b000;
 
-    // Match your Register_file port names from the report [1]
-    Register_file RF (
-        .clk(clk),
-        .RegWrite(RegWrite),
-        .A3(rd),
-        .WD3(WD3),
-        .A1(rs1),
-        .RD1(RD1),
-        .A2(rs2),
-        .RD2(RD2),
-        .dbg_x1(rf_dbg_x1),   // this is your added debug port
-        .dbg_x2(rf_dbg_x2),
-        .dbg_x3(rf_dbg_x3)
-    );
+    wire [2:0] EX_rd =
+        (EX_opcode == OPC_R)  ? EX_rd_r  :
+        (EX_opcode == OPC_I)  ? EX_rd_i  :
+        (EX_opcode == OPC_U)  ? EX_rd_u  :
+        (EX_opcode == OPC_J)  ? EX_rd_j  :
+        (EX_opcode == OPC_L)  ? EX_rd_l  :
+        (EX_opcode == OPC_JR) ? EX_rd_jr :
+        3'b000;
 
-    /* =====================
-       Immediate Generation
-    ====================== */
-    wire [15:0] imm_ext;
-
+    wire [15:0] EX_imm_ext;
     Sign_Extender SE (
-        .instr(instruction),
-        .ImmSrc(ImmSrc),
-        .ImmExt(imm_ext)
+        .instr  (IFEX_instr),
+        .ImmSrc (EX_ImmSrc),
+        .ImmExt (EX_imm_ext)
     );
 
-    /* =====================
-       Execute Stage
-    ====================== */
-    wire [15:0] ALU_B;
-    wire [15:0] ALUResult;
+    wire        EX_PCSrc;
+    wire [1:0]  EX_ResultSrc;
+    wire        EX_MemWrite;
+    wire        EX_MemRead;
+    wire        EX_ALUSrc;
+    wire        EX_RegWrite;
+    wire [2:0]  EX_ImmSrc;
+    wire [3:0]  EX_ALUControl;
+    wire        EX_zero;
+    wire        EX_negative;
 
-    ALUSrc_mux RD_2 (
-        .RD2(RD2),
-        .ImmExt(imm_ext),
-        .ALUSrc(ALUSrc),
-        .SrcB(ALU_B)
+    Control_unit CU (
+        .opcode    (EX_opcode),
+        .func      (EX_func),
+        .zero      (EX_zero),
+        .negative  (EX_negative),
+        .PCSrc     (EX_PCSrc),
+        .ResultSrc (EX_ResultSrc),
+        .MemWrite  (EX_MemWrite),
+        .MemRead   (EX_MemRead),
+        .ALUControl(EX_ALUControl),
+        .ALUSrc    (EX_ALUSrc),
+        .ImmSrc    (EX_ImmSrc),
+        .RegWrite  (EX_RegWrite)
     );
 
+    wire        WB_RegWrite;
+    wire [2:0]  WB_rd;
+    wire [15:0] WB_WD3;
 
+    wire [15:0] EX_RD1_raw, EX_RD2_raw;
+    wire [15:0] rf_dbg_x1, rf_dbg_x2, rf_dbg_x3;
+
+    Register_file RF (
+        .clk     (clk),
+        .RegWrite(WB_RegWrite),
+        .A3      (WB_rd),
+        .WD3     (WB_WD3),
+        .A1      (EX_rs1),
+        .RD1     (EX_RD1_raw),
+        .A2      (EX_rs2),
+        .RD2     (EX_RD2_raw),
+        .dbg_x1  (rf_dbg_x1),
+        .dbg_x2  (rf_dbg_x2),
+        .dbg_x3  (rf_dbg_x3)
+    );
+
+    // =========================================================================
+    //  Hazard Detection & Forwarding
+    // =========================================================================
+    reg        MEWB_RegWrite;
+    reg [2:0]  MEWB_rd;
+    reg [15:0] MEWB_WD3;
+    reg        MEWB_MemRead;
+
+    reg        EXME_RegWrite;
+    reg [2:0]  EXME_rd;
+    reg [15:0] EXME_ALUResult;
+    reg        EXME_MemRead;
+
+    wire fwd_a_exme = EXME_RegWrite && (EXME_rd != 3'b000) && (EXME_rd == EX_rs1);
+    wire fwd_a_mewb = MEWB_RegWrite && (MEWB_rd != 3'b000) && (MEWB_rd == EX_rs1) && !fwd_a_exme;
+    wire fwd_b_exme = EXME_RegWrite && (EXME_rd != 3'b000) && (EXME_rd == EX_rs2);
+    wire fwd_b_mewb = MEWB_RegWrite && (MEWB_rd != 3'b000) && (MEWB_rd == EX_rs2) && !fwd_b_exme;
+
+    wire [15:0] EX_RD1 = fwd_a_exme ? EXME_ALUResult :
+                         fwd_a_mewb ? MEWB_WD3       : EX_RD1_raw;
+
+    wire [15:0] EX_RD2 = fwd_b_exme ? EXME_ALUResult :
+                         fwd_b_mewb ? MEWB_WD3       : EX_RD2_raw;
+
+    wire load_use_stall = EXME_MemRead &&
+                          (EXME_rd != 3'b000) &&
+                          ((EXME_rd == EX_rs1) || (EXME_rd == EX_rs2));
+
+    // ctrl_taken: used only to flush IF/EX (kill wrongly-fetched instruction)
+    wire ctrl_taken = EX_PCSrc || (EX_opcode == OPC_J) || (EX_opcode == OPC_JR);
+
+    wire pc_stall   = load_use_stall;
+    wire ifex_stall = load_use_stall;
+    // NOTE: ex_flush now only fires on load_use_stall, NOT ctrl_taken.
+    // ctrl_taken flushes the IF/EX register below, but must NOT flush the
+    // EX/ME register — that would erase the JAL/JALR/branch write-back.
+    wire ex_flush   = load_use_stall;
+
+    // =========================================================================
+    //  PC Next
+    // =========================================================================
+    wire [15:0] EX_branch_target = IFEX_pc + EX_imm_ext;
+    wire [15:0] EX_jal_target    = IFEX_pc + (EX_imm_ext << 1);
+    wire [15:0] EX_jalr_sum      = EX_RD1 + EX_imm_ext;
+    wire [15:0] EX_jalr_target   = {EX_jalr_sum[15:1], 1'b0};
+
+    wire [15:0] PC_next =
+        (EX_opcode == OPC_JR) ? EX_jalr_target  :
+        (EX_opcode == OPC_J)  ? EX_jal_target   :
+        EX_PCSrc              ? EX_branch_target :
+        IF_PC_plus2;
+
+    // =========================================================================
+    //  ALU
+    // =========================================================================
+    wire [15:0] EX_ALU_B;
+    ALUSrc_mux RD2_MUX (
+        .RD2   (EX_RD2),
+        .ImmExt(EX_imm_ext),
+        .ALUSrc(EX_ALUSrc),
+        .SrcB  (EX_ALU_B)
+    );
+
+    wire [15:0] EX_ALUResult;
     ALU ALU_CORE (
-        .SrcA(RD1),
-        .SrcB(ALU_B),
-        .ALU_control(ALUControl),
-        .ALU_result(ALUResult),
-        .zero(zero),
-        .negative(negative)
+        .SrcA       (EX_RD1),
+        .SrcB       (EX_ALU_B),
+        .ALU_control(EX_ALUControl),
+        .ALU_result (EX_ALUResult),
+        .zero       (EX_zero),
+        .negative   (EX_negative)
     );
 
-    /* =====================
-       Data Memory
-    ====================== */
-    wire [15:0] ReadData;
+    // =========================================================================
+    //  EX → MEM/WB Pipeline Register (EXME)
+    //  IMPORTANT: only bubble on load_use_stall. ctrl_taken (branch/jump) must
+    //  NOT bubble here — the jump instruction's own RegWrite/ResultSrc must
+    //  propagate so its link register write-back completes correctly.
+    // =========================================================================
+    reg [15:0] EXME_RD2;
+    reg [1:0]  EXME_ResultSrc;
+    reg        EXME_MemWrite;
+    reg [15:0] EXME_pc_plus2;
 
+    always @(posedge clk or posedge reset) begin
+        if (reset) begin
+            EXME_RegWrite  <= 1'b0;
+            EXME_MemWrite  <= 1'b0;
+            EXME_MemRead   <= 1'b0;
+            EXME_ResultSrc <= 2'b00;
+            EXME_rd        <= 3'b000;
+            EXME_ALUResult <= 16'h0000;
+            EXME_RD2       <= 16'h0000;
+            EXME_pc_plus2  <= 16'h0000;
+        end else if (ex_flush) begin
+            // Load-use stall: insert bubble
+            EXME_RegWrite  <= 1'b0;
+            EXME_MemWrite  <= 1'b0;
+            EXME_MemRead   <= 1'b0;
+            EXME_ResultSrc <= 2'b00;
+            EXME_rd        <= 3'b000;
+            EXME_ALUResult <= 16'h0000;
+            EXME_RD2       <= 16'h0000;
+            EXME_pc_plus2  <= 16'h0000;
+        end else begin
+            // Normal latch — JAL/JALR/branch results flow through here
+            EXME_RegWrite  <= EX_RegWrite;
+            EXME_MemWrite  <= EX_MemWrite;
+            EXME_MemRead   <= EX_MemRead;
+            EXME_ResultSrc <= EX_ResultSrc;
+            EXME_rd        <= EX_rd;
+            EXME_ALUResult <= EX_ALUResult;
+            EXME_RD2       <= EX_RD2;
+            EXME_pc_plus2  <= IFEX_pc_plus2;
+        end
+    end
+
+    // =========================================================================
+    //  MEM/WB STAGE
+    // =========================================================================
+    wire [15:0] MEM_ReadData;
     Data_Memory DMEM (
-        .clk(clk),
-        .mem_access_addr(ALUResult),
-        .mem_write_data(RD2),
-        .mem_write_en(MemWrite),
-        .mem_read(MemRead),
-        .mem_read_data(ReadData)
+        .clk            (clk),
+        .mem_access_addr(EXME_ALUResult),
+        .mem_write_data (EXME_RD2),
+        .mem_write_en   (EXME_MemWrite),
+        .mem_read       (EXME_MemRead),
+        .mem_read_data  (MEM_ReadData)
     );
 
-    /* =====================
-       Writeback
-    ====================== */
-    // Replace WB_MUX module with a simple assign so it works now
+    wire [15:0] MEM_WB_result;
     Writeback_mux WB_MUX (
-        .ALUResult(ALUResult),
-        .MemData(ReadData),
-        .PcPlus2(PC_plus2),
-        .MemtoReg(ResultSrc),
-        .WD3(WD3)
+        .ALUResult(EXME_ALUResult),
+        .MemData  (MEM_ReadData),
+        .PcPlus2  (EXME_pc_plus2),
+        .MemtoReg (EXME_ResultSrc),
+        .WD3      (MEM_WB_result)
     );
 
+    // =========================================================================
+    //  MEM/WB Pipeline Register (MEWB)
+    // =========================================================================
+    always @(posedge clk or posedge reset) begin
+        if (reset) begin
+            MEWB_RegWrite <= 1'b0;
+            MEWB_rd       <= 3'b000;
+            MEWB_WD3      <= 16'h0000;
+            MEWB_MemRead  <= 1'b0;
+        end else begin
+            MEWB_RegWrite <= EXME_RegWrite;
+            MEWB_rd       <= EXME_rd;
+            MEWB_WD3      <= MEM_WB_result;
+            MEWB_MemRead  <= EXME_MemRead;
+        end
+    end
 
-    /* =====================
-       Debug
-    ====================== */
-    assign dbg_pc         = PC;
-    assign dbg_instr      = instruction;
-    assign dbg_alu_result = ALUResult;
+    assign WB_RegWrite = MEWB_RegWrite;
+    assign WB_rd       = MEWB_rd;
+    assign WB_WD3      = MEWB_WD3;
+
+    // =========================================================================
+    //  IF/EX Register + PC Update
+    //  ctrl_taken flushes IFEX only (kills the wrongly-fetched instruction).
+    // =========================================================================
+    always @(posedge clk or posedge reset) begin
+        if (reset) begin
+            IF_PC        <= 16'h0000;
+            IFEX_pc      <= 16'h0000;
+            IFEX_pc_plus2<= 16'h0002;
+            IFEX_instr   <= 16'h0000;
+        end else begin
+            if (!pc_stall)
+                IF_PC <= PC_next;
+
+            if (ctrl_taken) begin
+                // Flush: kill the instruction that was fetched after the jump/branch
+                IFEX_instr    <= 16'h0000;
+                IFEX_pc       <= 16'h0000;
+                IFEX_pc_plus2 <= 16'h0000;
+            end else if (!ifex_stall) begin
+                IFEX_instr    <= IF_instr;
+                IFEX_pc       <= IF_PC;
+                IFEX_pc_plus2 <= IF_PC_plus2;
+            end
+            // else: hold on load-use stall
+        end
+    end
+
+    // =========================================================================
+    //  Debug outputs
+    // =========================================================================
+    assign dbg_pc         = IFEX_pc;
+    assign dbg_instr      = IFEX_instr;
+    assign dbg_alu_result = EX_ALUResult;
     assign dbg_x1         = rf_dbg_x1;
     assign dbg_x2         = rf_dbg_x2;
     assign dbg_x3         = rf_dbg_x3;
