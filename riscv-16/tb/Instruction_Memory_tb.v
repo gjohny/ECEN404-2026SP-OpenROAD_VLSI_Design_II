@@ -158,10 +158,10 @@ module Instruction_memory_tb;
         input [127:0] test_name;
         begin
             if (actual === expected) begin
-                $display("  ✅ PASS | %-35s | got 0x%04h", test_name, actual);
+                $display("   PASS | %-35s | got 0x%04h", test_name, actual);
                 pass_count = pass_count + 1;
             end else begin
-                $display("  ❌ FAIL | %-35s | expected 0x%04h got 0x%04h",
+                $display("   FAIL | %-35s | expected 0x%04h got 0x%04h",
                          test_name, expected, actual);
                 fail_count = fail_count + 1;
             end
@@ -174,10 +174,10 @@ module Instruction_memory_tb;
         input [127:0] test_name;
         begin
             if (actual === expected) begin
-                $display("  ✅ PASS | %-35s | got %0b", test_name, actual);
+                $display("   PASS | %-35s | got %0b", test_name, actual);
                 pass_count = pass_count + 1;
             end else begin
-                $display("  ❌ FAIL | %-35s | expected %0b got %0b",
+                $display("   FAIL | %-35s | expected %0b got %0b",
                          test_name, expected, actual);
                 fail_count = fail_count + 1;
             end
