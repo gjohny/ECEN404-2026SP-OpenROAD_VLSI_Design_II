@@ -35,7 +35,7 @@ module Data_memory_tb;
 
   // Waveform dump (uncomment to generate VCD)
   initial begin
-    $dumpfile("Data_memory.vcd");
+    $dumpfile("./tb/waveform/Data_memory.vcd");
     $dumpvars(0, Data_memory_tb);
   end
 

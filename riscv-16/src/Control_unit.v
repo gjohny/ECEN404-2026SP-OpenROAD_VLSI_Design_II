@@ -1,22 +1,22 @@
 `timescale 1ns / 1ps
 
 module Control_unit(
-    input  [2:0] opcode,      // primary opcode
-    input  [3:0] func,        // function field (R-type, I-type)
-    input        zero,        // ALU zero flag (for branches)
-    input       negative,    // ALU negative flag (for branches)
-    output reg        PCSrc,        // PC source select
-    output reg  [1:0] ResultSrc,    // result source select
-    output reg        MemWrite,     // memory write enable
+    input  [2:0] opcode,
+    input  [3:0] func,
+    input        zero,
+    input        negative,
+    output reg        PCSrc,
+    output reg  [1:0] ResultSrc,
+    output reg        MemWrite,
     output reg        MemRead,
-    output reg  [3:0] ALUControl,   // ALU operation select
-    output reg        ALUSrc,       // ALU source select
-    output reg  [2:0] ImmSrc,       // immediate type select
-    output reg        RegWrite      // register file write enable
+    output reg  [3:0] ALUControl,
+    output reg        ALUSrc,
+    output reg  [2:0] ImmSrc,
+    output reg        RegWrite
 );
 
     always @(*) begin
-        // Default values (NOP-safe)
+        // Safe defaults (NOP)
         PCSrc      = 1'b0;
         ResultSrc  = 2'b00;
         MemWrite   = 1'b0;
@@ -28,60 +28,44 @@ module Control_unit(
 
         case (opcode)
 
-            // ------------------------------------------------
-            // R-type: opcode = 000
-            // ------------------------------------------------
+            // ── R-type (000) ─────────────────────────────────────────────────
             3'b000: begin
                 RegWrite   = 1'b1;
                 ALUSrc     = 1'b0;
                 ResultSrc  = 2'b00;
-                ALUControl = func; // func directly controls ALU op
+                ALUControl = func;   // func bits map directly to ALU op
             end
 
-            // ------------------------------------------------
-            // I-type: opcode = 001
-            // (addi/xori/ori/andi/jalr)
-            // ------------------------------------------------
+            // ── I-type (001): ADDI / XORI / ORI / ANDI ───────────────────────
             3'b001: begin
-                ALUSrc     = 1'b1;
-                RegWrite   = 1'b1;
-                ResultSrc  = 2'b00;
-                ImmSrc     = 3'b001;
-
-                // Decode func field
+                ALUSrc    = 1'b1;
+                RegWrite  = 1'b1;
+                ResultSrc = 2'b00;
+                ImmSrc    = 3'b001;
                 case (func)
-                    4'b0000: ALUControl = 4'b0000; // ADDI
-                    4'b0001: ALUControl = 4'b0010; // XORI
-                    4'b0010: ALUControl = 4'b0011; // ORI
-                    4'b0011: ALUControl = 4'b0100; // ANDI
-                    4'b1101: begin                  // JALR
-                                ALUControl = 4'b0000; // ALU does addition (rs1 + imm)
-                                ImmSrc     = 3'b001; // JALR immediate format
-                                PCSrc      = 1'b1;
-                            end
+                    4'b0000: ALUControl = 4'b0000; // ADDI  → ADD
+                    4'b0001: ALUControl = 4'b0010; // XORI  → XOR
+                    4'b0010: ALUControl = 4'b0011; // ORI   → OR
+                    4'b0011: ALUControl = 4'b0100; // ANDI  → AND
                     default: ALUControl = 4'b0000;
                 endcase
             end
 
-            // ------------------------------------------------
-            // LW: opcode = 010
-            // ------------------------------------------------
+            // ── LW (010) ─────────────────────────────────────────────────────
             3'b010: begin
                 ALUSrc     = 1'b1;
                 RegWrite   = 1'b1;
                 MemRead    = 1'b1;
-                ResultSrc  = 2'b01; // writeback from memory
-                ALUControl = 4'b0000; // ADD base + offset
+                ResultSrc  = 2'b01;   // write-back from memory
+                ALUControl = 4'b0000; // ADD: base + offset
                 ImmSrc     = 3'b010;
             end
 
-            // ------------------------------------------------
-            // SW: opcode = 011
-            // ------------------------------------------------
+            // ── SW (011) ─────────────────────────────────────────────────────
             3'b011: begin
                 ALUSrc     = 1'b1;
                 MemWrite   = 1'b1;
-                ALUControl = 4'b0000; // ADD base + offset
+                ALUControl = 4'b0000; // ADD: base + offset
                 ImmSrc     = 3'b010;
             end
 
@@ -100,49 +84,40 @@ module Control_unit(
                     2'b10: PCSrc = negative;            // BLT
                     2'b11: PCSrc = (~negative) & (~zero);   // BGT
                 endcase
-
             end
 
-            // ------------------------------------------------
-            // JAL: opcode = 101
-            // ------------------------------------------------
+            // ── JAL (101) ────────────────────────────────────────────────────
             3'b101: begin
                 PCSrc      = 1'b1;
                 RegWrite   = 1'b1;
                 ALUSrc     = 1'b1;
-                ALUControl = 4'b0000; // Add PC + imm
-                ImmSrc     = 3'b101;
-                ResultSrc  = 2'b10; // Write back PC + 2
+                ALUControl = 4'b0000;
+                ImmSrc     = 3'b101;  // J-type: sign_ext(instr[15:6])
+                ResultSrc  = 2'b10;   // write back PC+2
             end
 
-            // ------------------------------------------------
-            // JR: opcode = 111
-            // ------------------------------------------------
+            // ── JALR (111) ───────────────────────────────────────────────────
             3'b111: begin
                 PCSrc      = 1'b1;
                 RegWrite   = 1'b1;
                 ALUSrc     = 1'b1;
-                ALUControl = 4'b0000; // Add rs1 + imm
-                ImmSrc     = 3'b110;
-                ResultSrc  = 2'b10; // Write back PC + 2
+                ALUControl = 4'b0000; // ADD: rs1 + imm
+                ImmSrc     = 3'b110;  // JR-type: sign_ext(instr[15:9])
+                ResultSrc  = 2'b10;   // write back PC+2
             end
 
-            // ------------------------------------------------
-            // U-TYPE: opcode = 110  (LUI)
-            // ------------------------------------------------
+            // ── LUI (110) ────────────────────────────────────────────────────
+            // FIX: was ImmSrc=3'b101 (J-type sign-ext, no shift).
+            //      Corrected to ImmSrc=3'b100 so Sign_Extender produces
+            //      {instr[15:6], 6'b000000} — the proper upper-immediate.
             3'b110: begin
-                PCSrc      = 1'b0;        // No branch
-                RegWrite   = 1'b1;        // Write to rd
-                ALUSrc     = 1'b1;        // Use immediate
-                ALUControl = 4'b0000;     // ADD (x0 + imm)
-                ImmSrc     = 3'b101;       // Select U-type immediate
-                ResultSrc  = 2'b00;        // Write ALU result
+                RegWrite   = 1'b1;
+                ALUSrc     = 1'b1;
+                ALUControl = 4'b0000; // ADD x0 + upper_imm
+                ImmSrc     = 3'b100;  // U-type: {imm[9:0], 6'b0}
+                ResultSrc  = 2'b00;
             end
 
-
-            // ------------------------------------------------
-            // Default (NOP)
-            // ------------------------------------------------
             default: begin
                 PCSrc      = 1'b0;
                 ResultSrc  = 2'b00;

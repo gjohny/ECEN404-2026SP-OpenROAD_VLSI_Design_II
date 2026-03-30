@@ -1,8 +1,109 @@
 VCD info: dumpfile ./tb/waveform/Data_memory.vcd opened for output.
-READ disabled -> 0x0000 (expect 0000)
-OK   addr=0 = 0x1111
-OK   addr=1 = 0x2222
-OK   addr=7 = 0xabcd
-Bypass now  -> 0xbeef (expect BEEF)
-Read-back   -> 0xbeef (expect BEEF)
-./tb/Data_memory_tb.v:92: $finish called at 121000 (1ps)
+OK   init: mem_read=0 -> mem_read_data=0000
+
+========================================
+          TESTING ADDRESS 0
+========================================
+OK   W-only: addr=0 output=0000
+OK   R-only: addr=0 data=0x1000
+OK   RW-both (bypass NOW): addr=0 = 0x2000
+OK   RW-both (read-back): addr=0 = 0x2000
+---- SUMMARY addr=0 ----
+Wrote 0x1000 in write-only mode (we=1, read=0). Output was 0x0000 because read is disabled.
+Then read-only mode (we=0, read=1) returned 0x1000, confirming the write to this address worked.
+With both enabled (we=1, read=1), tried writing 0x2000 and output immediately showed 0x2000 (bypass/write-through).
+After the clock edge, reading back returned 0x2000, so the bypass value was stored in memory.
+
+========================================
+          TESTING ADDRESS 1
+========================================
+OK   W-only: addr=1 output=0000
+OK   R-only: addr=1 data=0x1001
+OK   RW-both (bypass NOW): addr=1 = 0x2001
+OK   RW-both (read-back): addr=1 = 0x2001
+---- SUMMARY addr=1 ----
+Wrote 0x1001 in write-only mode (we=1, read=0). Output was 0x0000 because read is disabled.
+Then read-only mode (we=0, read=1) returned 0x1001, confirming the write to this address worked.
+With both enabled (we=1, read=1), tried writing 0x2001 and output immediately showed 0x2001 (bypass/write-through).
+After the clock edge, reading back returned 0x2001, so the bypass value was stored in memory.
+
+========================================
+          TESTING ADDRESS 2
+========================================
+OK   W-only: addr=2 output=0000
+OK   R-only: addr=2 data=0x1002
+OK   RW-both (bypass NOW): addr=2 = 0x2002
+OK   RW-both (read-back): addr=2 = 0x2002
+---- SUMMARY addr=2 ----
+Wrote 0x1002 in write-only mode (we=1, read=0). Output was 0x0000 because read is disabled.
+Then read-only mode (we=0, read=1) returned 0x1002, confirming the write to this address worked.
+With both enabled (we=1, read=1), tried writing 0x2002 and output immediately showed 0x2002 (bypass/write-through).
+After the clock edge, reading back returned 0x2002, so the bypass value was stored in memory.
+
+========================================
+          TESTING ADDRESS 3
+========================================
+OK   W-only: addr=3 output=0000
+OK   R-only: addr=3 data=0x1003
+OK   RW-both (bypass NOW): addr=3 = 0x2003
+OK   RW-both (read-back): addr=3 = 0x2003
+---- SUMMARY addr=3 ----
+Wrote 0x1003 in write-only mode (we=1, read=0). Output was 0x0000 because read is disabled.
+Then read-only mode (we=0, read=1) returned 0x1003, confirming the write to this address worked.
+With both enabled (we=1, read=1), tried writing 0x2003 and output immediately showed 0x2003 (bypass/write-through).
+After the clock edge, reading back returned 0x2003, so the bypass value was stored in memory.
+
+========================================
+          TESTING ADDRESS 4
+========================================
+OK   W-only: addr=4 output=0000
+OK   R-only: addr=4 data=0x1004
+OK   RW-both (bypass NOW): addr=4 = 0x2004
+OK   RW-both (read-back): addr=4 = 0x2004
+---- SUMMARY addr=4 ----
+Wrote 0x1004 in write-only mode (we=1, read=0). Output was 0x0000 because read is disabled.
+Then read-only mode (we=0, read=1) returned 0x1004, confirming the write to this address worked.
+With both enabled (we=1, read=1), tried writing 0x2004 and output immediately showed 0x2004 (bypass/write-through).
+After the clock edge, reading back returned 0x2004, so the bypass value was stored in memory.
+
+========================================
+          TESTING ADDRESS 5
+========================================
+OK   W-only: addr=5 output=0000
+OK   R-only: addr=5 data=0x1005
+OK   RW-both (bypass NOW): addr=5 = 0x2005
+OK   RW-both (read-back): addr=5 = 0x2005
+---- SUMMARY addr=5 ----
+Wrote 0x1005 in write-only mode (we=1, read=0). Output was 0x0000 because read is disabled.
+Then read-only mode (we=0, read=1) returned 0x1005, confirming the write to this address worked.
+With both enabled (we=1, read=1), tried writing 0x2005 and output immediately showed 0x2005 (bypass/write-through).
+After the clock edge, reading back returned 0x2005, so the bypass value was stored in memory.
+
+========================================
+          TESTING ADDRESS 6
+========================================
+OK   W-only: addr=6 output=0000
+OK   R-only: addr=6 data=0x1006
+OK   RW-both (bypass NOW): addr=6 = 0x2006
+OK   RW-both (read-back): addr=6 = 0x2006
+---- SUMMARY addr=6 ----
+Wrote 0x1006 in write-only mode (we=1, read=0). Output was 0x0000 because read is disabled.
+Then read-only mode (we=0, read=1) returned 0x1006, confirming the write to this address worked.
+With both enabled (we=1, read=1), tried writing 0x2006 and output immediately showed 0x2006 (bypass/write-through).
+After the clock edge, reading back returned 0x2006, so the bypass value was stored in memory.
+
+========================================
+          TESTING ADDRESS 7
+========================================
+OK   W-only: addr=7 output=0000
+OK   R-only: addr=7 data=0x1007
+OK   RW-both (bypass NOW): addr=7 = 0x2007
+OK   RW-both (read-back): addr=7 = 0x2007
+---- SUMMARY addr=7 ----
+Wrote 0x1007 in write-only mode (we=1, read=0). Output was 0x0000 because read is disabled.
+Then read-only mode (we=0, read=1) returned 0x1007, confirming the write to this address worked.
+With both enabled (we=1, read=1), tried writing 0x2007 and output immediately showed 0x2007 (bypass/write-through).
+After the clock edge, reading back returned 0x2007, so the bypass value was stored in memory.
+
+Data_Memory test complete.
+./tb/Data_memory_tb.v:173: $finish called at 331000 (1ps)

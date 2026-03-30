@@ -2,7 +2,6 @@
 `define PARAMETER_H_
 
 `define col   16
-`define row_d 8
+`define row_d 16
 
 `endif
-
