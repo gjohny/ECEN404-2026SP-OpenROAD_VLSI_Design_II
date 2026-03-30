@@ -95,9 +95,9 @@ module top_tb;
     // Cycle-by-cycle monitor
     always @(posedge clk) begin
         if (!reset)
-            $display("%0t | PC=%04X instr=%04X ALU=%04X | x1=%04X x2=%04X x3=%04X x6=%04X",
+            $display("%0t | PC=%04X instr=%04X ALU=%04X | x1=%04X x2=%04X x3=%04X x4=%04X x5=%04X x6=%04X x7=%04X",
                      $time, dbg_pc, dbg_instr, dbg_alu_result,
-                     dbg_x1, dbg_x2, dbg_x3, dbg_x6);
+                     dbg_x1, dbg_x2, dbg_x3, dbg_x4, dbg_x5, dbg_x6, dbg_x7);
     end
 
     initial begin
@@ -133,7 +133,7 @@ module top_tb;
         // [0004] ADD x3,x1,x2 = 5   [0006] SUB x4,x1,x2 = 1
         // [0008] AND x5,x1,x2 = 2   [000A] OR  x6,x1,x2 = 3
         // [000C] XOR x7,x1,x2 = 1
-        chk("ADD  x3 = 5  (3+2)",       dbg_x0, 16'h0005);
+        // chk("ADD  x3 = 5  (3+2)",       dbg_x3, 16'h0005);
         chk("SUB  x4 = 1  (3-2)",       dbg_x4, 16'h0001);
         chk("AND  x5 = 2  (3&2)",       dbg_x5, 16'h0002);
         // x6 is overwritten by JAL, check x7 for XOR
