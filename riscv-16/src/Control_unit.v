@@ -69,14 +69,19 @@ module Control_unit(
                 ImmSrc     = 3'b010;
             end
 
-            // ── Branch (100): BEQ / BNE / BLT / BGT ─────────────────────────
+            // ------------------------------------------------
+            // Branches: opcode = 100
+            // func = 00 (BEQ), 01 (BNE), 10 (BLT), 11 (BGT)
+            // ------------------------------------------------
             3'b100: begin
                 ALUControl = 4'b0001; // SUB for comparison
                 ImmSrc     = 3'b011;
-                case (func[1:0])
-                    2'b00: PCSrc = zero;                    // BEQ
-                    2'b01: PCSrc = ~zero;                   // BNE
-                    2'b10: PCSrc = negative;                // BLT
+
+                // Branch condition
+                case(func[1:0])
+                    2'b00: PCSrc = zero;                // BEQ
+                    2'b01: PCSrc = ~zero;               // BNE
+                    2'b10: PCSrc = negative;            // BLT
                     2'b11: PCSrc = (~negative) & (~zero);   // BGT
                 endcase
             end
