@@ -88,34 +88,9 @@ module top_tb;
     endtask
 
     initial begin
-        passed   = 0;
-        watchdog = 0;
-
-        // 1. Reset
-        reset = 1'b1;
-        #10;
-        @(posedge clk);
-        reset = 1'b0;   
-
-        $display("--- Starting Execution ---");
-
-
-
-        // 2. Monitoring Loop
-        while ((dbg_pc >> 1) < PROGRAM_WORDS && watchdog < 20) begin
-            @(posedge clk);
-            #1;  // allow register file & memory to update
-
-            $display("Time=%0t | PC=0x%04h | Instr=0x%04h | ALU=0x%04h | x1=0x%04h | x2=0x%04h | x3=0x%04h | zero=%b",
-                    $time, dbg_pc, dbg_instr, dbg_alu_result, dbg_x1, dbg_x2, dbg_x3, dut.ALU_CORE.zero);
-            
-
-            $display("STORE: addr=%h data=%h | MEM snapshot: [0]=%h [1]=%h [2]=%h \n\n",
-                    dut.DMEM.mem_access_addr,
-                    dut.DMEM.mem_write_data,
-                    dut.DMEM.memory[0],
-                    dut.DMEM.memory[1],
-                    dut.DMEM.memory[2]);
+        $dumpfile("./tb/waveform/top.vcd");
+        $dumpvars(0, top_tb);
+    end
 
     // Cycle-by-cycle monitor
     always @(posedge clk) begin
@@ -155,9 +130,6 @@ module top_tb;
 
         // --- R-type ---
         $display("\n--- R-type: ADD / SUB / AND / OR / XOR ---");
-        // [0004] ADD x3,x1,x2 = 5   [0006] SUB x4,x1,x2 = 1
-        // [0008] AND x5,x1,x2 = 2   [000A] OR  x6,x1,x2 = 3
-        // [000C] XOR x7,x1,x2 = 1
         // chk("ADD  x3 = 5  (3+2)",       dbg_x3, 16'h0005);
         chk("SUB  x4 = 1  (3-2)",       dbg_x4, 16'h0001);
         chk("AND  x5 = 2  (3&2)",       dbg_x5, 16'h0002);
