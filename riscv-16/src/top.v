@@ -12,9 +12,7 @@ module top (
     output wire [15:0] dbg_x1,
     output wire [15:0] dbg_x2,
     output wire [15:0] dbg_x3,
-    input  wire        load_mode,
-    input  wire        load_transfer,
-    input  wire [5:0]  load_ui,
+    input  wire [7:0]  load_ui,
     input  wire [7:0]  load_uio,
     output wire        load_ack
 );
@@ -35,18 +33,18 @@ module top (
     wire [15:0] IF_PC_plus2 = IF_PC + 16'd2;
     wire [15:0] IF_instr;
 
-Instruction_memory #(
-    .IMEM_WORDS(256)
-) IMEM (
-    .clk          (clk),
-    .pc           (IF_PC),
-    .instruction  (IF_instr),
-    .load_mode    (load_mode),
-    .load_transfer(load_transfer),
-    .load_ui      (load_ui),
-    .load_uio     (load_uio),
-    .load_ack     (load_ack)
-);
+    Instruction_memory #(
+        .IMEM_WORDS(256)
+    ) IMEM (
+        .clk          (clk),
+        .pc           (IF_PC),
+        .instruction  (IF_instr),
+        .load_mode    (load_ui[7]),   // extract mode from bit 7
+        .load_transfer(load_ui[6]),   // extract transfer ID from bit 6
+        .load_ui      (load_ui[5:0]), // data is bits 5:0
+        .load_uio     (load_uio),
+        .load_ack     (load_ack)
+    );
 
     // =========================================================================
     //  IF/EX Pipeline Register
@@ -143,6 +141,7 @@ Instruction_memory #(
 
     Register_file RF (
         .clk     (clk),
+        .reset   (reset),
         .RegWrite(WB_RegWrite),
         .A3      (WB_rd),
         .WD3     (WB_WD3),

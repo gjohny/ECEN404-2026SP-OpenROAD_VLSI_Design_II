@@ -1,6 +1,7 @@
 `timescale 1ns / 1ps
 module Register_file(
     input            clk,          // Clock
+    input            reset,
     // Write port
     input            RegWrite,     // Write enable
     input  [2:0]     A3,           // Destination register
@@ -28,7 +29,10 @@ module Register_file(
 
     // Synchronous write
     always @(posedge clk) begin
-        if (RegWrite && A3 != 3'b000)  // X0 is always 0
+        if (reset) begin
+            for(i = 0; i < 8; i = i + 1)
+                reg_array[i] <= 16'd0;
+        end else if (RegWrite && A3 != 3'b000)  // X0 is always 0
             reg_array[A3] <= WD3;
     end
 

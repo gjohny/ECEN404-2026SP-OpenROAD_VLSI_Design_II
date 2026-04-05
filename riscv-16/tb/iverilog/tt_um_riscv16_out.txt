@@ -1,4 +1,3 @@
-WARNING: ./src/Instruction_memory.v:19: $readmemh(src/program16.mem): Not enough words in the file for the requested range [0:255].
 VCD info: dumpfile ./tb/waveform/tt_um_riscv16.vcd opened for output.
 
 ═══════════════════════════════════════════════
@@ -13,35 +12,35 @@ TEST 1: uio_oe hardwired to 0xFF
 TEST 2: Reset behaviour
 ═══════════════════════════════════════════════
   ✅ PASS | C=0 during reset               | got 0x0000
-  ✅ PASS | PC non-zero after reset        | PC moved to 0x0004
+  ✅ PASS | PC non-zero after reset        | PC moved to 0x0002
   ✅ PASS | er mid-run reset               | got 0x0000
 
 ═══════════════════════════════════════════════
 TEST 3: Mux channel routing correctness
 ═══════════════════════════════════════════════
-  ✅ PASS | ches internal PC               | got 0x0022
+  ✅ PASS | ches internal PC               | got 0x0012
   ✅ PASS | s internal INSTR               | got 0x0000
   ✅ PASS | hes internal ALU               | got 0x0000
-  ✅ PASS | ches internal x1               | got 0x0006
-  ✅ PASS | ches internal x2               | got 0x0006
-  ✅ PASS | ches internal x3               | got 0x0006
+  ✅ PASS | ches internal x1               | got 0x0000
+  ✅ PASS | ches internal x2               | got 0x0000
+  ✅ PASS | ches internal x3               | got 0x0000
   ✅ PASS | default = 0xDEAD               | got 0xdead
   ✅ PASS | default = 0xDEAD               | got 0xdead
 
 ═══════════════════════════════════════════════
 TEST 4: Byte splitting correctness
 ═══════════════════════════════════════════════
-  ✅ PASS | ch0 uo_out  = 0x24 (low byte correct)
+  ✅ PASS | ch0 uo_out  = 0x14 (low byte correct)
   ✅ PASS | ch0 uio_out = 0x00 (high byte correct)
   ✅ PASS | ch1 uo_out  = 0x00 (low byte correct)
   ✅ PASS | ch1 uio_out = 0x00 (high byte correct)
   ✅ PASS | ch2 uo_out  = 0x00 (low byte correct)
   ✅ PASS | ch2 uio_out = 0x00 (high byte correct)
-  ✅ PASS | ch3 uo_out  = 0x06 (low byte correct)
+  ✅ PASS | ch3 uo_out  = 0x00 (low byte correct)
   ✅ PASS | ch3 uio_out = 0x00 (high byte correct)
-  ✅ PASS | ch4 uo_out  = 0x06 (low byte correct)
+  ✅ PASS | ch4 uo_out  = 0x00 (low byte correct)
   ✅ PASS | ch4 uio_out = 0x00 (high byte correct)
-  ✅ PASS | ch5 uo_out  = 0x06 (low byte correct)
+  ✅ PASS | ch5 uo_out  = 0x00 (low byte correct)
   ✅ PASS | ch5 uio_out = 0x00 (high byte correct)
 
 ═══════════════════════════════════════════════
@@ -73,20 +72,20 @@ TEST 9: Channel uniqueness sanity check
 ═══════════════════════════════════════════════
 
   [Snapshot] All channels:
-    ch0 -> 0x0056
+    ch0 -> 0x0036
     ch1 -> 0x0000
     ch2 -> 0x0000
-    ch3 -> 0x000c
-    ch4 -> 0x0010
-    ch5 -> 0x0010
+    ch3 -> 0x0000
+    ch4 -> 0x0000
+    ch5 -> 0x0000
   ✅ All 6 channels confirmed to track their internal wires
 
 ═══════════════════════════════════════════════
 FINAL REPORT
 ═══════════════════════════════════════════════
-  Total PASS: 109
+  Total PASS: 93
   Total FAIL: 0
   ✅ ALL TESTS PASSED
 ═══════════════════════════════════════════════
 
-./tb/tt_um_riscv16_tb.v:421: $finish called at 1789000 (1ps)
+./tb/tt_um_riscv16_tb.v:422: $finish called at 1759000 (1ps)

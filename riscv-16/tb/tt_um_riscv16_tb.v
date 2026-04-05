@@ -293,8 +293,9 @@ module tt_um_riscv16_tb;
             ui_in = 8'h00; #2;
             baseline = {uio_out, uo_out};
             // walk all combinations of upper bits with ch=0
-            for (pattern = 0; pattern < 32; pattern = pattern + 1) begin
-                ui_in = {pattern[4:0], 3'b000}; // vary [7:3], keep ch=0
+            for (pattern = 0; pattern < 16; pattern = pattern + 1) begin
+                // keep ui_in[7]=1 (RUN mode), vary ui_in[6:3], keep ch=0
+                ui_in = {1'b1, pattern[3:0], 3'b000};
                 #2;
                 noisy = {uio_out, uo_out};
                 baseline = internal_pc;
