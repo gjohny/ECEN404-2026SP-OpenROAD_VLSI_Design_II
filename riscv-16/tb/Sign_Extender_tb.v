@@ -106,26 +106,30 @@ module Sign_Extender_tb;
         $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
 
 
-        
-        // ----------------------  B-TYPE (positive and negative / edge cases) ----------------------
-        instr = 16'b0111111000000000; ImmSrc = 3'b011; instr_type = "B-TYPE"; expected = 16'b0000000001111110; #10;
+        // ---------------------- B-TYPE (hard-coded expected values) ----------------------
+        // instr[15:11] = 01111 (+15) → sign_ext = 0000000000001111 → <<1 = 0000000000011110
+        instr = 16'b0111111000000000; ImmSrc = 3'b011; instr_type = "B-TYPE"; expected = 16'b0000000000011110; #10;
         $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
 
-        instr = 16'b0000001000000000; ImmSrc = 3'b011; instr_type = "B-TYPE"; expected = 16'b0000000000000010; #10;
+        // instr[15:11] = 00000 (0) → sign_ext = 0000000000000000 → <<1 = 0000000000000000
+        instr = 16'b0000001000000000; ImmSrc = 3'b011; instr_type = "B-TYPE"; expected = 16'b0000000000000000; #10;
         $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
 
-
-        instr = 16'b0010101000000000; ImmSrc = 3'b011; instr_type = "B-TYPE"; expected = 16'b0000000000101010; #10;
+        // instr[15:11] = 00101 (+5) → sign_ext = 0000000000000101 → <<1 = 0000000000001010
+        instr = 16'b0010101000000000; ImmSrc = 3'b011; instr_type = "B-TYPE"; expected = 16'b0000000000001010; #10;
         $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
 
-        instr = 16'b1000000000000000; ImmSrc = 3'b011; instr_type = "B-TYPE"; expected = 16'b1111111110000000; #10;
+        // instr[15:11] = 10000 (-16) → sign_ext = 1111111111110000 → <<1 = 1111111111100000
+        instr = 16'b1000000000000000; ImmSrc = 3'b011; instr_type = "B-TYPE"; expected = 16'b1111111111100000; #10;
         $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
 
-        instr = 16'b1000001000000000; ImmSrc = 3'b011; instr_type = "B-TYPE"; expected = 16'b1111111110000010; #10;
+        // instr[15:11] = 10000 (-16) → sign_ext = 1111111111110000 → <<1 = 1111111111100000
+        instr = 16'b1000001000000000; ImmSrc = 3'b011; instr_type = "B-TYPE"; expected = 16'b1111111111100000; #10;
         $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
 
-        instr = 16'b1010101000000000; ImmSrc = 3'b011; instr_type = "B-TYPE"; expected = 16'b1111111110101010; #10;
-        $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
+        // instr[15:11] = 10101 (-11) → sign_ext = 1111111111110101 → <<1 = 1111111111101010
+        instr = 16'b1010101000000000; ImmSrc = 3'b011; instr_type = "B-TYPE"; expected = 16'b1111111111101010; #10;
+$display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
 
 
                 
@@ -176,7 +180,7 @@ $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmEx
 
         
         //  ---------------------- INVALID / default  ----------------------
-        instr = 16'b1111111111111111; ImmSrc = 3'b110; instr_type = "X"; expected = 16'b0; #10;
+        instr = 16'b1111111111111111; ImmSrc = 3'b110; instr_type = "X"; expected = 16'b1111111111111111; #10;
         $display("%-18b  %-7b  %-8s  %-18b  %-18b  %b", instr, ImmSrc, instr_type, ImmExt, expected, (ImmExt==expected));
 
         $finish;

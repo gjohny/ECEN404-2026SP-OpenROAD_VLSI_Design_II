@@ -1,73 +1,101 @@
 VCD info: dumpfile ./tb/waveform/top.vcd opened for output.
 
 ===============================================
-PHASE 1: LOAD MODE
+PHASE 1: LOAD PROGRAM THROUGH PINS
 ===============================================
-  [LOAD] 0x2901 — cycle 1 of 2
-  [LOAD] 0x2901 — cycle 2 of 2
+  Loading instr 0: ADDI x1, x0, 3 = 0x6081
   [ACK] received (addr=0)
-  [LOAD] 0x2901 — cycle 1 of 2
-  [LOAD] 0x2901 — cycle 2 of 2
+  Loading instr 1: ADDI x2, x0, 2 = 0x4101
   [ACK] received (addr=1)
-  [LOAD] 0x2901 — cycle 1 of 2
-  [LOAD] 0x2901 — cycle 2 of 2
+  Loading instr 2: ADD x0, x1, x2 = 0x2800
   [ACK] received (addr=2)
-  [LOAD] 0x3101 — cycle 1 of 2
-  [LOAD] 0x3101 — cycle 2 of 2
+  Loading instr 3: SUB x4, x1, x2 = 0x2A08
   [ACK] received (addr=3)
-  [LOAD] 0x0000 — cycle 1 of 2
-  [LOAD] 0x0000 — cycle 2 of 2
+  Loading instr 4: ADD x6, x1, x2 = 0x2B00
   [ACK] received (addr=4)
-  [LOAD] 0x0000 — cycle 1 of 2
-  [LOAD] 0x0000 — cycle 2 of 2
+  Loading instr 5: OR x3, x1, x2 = 0x2998
   [ACK] received (addr=5)
+  Loading instr 6: XOR x2, x1, x2 = 0x2910
+  [ACK] received (addr=6)
+  Loading instr 6: NOP = 0x0000
+  [ACK] received (addr=7)
+  Loading instr 7: NOP = 0x0000
+  [ACK] received (addr=8)
+
   IMEM check:
-    memory[0]=0x2901 (expect 0x2901)
-    memory[1]=0x2901 (expect 0x2901)
-    memory[2]=0x2901 (expect 0x2901)
-    memory[3]=0x3101 (expect 0x3101)
-    memory[4]=0x0000 (expect 0x0000)
-    memory[5]=0x0000 (expect 0x0000)
-    write_addr=6   (expect 6)
+    memory[0]=0x6081 (expect 0x6081)
+    memory[1]=0x4101 (expect 0x4101)
+    memory[2]=0x2800 (expect 0x2800)
+    memory[3]=0x2a08 (expect 0x2A08)
+    memory[4]=0x2b00 (expect 0x2B00)
+    memory[5]=0x2998 (expect 0x2998)
+    memory[6]=0x2910 (expect 0x2910)
+    memory[7]=0x0000 (expect 0x0000)
+    memory[8]=0x0000 (expect 0x0000)
+    write_addr=9   (expect 9)
+  PASS | uio_oe=0x00 during LOAD (bidir=inputs)
 
 ===============================================
-PHASE 2: RESET then RUN
+PHASE 2: RESET AND START EXECUTION
 ===============================================
-  PASS | PC=0 during reset                   | got 0x0000
+  PASS | uio_oe=0xFF during RUN (bidir=outputs)
+  PASS | PC=0 during reset via pin                | got 0x0000
 
 ===============================================
-PHASE 3: Execution trace
+PHASE 3: EXECUTION TRACE THROUGH PINS
 ===============================================
-  PC=0x0000 | INSTR=0x2901 | ALU=0x0001 | x1=0x0000 | x2=0x0000 | x3=0x0000
-  PC=0x0002 | INSTR=0x2901 | ALU=0x0002 | x1=0x0000 | x2=0x0000 | x3=0x0000
-  PC=0x0004 | INSTR=0x2901 | ALU=0x0003 | x1=0x0000 | x2=0x0000 | x3=0x0000
-  PC=0x0006 | INSTR=0x3101 | ALU=0x0004 | x1=0x0000 | x2=0x0001 | x3=0x0000
-  PC=0x0008 | INSTR=0x0000 | ALU=0x0000 | x1=0x0000 | x2=0x0002 | x3=0x0000
-  PC=0x000a | INSTR=0x0000 | ALU=0x0000 | x1=0x0000 | x2=0x0003 | x3=0x0000
-  PC=0x000c | INSTR=0x0000 | ALU=0x0000 | x1=0x0000 | x2=0x0004 | x3=0x0000
-  PC=0x000e | INSTR=0x0000 | ALU=0x0000 | x1=0x0000 | x2=0x0004 | x3=0x0000
-  PC=0x0010 | INSTR=0x0000 | ALU=0x0000 | x1=0x0000 | x2=0x0004 | x3=0x0000
-  PC=0x0012 | INSTR=0x0000 | ALU=0x0000 | x1=0x0000 | x2=0x0004 | x3=0x0000
-  PC=0x0014 | INSTR=0x0000 | ALU=0x0000 | x1=0x0000 | x2=0x0004 | x3=0x0000
-  PC=0x0016 | INSTR=0x0000 | ALU=0x0000 | x1=0x0000 | x2=0x0004 | x3=0x0000
-  PC=0x0018 | INSTR=0x0000 | ALU=0x0000 | x1=0x0000 | x2=0x0004 | x3=0x0000
-  PC=0x001a | INSTR=0x0000 | ALU=0x0000 | x1=0x0000 | x2=0x0004 | x3=0x0000
-  PC=0x001c | INSTR=0x0000 | ALU=0x0000 | x1=0x0000 | x2=0x0004 | x3=0x0000
-  PC=0x001e | INSTR=0x0000 | ALU=0x0000 | x1=0x0000 | x2=0x0004 | x3=0x0000
-  PC=0x0020 | INSTR=0x0000 | ALU=0x0000 | x1=0x0000 | x2=0x0004 | x3=0x0000
-  PC=0x0022 | INSTR=0x0000 | ALU=0x0000 | x1=0x0000 | x2=0x0004 | x3=0x0000
-  PC=0x0024 | INSTR=0x0000 | ALU=0x0000 | x1=0x0000 | x2=0x0004 | x3=0x0000
-  PC=0x0026 | INSTR=0x0000 | ALU=0x0000 | x1=0x0000 | x2=0x0004 | x3=0x0000
+  PC=0x0000 | INSTR=0x6081 | ALU=0x0003 | x1=0x0000 | x2=0x0000 | x3=0x0000 | x4=0x0000 | x6=0x0000
+  PC=0x0002 | INSTR=0x4101 | ALU=0x0002 | x1=0x0000 | x2=0x0000 | x3=0x0000 | x4=0x0000 | x6=0x0000
+  PC=0x0004 | INSTR=0x2800 | ALU=0x0005 | x1=0x0000 | x2=0x0000 | x3=0x0000 | x4=0x0000 | x6=0x0000
+  PC=0x0006 | INSTR=0x2a08 | ALU=0x0001 | x1=0x0003 | x2=0x0000 | x3=0x0000 | x4=0x0000 | x6=0x0000
+  PC=0x0008 | INSTR=0x2b00 | ALU=0x0005 | x1=0x0003 | x2=0x0002 | x3=0x0000 | x4=0x0000 | x6=0x0000
+  PC=0x000a | INSTR=0x2998 | ALU=0x0003 | x1=0x0003 | x2=0x0002 | x3=0x0000 | x4=0x0000 | x6=0x0000
+  PC=0x000c | INSTR=0x2910 | ALU=0x0001 | x1=0x0003 | x2=0x0002 | x3=0x0000 | x4=0x0001 | x6=0x0000
+  PC=0x000e | INSTR=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0002 | x3=0x0000 | x4=0x0001 | x6=0x0005
+  PC=0x0010 | INSTR=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0002 | x3=0x0003 | x4=0x0001 | x6=0x0005
+  PC=0x0012 | INSTR=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0001 | x3=0x0003 | x4=0x0001 | x6=0x0005
+  PC=0x0014 | INSTR=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0001 | x3=0x0003 | x4=0x0001 | x6=0x0005
+  PC=0x0016 | INSTR=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0001 | x3=0x0003 | x4=0x0001 | x6=0x0005
+  PC=0x0018 | INSTR=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0001 | x3=0x0003 | x4=0x0001 | x6=0x0005
+  PC=0x001a | INSTR=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0001 | x3=0x0003 | x4=0x0001 | x6=0x0005
+  PC=0x001c | INSTR=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0001 | x3=0x0003 | x4=0x0001 | x6=0x0005
+  PC=0x001e | INSTR=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0001 | x3=0x0003 | x4=0x0001 | x6=0x0005
+  PC=0x0020 | INSTR=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0001 | x3=0x0003 | x4=0x0001 | x6=0x0005
+  PC=0x0022 | INSTR=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0001 | x3=0x0003 | x4=0x0001 | x6=0x0005
+  PC=0x0024 | INSTR=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0001 | x3=0x0003 | x4=0x0001 | x6=0x0005
+  PC=0x0026 | INSTR=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0001 | x3=0x0003 | x4=0x0001 | x6=0x0005
+
+  Direct internal wire check:
+    DUT.CPU.dbg_x1 = 0x0003 (expect 0x0003)
+    DUT.CPU.dbg_x2 = 0x0001 (expect 0x0002)
+    DUT.CPU.dbg_x3 = 0x0003 (expect 0x0003)
+    DUT.CPU.dbg_x4 = 0x0001 (expect 0x0001)
+    DUT.CPU.dbg_x5 = 0x0000 (expect 0x0000)
+    DUT.CPU.dbg_x6 = 0x0005 (expect 0x0005)
 
 ===============================================
-PHASE 4: Register checks
+PHASE 4: CHECK ALL REGISTER VALUES THROUGH PINS
 ===============================================
-  PASS | x1=0 untouched                      | got 0x0000
-  PASS | x2=4 after instructions             | got 0x0004
-  PASS | x3=0 untouched                      | got 0x0000
+  PASS | x1=3 after ADDI x1,x0,3                  | got 0x0003
+  PASS | x2=1 after XOR x2,x1,x2 (3^2=1)          | got 0x0001
+  PASS | x3=3 after OR x3,x1,x2 (3|2=3)           | got 0x0003
+  PASS | x4=1 after SUB x4,x1,x2 (3-2=1)          | got 0x0001
+  PASS | x6=5 after ADD x6,x1,x2 (3+2=5)          | got 0x0005
+
+  INFO | x0 hardwired to 0 verification:
+         ADD x0,x1,x2 computed 3+2=5
+         but x0 stays 0 (write discarded by register file)
+         x1 and x2 unchanged confirms correct operation
+
+  Final register snapshot:
+    x1 = 0x0003 (expect 0x0003)
+    x2 = 0x0001 (expect 0x0002)
+    x3 = 0x0003 (expect 0x0003)
+    x4 = 0x0001 (expect 0x0001)
+    x6 = 0x0005 (expect 0x0005)
 
 ===============================================
-FINAL: pass=4 fail=0
+FINAL: pass=6 fail=0
 ===============================================
 
-./tb/top_tb.v:265: $finish called at 596000 (1ps)
+./tb/top_tb.v:360: $finish called at 1067000 (1ps)

@@ -12,6 +12,9 @@ module top (
     output wire [15:0] dbg_x1,
     output wire [15:0] dbg_x2,
     output wire [15:0] dbg_x3,
+    output wire [15:0] dbg_x4,
+    output wire [15:0] dbg_x5,
+    output wire [15:0] dbg_x6,
     input  wire [7:0]  load_ui,
     input  wire [7:0]  load_uio,
     output wire        load_ack
@@ -62,7 +65,7 @@ module top (
     wire [2:0] EX_rs1_r = IFEX_instr[15:13];
     wire [2:0] EX_rs2_r = IFEX_instr[12:10];
     wire [2:0] EX_rd_r  = IFEX_instr[9:7];
-    wire [2:0] EX_rs1_i = IFEX_instr[9:7];
+    wire [2:0] EX_rs1_i = IFEX_instr[12:10];
     wire [2:0] EX_rd_i  = IFEX_instr[9:7];
     wire [2:0] EX_rs1_s = IFEX_instr[8:6];
     wire [2:0] EX_rs2_s = IFEX_instr[5:3];
@@ -138,6 +141,7 @@ module top (
 
     wire [15:0] EX_RD1_raw, EX_RD2_raw;
     wire [15:0] rf_dbg_x1, rf_dbg_x2, rf_dbg_x3;
+    wire [15:0] rf_dbg_x4, rf_dbg_x5, rf_dbg_x6;
 
     Register_file RF (
         .clk     (clk),
@@ -151,7 +155,10 @@ module top (
         .RD2     (EX_RD2_raw),
         .dbg_x1  (rf_dbg_x1),
         .dbg_x2  (rf_dbg_x2),
-        .dbg_x3  (rf_dbg_x3)
+        .dbg_x3  (rf_dbg_x3),
+        .dbg_x4  (rf_dbg_x4), 
+        .dbg_x5  (rf_dbg_x5), 
+        .dbg_x6  (rf_dbg_x6) 
     );
 
     // =========================================================================
@@ -351,5 +358,8 @@ module top (
     assign dbg_x1         = rf_dbg_x1;
     assign dbg_x2         = rf_dbg_x2;
     assign dbg_x3         = rf_dbg_x3;
+    assign dbg_x4         = rf_dbg_x4;
+    assign dbg_x5         = rf_dbg_x5; 
+    assign dbg_x6         = rf_dbg_x6;
 
 endmodule

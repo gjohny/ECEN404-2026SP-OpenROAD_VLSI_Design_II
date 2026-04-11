@@ -65,9 +65,9 @@ module tt_um_riscv16 (
     input  wire       clk,
     input  wire       rst_n
 );
-    // ui_in[7] = 0 → LOAD mode
-    // ui_in[7] = 1 → RUN  mode
-    wire run_mode = ui_in[7];
+    // ui_in[7] = 1 → LOAD mode
+    // ui_in[7] = 0 → RUN  mode
+    wire run_mode = ~ui_in[7];
 
     // LOAD: bidir = inputs
     // RUN:  bidir = outputs
@@ -77,6 +77,7 @@ module tt_um_riscv16 (
 
     wire [15:0] dbg_pc, dbg_instr, dbg_alu_result;
     wire [15:0] dbg_x1, dbg_x2, dbg_x3;
+    wire [15:0] dbg_x4, dbg_x5, dbg_x6;
     wire        load_ack;
 
     // LOAD mode pin mapping:
@@ -97,6 +98,9 @@ module tt_um_riscv16 (
         .dbg_x1        (dbg_x1),
         .dbg_x2        (dbg_x2),
         .dbg_x3        (dbg_x3),
+        .dbg_x4        (dbg_x4),
+        .dbg_x5        (dbg_x5),
+        .dbg_x6        (dbg_x6),
         .load_ui  (ui_in[7:0]),   // full 8 bits — mode + transfer + data
         .load_uio (uio_in[7:0]),
         .load_ack (load_ack)
@@ -111,6 +115,8 @@ module tt_um_riscv16 (
             3'd3: dbg_word = dbg_x1;
             3'd4: dbg_word = dbg_x2;
             3'd5: dbg_word = dbg_x3;
+            3'd6: dbg_word = dbg_x4;
+            3'd7: dbg_word = dbg_x6;
             default: dbg_word = 16'hDEAD;
         endcase
     end
