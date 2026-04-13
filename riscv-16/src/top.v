@@ -64,16 +64,23 @@ module top(
     wire [2:0] EX_rs1_r = IFEX_instr[15:13];
     wire [2:0] EX_rs2_r = IFEX_instr[12:10];
     wire [2:0] EX_rd_r  = IFEX_instr[9:7];
-    wire [2:0] EX_rs1_i = IFEX_instr[9:7];
+
+    wire [2:0] EX_rs1_i = IFEX_instr[12:10];
     wire [2:0] EX_rd_i  = IFEX_instr[9:7];
+
     wire [2:0] EX_rs1_s = IFEX_instr[8:6];
     wire [2:0] EX_rs2_s = IFEX_instr[5:3];
+
     wire [2:0] EX_rs1_l = IFEX_instr[8:6];
     wire [2:0] EX_rd_l  = IFEX_instr[5:3];
+
     wire [2:0] EX_rs1_b = IFEX_instr[10:8];
     wire [2:0] EX_rs2_b = IFEX_instr[7:5];
+
     wire [2:0] EX_rd_u  = IFEX_instr[5:3];
+
     wire [2:0] EX_rd_j  = IFEX_instr[5:3];
+
     wire [2:0] EX_rs1_jr = IFEX_instr[7:5];
     wire [2:0] EX_rd_jr  = IFEX_instr[5:3];
 

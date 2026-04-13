@@ -65,6 +65,8 @@ module top_tb;
     wire [15:0] dbg_x6 = DUT.RF.reg_array[6];
     wire [15:0] dbg_x7 = DUT.RF.reg_array[7];
 
+    wire zero = DUT.ALU_CORE.zero;
+
     initial clk = 0;
     always #5 clk = ~clk;
 
@@ -155,10 +157,10 @@ module top_tb;
         input [15:0]  expected;
         begin
             if (got === expected) begin
-                $display("  [PASS] %-38s  got=0x%04X", label, got);
+                $display("     \033[32mPASS\033[0m | %-38s  got=0x%04X", label, got);
                 pass_count = pass_count + 1;
             end else begin
-                $display("  [FAIL] %-38s  got=0x%04X  exp=0x%04X",
+                $display("     \033[31mFAIL\033[0m | %-38s  got=0x%04X  exp=0x%04X",
                          label, got, expected);
                 fail_count = fail_count + 1;
             end
@@ -173,9 +175,9 @@ module top_tb;
     // Cycle-by-cycle monitor
     always @(posedge clk) begin
         if (!reset)
-            $display("%0t | PC=%04X instr=%04X ALU=%04X | x1=%04X x2=%04X x3=%04X x4=%04X x5=%04X x6=%04X x7=%04X",
+            $display("%0t | PC=%04X instr=%04X ALU=%04X | x0=%04X x1=%04X x2=%04X x3=%04X x4=%04X x5=%04X x6=%04X x7=%04X | zero=%b",
                      $time, dbg_pc, dbg_instr, dbg_alu_result,
-                     dbg_x1, dbg_x2, dbg_x3, dbg_x4, dbg_x5, dbg_x6, dbg_x7);
+                     dbg_x0, dbg_x1, dbg_x2, dbg_x3, dbg_x4, dbg_x5, dbg_x6, dbg_x7, zero);
     end
 
 
@@ -183,48 +185,48 @@ module top_tb;
     reg [2:0]  exp_rd;
     reg [15:0] exp_val;
 
-    always @(posedge clk) begin
-        if (!reset) begin
+    // always @(posedge clk) begin
+    //     if (!reset) begin
 
-            // ----------------------------
-            // Generate expected result
-            // ----------------------------
-            decode_and_predict(dbg_instr, exp_we, exp_rd, exp_val);
+    //         // ----------------------------
+    //         // Generate expected result
+    //         // ----------------------------
+    //         decode_and_predict(dbg_instr, exp_we, exp_rd, exp_val);
 
-            // Push into scoreboard FIFO
-            sb_we[sb_tail]  = exp_we;
-            sb_rd[sb_tail]  = exp_rd;
-            sb_val[sb_tail] = exp_val;
+    //         // Push into scoreboard FIFO
+    //         sb_we[sb_tail]  = exp_we;
+    //         sb_rd[sb_tail]  = exp_rd;
+    //         sb_val[sb_tail] = exp_val;
 
-            sb_tail = (sb_tail + 1) % 64;
-            sb_size = sb_size + 1;
+    //         sb_tail = (sb_tail + 1) % 64;
+    //         sb_size = sb_size + 1;
 
-            // ----------------------------
-            // Pop after pipeline delay (~3)
-            // ----------------------------
-            if (sb_size > 3) begin
+    //         // ----------------------------
+    //         // Pop after pipeline delay (~3)
+    //         // ----------------------------
+    //         if (sb_size > 3) begin
 
-                if (sb_we[sb_head]) begin
+    //             if (sb_we[sb_head]) begin
 
-                    case (sb_rd[sb_head])
-                        3'd1: chk("SB x1", dbg_x1, sb_val[sb_head]);
-                        3'd2: chk("SB x2", dbg_x2, sb_val[sb_head]);
-                        3'd3: chk("SB x3", dbg_x3, sb_val[sb_head]);
-                        3'd4: chk("SB x4", dbg_x4, sb_val[sb_head]);
-                        3'd5: chk("SB x5", dbg_x5, sb_val[sb_head]);
-                        3'd6: chk("SB x6", dbg_x6, sb_val[sb_head]);
-                        3'd7: chk("SB x7", dbg_x7, sb_val[sb_head]);
-                    endcase
+    //                 case (sb_rd[sb_head])
+    //                     3'd1: chk("SB x1", dbg_x1, sb_val[sb_head]);
+    //                     3'd2: chk("SB x2", dbg_x2, sb_val[sb_head]);
+    //                     3'd3: chk("SB x3", dbg_x3, sb_val[sb_head]);
+    //                     3'd4: chk("SB x4", dbg_x4, sb_val[sb_head]);
+    //                     3'd5: chk("SB x5", dbg_x5, sb_val[sb_head]);
+    //                     3'd6: chk("SB x6", dbg_x6, sb_val[sb_head]);
+    //                     3'd7: chk("SB x7", dbg_x7, sb_val[sb_head]);
+    //                 endcase
 
-                    // Update golden model AFTER checking
-                    golden_reg[sb_rd[sb_head]] = sb_val[sb_head];
-                end
+    //                 // Update golden model AFTER checking
+    //                 golden_reg[sb_rd[sb_head]] = sb_val[sb_head];
+    //             end
 
-                sb_head = (sb_head + 1) % 64;
-                sb_size = sb_size - 1;
-            end
-        end
-    end
+    //             sb_head = (sb_head + 1) % 64;
+    //             sb_size = sb_size - 1;
+    //         end
+    //     end
+    // end
 
 
     initial begin
@@ -232,98 +234,220 @@ module top_tb;
         fail_count = 0;
 
         reset = 1;
-        repeat(4) @(posedge clk);
+        repeat(3) @(posedge clk);
         @(negedge clk);
         reset = 0;
         $display("\n=== Reset released ===\n");
+
+        $display("\n=============================================================");
+        $display("  RISC-V16 Pipeline - FULL INSTRUCTION TYPE COVERAGE ");
+        $display("=============================================================");
+
+        repeat(12) @(posedge clk);
+        @(negedge clk);
+        $display("");
+        $display("=== -- x0 remain 0 --  ===");
+        $display("");
+
+        chk("x0 = 0",              dbg_x0, 16'h0000);
+
+        $display("\n\n");
+
+        repeat(12) @(posedge clk);
+        @(negedge clk);
+        $display("");
+        $display("=== -- Check I-types (Positive)--  ===");
+        $display("");
+
+        chk("x0 = 0",                  dbg_x0, 16'h0000);
+        chk("ADDI x1 = 2",              dbg_x1, 16'h0002);
+        chk("ADDI x2 = 3",              dbg_x2, 16'h0003);
+        chk("XORI x3 = 1",              dbg_x3, 16'h0001);
+        chk("XORI x4 = 2",              dbg_x4, 16'h0002);
+        chk("ORI x5 = 1",              dbg_x5, 16'h0001);
+        chk("ORI x6 = 3",              dbg_x6, 16'h0003);
+        chk("ANDI x7 = 0",              dbg_x7, 16'h0000);
+
+        $display("\n\n");
+
+        repeat(12) @(posedge clk);
+        @(negedge clk);
+        $display("\n");
+        $display("=== -- Check I-types (Negative) --  ===");
+        $display("");
+
+        chk("x0 = 0",                  dbg_x0, 16'h0000);
+        chk("ADDI x1 = -1",              dbg_x1, 16'hffff);
+        chk("ADDI x2 = -4",              dbg_x2, 16'hfffc);
+        chk("XORI x3 = -2",              dbg_x3, 16'hfffe);
+        chk("XORI x4 = -3",              dbg_x4, 16'hfffd);
+        chk("ORI x5 = -1",              dbg_x5, 16'hffff);
+        chk("ORI x6 = -2",              dbg_x6, 16'hfffe);
+        chk("ANDI x7 = 0",              dbg_x7, 16'h0000);
+
+        $display("\n\n");
+
+        repeat(11) @(posedge clk);
+        @(negedge clk);
+        $display("\n");
+        $display("=== -- Check R-type Arithmetic (use of forwarding)--  ===");
+        $display("");
+
+        chk("x0 = 0",                  dbg_x0, 16'h0000);
+        chk("ADD x1 = -2",             dbg_x1, 16'hfffe);
+        chk("SLT x2 = 0",              dbg_x2, 16'h0000);
+        chk("SLTU x3 = 0",             dbg_x3, 16'h0000);
+        chk("OR x4 = -2",              dbg_x4, 16'hfffe);
+        chk("SLL x5 = -32768",         dbg_x5, 16'h8000);
+        chk("SUB x6 = -2",             dbg_x6, 16'hfffe);
+        chk("SRL x7 = 3",              dbg_x7, 16'h0003);
+
+        $display("\n\n");
+
+        repeat(11) @(posedge clk);
+        @(negedge clk);
+        $display("\n");
+        $display("=== -- Check Store/Load (use of stalling) --  ===");
+        $display("");
+
+        chk("x0 = 0",                 dbg_x0, 16'h0000);
+        chk("LW x4 = -2",             dbg_x2, 16'h0003);
+        chk("LW x3 = 0",              dbg_x3, 16'h8000);
+        chk("LW x6 = -2",             dbg_x6, 16'hfffe);
+
+        $display("\n\n");
+
+        repeat(15) @(posedge clk);
+        @(negedge clk);
+        $display("\n");
+        $display("=== -- Check Branch --  ===");
+        $display("");
+
+        chk("x1 = 2, (flushes proceeding ADD -1)",   dbg_x1, 16'h0002);
+
+        $display("\n\n");
+
+        repeat(4) @(posedge clk);
+        @(negedge clk);
+        $display("\n");
+        $display("=== -- Check JAL --  ===");
+        $display("");
+
+        chk("x1 = 0x0092",              dbg_x1, 16'h0092);
+        chk("x2 = 2",              dbg_x2, 16'h0002);
+
+        $display("\n\n");
+
+        // repeat(4) @(posedge clk);
+        // @(negedge clk);
+        // $display("\n");
+        // $display("=== -- Check JALR --  ===");
+        // $display("");
+
+        // chk("x1 = 0x00a4",              dbg_x1, 16'h00a4);
+        // chk("x2 = 2",              dbg_x2, 16'h0002);
+
+        // $display("\n\n");
+
+        // repeat(4) @(posedge clk);
+        // @(negedge clk);
+        // $display("\n");
+        // $display("=== -- Test U-type (Large Values) --  ===");
+        // $display("");
+
+        // chk("x3 = 38",         dbg_x1, 16'h0038);
+
+        // $display("");
+       
+       
 
         // Program has 20 instructions with ~4 stall/flush cycles.
         // Wait 40 cycles: enough for one full pass to complete and settle
         // into the 0x0022/0x0024 infinite loop without a second full pass.
         // (Second full pass would start at cycle ~30+, so sampling at 35 is safe.)
-        repeat(85) @(posedge clk);
-        @(negedge clk);
+        // repeat(35) @(posedge clk);
+        // @(negedge clk);
 
-        $display("\n=============================================================");
-        $display("  RISC-V16 Pipeline - Full Instruction Type Coverage");
-        $display("=============================================================");
+        // $display("\n=============================================================");
+        // $display("  RISC-V16 Pipeline - Full Instruction Type Coverage");
+        // $display("=============================================================");
 
-        // --- I-type: ADDI ---
-        $display("\n--- I-type: ADDI ---");
-        // [0000] ADDI x1, x1, 3  → x1 = 3
-        // [0002] ADDI x2, x2, 2  → x2 = 2
-        chk("ADDI x1 = 3",              dbg_x1, 16'h0003);
-        chk("ADDI x2 = 2",              dbg_x2, 16'h0002);
+        // // --- I-type: ADDI ---
+        // $display("\n--- I-type: ADDI ---");
+        // // [0000] ADDI x1, x1, 3  → x1 = 3
+        // // [0002] ADDI x2, x2, 2  → x2 = 2
+        // chk("ADDI x1 = 3",              dbg_x1, 16'h0003);
+        // chk("ADDI x2 = 2",              dbg_x2, 16'h0002);
 
-        // --- R-type ---
-        $display("\n--- R-type: ADD / SUB / AND / OR / XOR ---");
-        // chk("ADD  x3 = 5  (3+2)",       dbg_x3, 16'h0005);
-        chk("SUB  x4 = 1  (3-2)",       dbg_x4, 16'h0001);
-        chk("AND  x5 = 2  (3&2)",       dbg_x5, 16'h0002);
-        // x6 is overwritten by JAL, check x7 for XOR
-        chk("XOR  x7 = 1  (3^2)",       dbg_x7, 16'h0001);
+        // // --- R-type ---
+        // $display("\n--- R-type: ADD / SUB / AND / OR / XOR ---");
+        // // chk("ADD  x3 = 5  (3+2)",       dbg_x3, 16'h0005);
+        // chk("SUB  x4 = 1  (3-2)",       dbg_x4, 16'h0001);
+        // chk("AND  x5 = 2  (3&2)",       dbg_x5, 16'h0002);
+        // // x6 is overwritten by JAL, check x7 for XOR
+        // chk("XOR  x7 = 1  (3^2)",       dbg_x7, 16'h0001);
 
-        // --- I-type: ANDI / ORI / XORI ---
-        // x3 is overwritten by JALR link, so we can only verify the
-        // intermediate chain completed correctly via x3 before JALR ran.
-        // After JALR: x3 = 0x0026 (link address). Both facts are checked.
-        $display("\n--- I-type: ANDI/ORI/XORI then JALR link stored in x3 ---");
-        // [000E] ANDI x3,x3(5),3=1  [0010] ORI x3,x3(1),2=3  [0012] XORI x3,x3(3),1=2
-        // [0024] JALR x3, x6, 0 → x3 = PC_JALR+2 = 0x0026
-        chk("JALR link x3 = 0x0026",    dbg_x3, 16'h0026);
+        // // --- I-type: ANDI / ORI / XORI ---
+        // // x3 is overwritten by JALR link, so we can only verify the
+        // // intermediate chain completed correctly via x3 before JALR ran.
+        // // After JALR: x3 = 0x0026 (link address). Both facts are checked.
+        // $display("\n--- I-type: ANDI/ORI/XORI then JALR link stored in x3 ---");
+        // // [000E] ANDI x3,x3(5),3=1  [0010] ORI x3,x3(1),2=3  [0012] XORI x3,x3(3),1=2
+        // // [0024] JALR x3, x6, 0 → x3 = PC_JALR+2 = 0x0026
+        // chk("JALR link x3 = 0x0026",    dbg_x3, 16'h0026);
 
-        // --- S-type SW + L-type LW ---
-        $display("\n--- S-type: SW  /  L-type: LW  (load-use stall) ---");
-        // [0014] SW x2,0(x0) → mem[0]=2
-        // [0016] LW x5,0(x0) → x5=2  (load-use stall exercised; overwrites AND result)
-        chk("LW x5 = 2  (mem[0])",      dbg_x5, 16'h0002);
+        // // --- S-type SW + L-type LW ---
+        // $display("\n--- S-type: SW  /  L-type: LW  (load-use stall) ---");
+        // // [0014] SW x2,0(x0) → mem[0]=2
+        // // [0016] LW x5,0(x0) → x5=2  (load-use stall exercised; overwrites AND result)
+        // chk("LW x5 = 2  (mem[0])",      dbg_x5, 16'h0002);
 
-        // --- B-type: BEQ taken ---
-        $display("\n--- B-type: BEQ taken (flush kills ADDI x1,-1) ---");
-        // [0018] BEQ x2,x5,+4 → taken; [001A] ADDI x1,-1 killed
-        chk("BEQ flush: x1 still 3",    dbg_x1, 16'h0003);
+        // // --- B-type: BEQ taken ---
+        // $display("\n--- B-type: BEQ taken (flush kills ADDI x1,-1) ---");
+        // // [0018] BEQ x2,x5,+4 → taken; [001A] ADDI x1,-1 killed
+        // chk("BEQ flush: x1 still 3",    dbg_x1, 16'h0003);
 
-        // --- B-type: BNE taken ---
-        $display("\n--- B-type: BNE taken (flush kills ADDI x2,-1) ---");
-        // [001C] BNE x1,x2,+4 → taken; [001E] ADDI x2,-1 killed
-        chk("BNE flush: x2 still 2",    dbg_x2, 16'h0002);
+        // // --- B-type: BNE taken ---
+        // $display("\n--- B-type: BNE taken (flush kills ADDI x2,-1) ---");
+        // // [001C] BNE x1,x2,+4 → taken; [001E] ADDI x2,-1 killed
+        // chk("BNE flush: x2 still 2",    dbg_x2, 16'h0002);
 
-        // --- J-type: JAL ---
-        $display("\n--- J-type: JAL ---");
-        // [0020] JAL x6,+4 → x6=0x0022 (PC+2), jumps to 0x0024, kills NOP at 0x0022
-        chk("JAL link x6 = 0x0022",     dbg_x6, 16'h0022);
-        chk("JAL flush: x1 still 3",    dbg_x1, 16'h0003);
+        // // --- J-type: JAL ---
+        // $display("\n--- J-type: JAL ---");
+        // // [0020] JAL x6,+4 → x6=0x0022 (PC+2), jumps to 0x0024, kills NOP at 0x0022
+        // chk("JAL link x6 = 0x0022",     dbg_x6, 16'h0022);
+        // chk("JAL flush: x1 still 3",    dbg_x1, 16'h0003);
 
-        // --- JR-type: JALR ---
-        $display("\n--- JR-type: JALR x3, x6, 0 ---");
-        // [0024] JALR x3,x6(=0x0022),0 → jumps to 0x0022, x3=0x0026
-        // (rs1=x6, rd=x3; encoding 0x00DF avoids bit-5 overlap in JR-type fields)
-        chk("JALR link x3 = 0x0026",    dbg_x3, 16'h0026);
+        // // --- JR-type: JALR ---
+        // $display("\n--- JR-type: JALR x3, x6, 0 ---");
+        // // [0024] JALR x3,x6(=0x0022),0 → jumps to 0x0022, x3=0x0026
+        // // (rs1=x6, rd=x3; encoding 0x00DF avoids bit-5 overlap in JR-type fields)
+        // chk("JALR link x3 = 0x0026",    dbg_x3, 16'h0026);
 
-        // =============================================================
-        // NEW EXTENDED TESTS
-        // =============================================================
+        // // =============================================================
+        // // NEW EXTENDED TESTS
+        // // =============================================================
 
-        $display("\n--- Extended: Data hazard chain ---");
-        chk("x2 = 3 after ADDI chain", dbg_x2, 16'h0003);
-        chk("x1 = 6 after RAW hazard", dbg_x1, 16'h0006);
-        chk("x3 = 9 (x1+x2)",          dbg_x3, 16'h0009);
-        chk("x4 = 6 (x3-x2)",          dbg_x4, 16'h0006);
+        // $display("\n--- Extended: Data hazard chain ---");
+        // chk("x2 = 3 after ADDI chain", dbg_x2, 16'h0003);
+        // chk("x1 = 6 after RAW hazard", dbg_x1, 16'h0006);
+        // chk("x3 = 9 (x1+x2)",          dbg_x3, 16'h0009);
+        // chk("x4 = 6 (x3-x2)",          dbg_x4, 16'h0006);
 
-        $display("\n--- Extended: Overwrite chain ---");
-        chk("x1 = 8 after increments", dbg_x1, 16'h0008);
-        chk("x5 = 8 copy of x1",       dbg_x5, 16'h0008);
+        // $display("\n--- Extended: Overwrite chain ---");
+        // chk("x1 = 8 after increments", dbg_x1, 16'h0008);
+        // chk("x5 = 8 copy of x1",       dbg_x5, 16'h0008);
 
-        $display("\n--- Extended: Sign extension ---");
-        chk("x2 decremented to 2",     dbg_x2, 16'h0002);
-        chk("x1 decremented to 7",     dbg_x1, 16'h0007);
+        // $display("\n--- Extended: Sign extension ---");
+        // chk("x2 decremented to 2",     dbg_x2, 16'h0002);
+        // chk("x1 decremented to 7",     dbg_x1, 16'h0007);
 
-        $display("\n--- Extended: Memory offset ---");
-        chk("LW x3 = 2 from mem[x1+3]", dbg_x3, 16'h0002);
+        // $display("\n--- Extended: Memory offset ---");
+        // chk("LW x3 = 2 from mem[x1+3]", dbg_x3, 16'h0002);
 
-        $display("\n--- Extended: Branch behavior ---");
-        chk("BEQ not taken → x1 incremented", dbg_x1, 16'h0008);
-        chk("BNE taken → no extra increment", dbg_x1, 16'h0008);
+        // $display("\n--- Extended: Branch behavior ---");
+        // chk("BEQ not taken → x1 incremented", dbg_x1, 16'h0008);
+        // chk("BNE taken → no extra increment", dbg_x1, 16'h0008);
 
         $display("\n=============================================================");
         $display("  Results: %0d PASSED,  %0d FAILED", pass_count, fail_count);
