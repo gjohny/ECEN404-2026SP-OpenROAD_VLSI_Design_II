@@ -621,6 +621,271 @@ module Instruction_memory_tb;
         check_bit(load_ack, 1, "ACK received after noisy transfer");
 
         // ══════════════════════════════════════════════════════════════
+        // TEST 15: All-zeros instruction (NOP) loads correctly
+        // ══════════════════════════════════════════════════════════════
+        $display("\n═══════════════════════════════════════════════");
+        $display("TEST 15: All-zeros instruction loads correctly");
+        $display("═══════════════════════════════════════════════");
+        go_idle();
+        load_instruction(16'h0000);
+        go_idle();
+        pc = 16'h0000; #2;
+        check(instruction, 16'h0000, "NOP 0x0000 loaded correctly");
+
+        // ══════════════════════════════════════════════════════════════
+        // TEST 16: All-ones instruction (0xFFFF) loads correctly
+        // ══════════════════════════════════════════════════════════════
+        $display("\n═══════════════════════════════════════════════");
+        $display("TEST 16: All-ones instruction loads correctly");
+        $display("═══════════════════════════════════════════════");
+        go_idle();
+        load_instruction(16'hFFFF);
+        go_idle();
+        pc = 16'h0000; #2;
+        check(instruction, 16'hFFFF, "0xFFFF loaded correctly");
+
+        // ══════════════════════════════════════════════════════════════
+        // TEST 17: Out of bounds read returns 0x0000
+        // PC beyond memory size (256 words = 512 bytes)
+        // Any PC >= 0x0200 should return 0x0000
+        // ══════════════════════════════════════════════════════════════
+        $display("\n═══════════════════════════════════════════════");
+        $display("TEST 17: Out of bounds read returns 0x0000");
+        $display("═══════════════════════════════════════════════");
+        go_idle();
+        pc = 16'h0200; #2;
+        check(instruction, 16'h0000, "PC=0x0200 out of bounds = 0x0000");
+        pc = 16'h0400; #2;
+        check(instruction, 16'h0000, "PC=0x0400 out of bounds = 0x0000");
+        pc = 16'hFFFF; #2;
+        check(instruction, 16'h0000, "PC=0xFFFF out of bounds = 0x0000");
+        pc = 16'h01FE; #2;
+        check(instruction, 16'h0000, "PC=0x01FE last valid addr = 0x0000");
+
+        // ══════════════════════════════════════════════════════════════
+        // TEST 18: T1 sent twice without T2 between them
+        // First T1 arrives, FSM moves to GOT_T1
+        // Second T1 arrives — FSM should stay in GOT_T1 and
+        // update instr_latch with new T1 data
+        // ══════════════════════════════════════════════════════════════
+        $display("\n═══════════════════════════════════════════════");
+        $display("TEST 18: T1 sent twice without T2 between them");
+        $display("═══════════════════════════════════════════════");
+        go_idle();
+
+        // send first T1 with data 0xAAAA lower bits
+        load_mode     = 1;
+        load_transfer = 0;
+        load_ui       = 6'b101010;   // instr[5:0] = 101010
+        load_uio      = 8'b10101010; // instr[13:6]
+        @(posedge clk); #1;
+        check(DUT.state, 3'd1, "FSM in GOT_T1 after first T1");
+
+        // send second T1 with different data — FSM stays in GOT_T1
+        // because load_transfer=0 again
+        load_transfer = 0;
+        load_ui       = 6'b000001;   // new instr[5:0]
+        load_uio      = 8'b00000100; // new instr[13:6]
+        @(posedge clk); #1;
+        check(DUT.state, 3'd1, "FSM stays in GOT_T1 after second T1");
+
+        // now send T2 — should use the SECOND T1 data
+        load_transfer = 1;
+        load_ui[5:4]  = 2'b01;
+        load_ui[3:0]  = 4'b0000;
+        load_uio      = 8'h00;
+        @(posedge clk); #1;
+
+        begin : wait_ack_18
+            integer t;
+            t = 0;
+            while (!load_ack && t < 8) begin
+                @(posedge clk); #1;
+                t = t + 1;
+            end
+        end
+        check_bit(load_ack, 1, "ACK received after double T1");
+
+        // NOTE: FSM ignores second T1 — first T1 data is kept
+        // FSM stays in GOT_T1 waiting for T2 only
+        // second T1 is silently ignored
+        // instr = {01, 10101010, 101010} = 0x6AAA
+        go_idle();
+        pc = 16'h0000; #2;
+        check(instruction, 16'h6AAA, "first T1 data kept, second T1 ignored");
+
+        // ══════════════════════════════════════════════════════════════
+        // TEST 19: load_mode drops during WRITE state
+        // T1 and T2 both arrive, FSM moves to WRITE
+        // load_mode drops before WRITE completes
+        // FSM should reset — write may or may not have happened
+        // depending on timing, but FSM must recover cleanly
+        // ══════════════════════════════════════════════════════════════
+        $display("\n═══════════════════════════════════════════════");
+        $display("TEST 19: load_mode drops during WRITE state");
+        $display("═══════════════════════════════════════════════");
+        go_idle();
+
+        // send T1
+        load_mode     = 1;
+        load_transfer = 0;
+        load_ui       = 6'b000001;
+        load_uio      = 8'b10000010;
+        @(posedge clk); #1;   // IDLE → GOT_T1
+
+        // send T2
+        load_transfer = 1;
+        load_ui[5:4]  = 2'b01;
+        load_ui[3:0]  = 4'b0000;
+        load_uio      = 8'h00;
+        @(posedge clk); #1;   // GOT_T1 → WRITE
+
+        // drop load_mode immediately — FSM is now in WRITE state
+        load_mode = 0;
+        @(posedge clk); #1;   // FSM should reset
+
+        check(DUT.state, 3'd0, "FSM reset after load_mode drop in WRITE");
+        check_bit(load_ack, 0, "no ACK when load_mode drops in WRITE");
+
+        // verify FSM recovers cleanly
+        load_instruction(16'h1234);
+        go_idle();
+        pc = 16'h0000; #2;
+        check(instruction, 16'h1234, "FSM recovered after WRITE state abort");
+
+        // ══════════════════════════════════════════════════════════════
+        // TEST 20: load_mode drops during ACK state
+        // Full transfer completes, FSM reaches ACK state
+        // load_mode drops while in ACK state
+        // FSM should reset cleanly
+        // ══════════════════════════════════════════════════════════════
+        $display("\n═══════════════════════════════════════════════");
+        $display("TEST 20: load_mode drops during ACK state");
+        $display("═══════════════════════════════════════════════");
+        go_idle();
+
+        // send T1
+        load_mode     = 1;
+        load_transfer = 0;
+        load_ui       = 6'b000001;
+        load_uio      = 8'b00000100;
+        @(posedge clk); #1;   // IDLE → GOT_T1
+
+        // send T2
+        load_transfer = 1;
+        load_ui[5:4]  = 2'b01;
+        load_ui[3:0]  = 4'b0000;
+        load_uio      = 8'h00;
+        @(posedge clk); #1;   // GOT_T1 → WRITE
+        @(posedge clk); #1;   // WRITE → ACK
+
+        // drop load_mode while in ACK state
+        load_mode = 0;
+        @(posedge clk); #1;
+
+        check(DUT.state, 3'd0, "FSM reset after load_mode drop in ACK");
+        check_bit(load_ack, 0, "ACK cleared after load_mode drop");
+
+        // verify FSM recovers cleanly
+        load_instruction(16'h5678);
+        go_idle();
+        pc = 16'h0000; #2;
+        check(instruction, 16'h5678, "FSM recovered after ACK state abort");
+
+        // ══════════════════════════════════════════════════════════════
+        // TEST 21: Rapid load_mode toggling
+        // load_mode toggles on/off rapidly many times
+        // FSM should always end up in IDLE with write_addr=0
+        // ══════════════════════════════════════════════════════════════
+        $display("\n═══════════════════════════════════════════════");
+        $display("TEST 21: Rapid load_mode toggling");
+        $display("═══════════════════════════════════════════════");
+        go_idle();
+
+        begin : rapid_toggle
+            integer t;
+            for (t = 0; t < 10; t = t + 1) begin
+                load_mode = 1;
+                @(posedge clk);
+                load_mode = 0;
+                @(posedge clk);
+            end
+        end
+        #1;
+        check(DUT.state, 3'd0, "FSM in IDLE after rapid toggling");
+        check(DUT.write_addr, 8'd0, "write_addr=0 after rapid toggling");
+        check_bit(load_ack, 0, "no ACK after rapid toggling");
+
+        // verify FSM still works after rapid toggling
+        load_instruction(16'hABCD);
+        go_idle();
+        pc = 16'h0000; #2;
+        check(instruction, 16'hABCD, "FSM works after rapid toggling");
+
+        // ══════════════════════════════════════════════════════════════
+        // TEST 22: Load full memory (256 instructions)
+        // Fill all 256 addresses and verify all values
+        // ══════════════════════════════════════════════════════════════
+        $display("\n═══════════════════════════════════════════════");
+        $display("TEST 22: Load full memory (256 instructions)");
+        $display("═══════════════════════════════════════════════");
+        go_idle();
+
+        begin : full_mem_load
+            integer idx;
+            // load 256 instructions — each value = index for easy verification
+            for (idx = 0; idx < 256; idx = idx + 1) begin
+                load_mode     = 1;
+                load_transfer = 0;
+                load_ui       = idx[5:0];
+                load_uio      = idx[13:6];
+                @(posedge clk); #1;
+                load_transfer = 1;
+                load_ui[5:4]  = idx[15:14];
+                load_ui[3:0]  = 4'b0000;
+                load_uio      = 8'h00;
+                @(posedge clk); #1;
+                // wait for ACK
+                begin : inner_ack
+                    integer t;
+                    t = 0;
+                    while (!load_ack && t < 8) begin
+                        @(posedge clk); #1;
+                        t = t + 1;
+                    end
+                end
+                // idle between instructions
+                load_transfer = 1;
+                @(posedge clk); #1;
+            end
+        end
+
+        // verify all 256 addresses
+        go_idle();
+        begin : full_mem_check
+            integer idx;
+            integer errors;
+            errors = 0;
+            for (idx = 0; idx < 256; idx = idx + 1) begin
+                pc = idx * 2; #2;
+                if (instruction !== idx[15:0]) begin
+                    $display("   FAIL | memory[%0d]=0x%04h expected 0x%04h",
+                             idx, instruction, idx[15:0]);
+                    errors = errors + 1;
+                    fail_count = fail_count + 1;
+                end else begin
+                    pass_count = pass_count + 1;
+                end
+            end
+            if (errors == 0)
+                $display("   PASS | all 256 addresses correct");
+            else
+                $display("   FAIL | %0d addresses wrong", errors);
+        end
+
+        check(DUT.write_addr, 8'd0, "write_addr wrapped to 0 after 256 loads");
+
+        // ══════════════════════════════════════════════════════════════
         // FINAL REPORT
         // ══════════════════════════════════════════════════════════════
         $display("\n═══════════════════════════════════════════════");

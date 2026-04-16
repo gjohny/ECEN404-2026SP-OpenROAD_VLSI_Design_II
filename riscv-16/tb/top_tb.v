@@ -64,10 +64,10 @@ module top_tb;
                 @(posedge clk); #1;
                 timeout = timeout + 1;
             end
-            if (uo_out[0])
-                $display("  [ACK] received (addr=%0d)", DUT.CPU.IMEM.write_addr - 1);
-            else
-                $display("  [ACK] TIMEOUT - FSM state=%0d", DUT.CPU.IMEM.state);
+            // if (uo_out[0])
+            //     $display("  [ACK] received (addr=%0d)", DUT.CPU.IMEM.write_addr - 1);
+            // else
+            //     $display("  [ACK] TIMEOUT - FSM state=%0d", DUT.CPU.IMEM.state);
         end
     endtask
 

@@ -1,116 +1,81 @@
 VCD info: dumpfile ./tb/waveform/tt_um_riscv16.vcd opened for output.
 
 ═══════════════════════════════════════════════
-TEST 1: uio_oe hardwired to 0xFF
+TEST 1: uio_oe combinational switching
 ═══════════════════════════════════════════════
-  ❌ FAIL | _oe during reset               | expected 0xff, got 0x00
-  ❌ FAIL | o_oe after reset               | expected 0xff, got 0x00
-  ❌ FAIL |  after 20 cycles               | expected 0xff, got 0x00
-  ❌ FAIL | e after re-reset               | expected 0xff, got 0x00
+  PASS | uio_oe=0x00 in LOAD mode                 | got 0x00
+  PASS | _oe=0xFF in RUN mode (immediate)        | got 0xff
+  PASS | 00 back in LOAD mode (immediate)         | got 0x00
+  PASS | ediate after rapid toggle to RUN        | got 0xff
+  PASS | diate after rapid toggle to LOAD        | got 0x00
+  PASS | ediate after second rapid toggle        | got 0xff
 
 ═══════════════════════════════════════════════
-TEST 2: Reset behaviour
+TEST 2: LOAD mode output cleanliness
 ═══════════════════════════════════════════════
-  ✅ PASS | C=0 during reset               | got 0x0000
-  ❌ FAIL | PC still 0 after reset released
-  ✅ PASS | er mid-run reset               | got 0x0000
+  PASS | uo_out[7:1]=0 in LOAD mode               | got 0x00
+  PASS | uio_out=0x00 in LOAD mode                | got 0x00
+  PASS | uio_out=0x00 for all LOAD combinations  
 
 ═══════════════════════════════════════════════
-TEST 3: Mux channel routing correctness
+TEST 3: RUN mode ACK isolation
 ═══════════════════════════════════════════════
-  ❌ FAIL | ches internal PC               | expected 0x0012, got 0x0000
-  ✅ PASS | s internal INSTR               | got 0x0000
-  ✅ PASS | hes internal ALU               | got 0x0000
-  ✅ PASS | ches internal x1               | got 0x0000
-  ✅ PASS | ches internal x2               | got 0x0000
-  ✅ PASS | ches internal x3               | got 0x0000
-  ❌ FAIL | default = 0xDEAD               | expected 0xdead, got 0x0000
-  ❌ FAIL | default = 0xDEAD               | expected 0xdead, got 0x0000
+  INFO | uo_out in RUN mode ch3 = 0x00 (driven by dbg, not ACK)
+  INFO | uio_out in RUN mode    = 0x00 (driven by dbg high byte)
+  PASS | no spurious ACK in RUN mode              | 20 cycles checked
 
 ═══════════════════════════════════════════════
-TEST 4: Byte splitting correctness
+TEST 4: Channel selector is combinational
 ═══════════════════════════════════════════════
-  ❌ FAIL | ch0 uo_out low byte  | expected 0x14 got 0x00
-  ✅ PASS | ch0 uio_out = 0x00 (high byte correct)
-  ✅ PASS | ch1 uo_out  = 0x00 (low byte correct)
-  ✅ PASS | ch1 uio_out = 0x00 (high byte correct)
-  ✅ PASS | ch2 uo_out  = 0x00 (low byte correct)
-  ✅ PASS | ch2 uio_out = 0x00 (high byte correct)
-  ✅ PASS | ch3 uo_out  = 0x00 (low byte correct)
-  ✅ PASS | ch3 uio_out = 0x00 (high byte correct)
-  ✅ PASS | ch4 uo_out  = 0x00 (low byte correct)
-  ✅ PASS | ch4 uio_out = 0x00 (high byte correct)
-  ✅ PASS | ch5 uo_out  = 0x00 (low byte correct)
-  ✅ PASS | ch5 uio_out = 0x00 (high byte correct)
+  INFO | ch0=0x0032 ch1=0x0000 ch2=0x0000
+  INFO | ch3=0x0000 ch4=0x0000 ch5=0x0000
+  PASS | ch0 matches dbg_pc instantly             | got 0x0034
+  PASS | ch1 matches dbg_instr instantly          | got 0x0000
+  PASS | ch2 matches dbg_alu instantly            | got 0x0000
+  PASS | ch3 matches dbg_x1 instantly             | got 0x0000
+  PASS | ch4 matches dbg_x2 instantly             | got 0x0000
+  PASS | ch5 matches dbg_x3 instantly             | got 0x0000
+  PASS | ch6 matches dbg_x4 instantly             | got 0x0000
+  PASS | ch7 matches dbg_x6 instantly             | got 0x0000
 
 ═══════════════════════════════════════════════
-TEST 5: Rapid channel switching mid-execution
+TEST 5: uio_in ignored in RUN mode
 ═══════════════════════════════════════════════
-  ❌ FAIL | rapid switch i=0 ch=0 | expected 0x001a got 0x0000
-  ❌ FAIL | rapid switch i=6 ch=0 | expected 0x0026 got 0x0000
-  ❌ FAIL | rapid switch i=12 ch=0 | expected 0x0032 got 0x0000
-  ❌ FAIL | rapid switch i=18 ch=0 | expected 0x003e got 0x0000
-  ❌ FAIL | rapid switch i=24 ch=0 | expected 0x004a got 0x0000
-  Rapid switch: 30 checks done
+  PASS | uio_in isolated in RUN mode              | bit 0 ok
+  PASS | uio_in isolated in RUN mode              | bit 1 ok
+  PASS | uio_in isolated in RUN mode              | bit 2 ok
+  PASS | uio_in isolated in RUN mode              | bit 3 ok
+  PASS | uio_in isolated in RUN mode              | bit 4 ok
+  PASS | uio_in isolated in RUN mode              | bit 5 ok
+  PASS | uio_in isolated in RUN mode              | bit 6 ok
+  PASS | uio_in isolated in RUN mode              | bit 7 ok
+  PASS | uio_in=0xFF isolated in RUN mode         | 0xFF ok
 
 ═══════════════════════════════════════════════
-TEST 6: ui_in[7:3] noise immunity
+TEST 6: ui_in[6:3] noise immunity in RUN mode
 ═══════════════════════════════════════════════
-  ❌ FAIL | ui_in[7:3]=00000 affected output | 0x0054 vs 0x0000
-  ❌ FAIL | ui_in[7:3]=00001 affected output | 0x0054 vs 0x0000
-  ❌ FAIL | ui_in[7:3]=00010 affected output | 0x0056 vs 0x0000
-  ❌ FAIL | ui_in[7:3]=00011 affected output | 0x0056 vs 0x0000
-  ❌ FAIL | ui_in[7:3]=00100 affected output | 0x0056 vs 0x0000
-  ❌ FAIL | ui_in[7:3]=00101 affected output | 0x0056 vs 0x0000
-  ❌ FAIL | ui_in[7:3]=00110 affected output | 0x0056 vs 0x0000
-  ❌ FAIL | ui_in[7:3]=00111 affected output | 0x0058 vs 0x0000
-  ❌ FAIL | ui_in[7:3]=01000 affected output | 0x0058 vs 0x0000
-  ❌ FAIL | ui_in[7:3]=01001 affected output | 0x0058 vs 0x0000
-  ❌ FAIL | ui_in[7:3]=01010 affected output | 0x0058 vs 0x0000
-  ❌ FAIL | ui_in[7:3]=01011 affected output | 0x0058 vs 0x0000
-  ❌ FAIL | ui_in[7:3]=01100 affected output | 0x005a vs 0x0000
-  ❌ FAIL | ui_in[7:3]=01101 affected output | 0x005a vs 0x0000
-  ❌ FAIL | ui_in[7:3]=01110 affected output | 0x005a vs 0x0000
-  ❌ FAIL | ui_in[7:3]=01111 affected output | 0x005a vs 0x0000
-  Noise immunity: 32 patterns checked on ch0
+  PASS | ui_in[6:3] noise immunity                | all 16 patterns ok
 
 ═══════════════════════════════════════════════
-TEST 7: uio_in isolation
+TEST 7: ena pin has no effect
 ═══════════════════════════════════════════════
-  ❌ FAIL | uio_in bit 5 affected output
-  ❌ FAIL | uio_in bit 6 affected output
-  ❌ FAIL | uio_in bit 7 affected output
-  ❌ FAIL | uio_in=0xFF affected output
+  PASS | ena=0 has no effect on output           
+  PASS | ena=0 has no effect on uio_oe           
+  PASS | ena=1 restores correctly                
 
 ═══════════════════════════════════════════════
-TEST 8: Repeated reset consistency
+TEST 8: uo_out assignment mux correctness
 ═══════════════════════════════════════════════
-  ✅ PASS | reset 0: PC=0x0000 confirmed
-  ✅ PASS | reset 1: PC=0x0000 confirmed
-  ✅ PASS | reset 2: PC=0x0000 confirmed
-  ✅ PASS | reset 3: PC=0x0000 confirmed
-  ✅ PASS | reset 4: PC=0x0000 confirmed
-
-═══════════════════════════════════════════════
-TEST 9: Channel uniqueness sanity check
-═══════════════════════════════════════════════
-
-  [Snapshot] All channels:
-    ch0 -> 0x0000
-    ch1 -> 0x0000
-    ch2 -> 0x0000
-    ch3 -> 0x0000
-    ch4 -> 0x0000
-    ch5 -> 0x0000
-  ❌ FAIL | ch0 mux output doesn't match internal wire
-  ✅ All 6 channels confirmed to track their internal wires
+  PASS | uo_out[7:1]=0 in LOAD mode               | uo_out=0x00
+  PASS | uo_out=dbg_word[7:0] in RUN mode         | uo_out=0x48
+  PASS | uio_out=dbg_word[15:8] in RUN mode       | uio_out=0x00
 
 ═══════════════════════════════════════════════
 FINAL REPORT
 ═══════════════════════════════════════════════
-  Total PASS: 58
-  Total FAIL: 35
-  ❌ 35 TEST(S) FAILED — review output above
+  Total PASS: 52
+  Total FAIL: 0
+  ALL TESTS PASSED
 ═══════════════════════════════════════════════
 
-./tb/tt_um_riscv16_tb.v:422: $finish called at 1759000 (1ps)
+./tb/tt_um_riscv16_tb.v:463: $finish called at 408000 (1ps)

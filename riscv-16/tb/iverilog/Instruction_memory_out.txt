@@ -126,11 +126,70 @@ TEST 14: Noise on pins between T1 and T2
    PASS | r noisy transfer                         | got 1
 
 ═══════════════════════════════════════════════
+TEST 15: All-zeros instruction loads correctly
+═══════════════════════════════════════════════
+   PASS | lsed after write                         | got 1
+   PASS | loaded correctly                         | got 0x0000
+
+═══════════════════════════════════════════════
+TEST 16: All-ones instruction loads correctly
+═══════════════════════════════════════════════
+   PASS | lsed after write                         | got 1
+   PASS | loaded correctly                         | got 0xffff
+
+═══════════════════════════════════════════════
+TEST 17: Out of bounds read returns 0x0000
+═══════════════════════════════════════════════
+   PASS |  bounds = 0x0000                         | got 0x0000
+   PASS |  bounds = 0x0000                         | got 0x0000
+   PASS |  bounds = 0x0000                         | got 0x0000
+   PASS | id addr = 0x0000                         | got 0x0000
+
+═══════════════════════════════════════════════
+TEST 18: T1 sent twice without T2 between them
+═══════════════════════════════════════════════
+   PASS | 1 after first T1                         | got 0x0001
+   PASS |  after second T1                         | got 0x0001
+   PASS |  after double T1                         | got 1
+   PASS | econd T1 ignored                         | got 0x6aaa
+
+═══════════════════════════════════════════════
+TEST 19: load_mode drops during WRITE state
+═══════════════════════════════════════════════
+   PASS | de drop in WRITE                         | got 0x0000
+   PASS | e drops in WRITE                         | got 0
+   PASS | lsed after write                         | got 1
+   PASS | RITE state abort                         | got 0x1234
+
+═══════════════════════════════════════════════
+TEST 20: load_mode drops during ACK state
+═══════════════════════════════════════════════
+   PASS | mode drop in ACK                         | got 0x0000
+   PASS | r load_mode drop                         | got 0
+   PASS | lsed after write                         | got 1
+   PASS |  ACK state abort                         | got 0x5678
+
+═══════════════════════════════════════════════
+TEST 21: Rapid load_mode toggling
+═══════════════════════════════════════════════
+   PASS | r rapid toggling                         | got 0x0000
+   PASS | r rapid toggling                         | got 0x0000
+   PASS | r rapid toggling                         | got 0
+   PASS | lsed after write                         | got 1
+   PASS | r rapid toggling                         | got 0xabcd
+
+═══════════════════════════════════════════════
+TEST 22: Load full memory (256 instructions)
+═══════════════════════════════════════════════
+   PASS | all 256 addresses correct
+   PASS |  after 256 loads                         | got 0x0000
+
+═══════════════════════════════════════════════
 FINAL REPORT
 ═══════════════════════════════════════════════
-  Total PASS: 68
+  Total PASS: 350
   Total FAIL: 0
   ✅ ALL TESTS PASSED
 ═══════════════════════════════════════════════
 
-./tb/Instruction_Memory_tb.v:637: $finish called at 2036000 (1ps)
+./tb/Instruction_memory_tb.v:902: $finish called at 16417000 (1ps)
