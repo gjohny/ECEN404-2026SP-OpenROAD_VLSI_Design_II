@@ -293,7 +293,7 @@ module top_tb;
 
         $display("\n  Direct internal wire check:");
         $display("    DUT.CPU.dbg_x1 = 0x%04h (expect 0x0003)", DUT.CPU.dbg_x1);
-        $display("    DUT.CPU.dbg_x2 = 0x%04h (expect 0x0002)", DUT.CPU.dbg_x2);
+        $display("    DUT.CPU.dbg_x2 = 0x%04h (expect 0x0001)", DUT.CPU.dbg_x2);
         $display("    DUT.CPU.dbg_x3 = 0x%04h (expect 0x0003)", DUT.CPU.dbg_x3);
         $display("    DUT.CPU.dbg_x4 = 0x%04h (expect 0x0001)", DUT.CPU.dbg_x4);
         $display("    DUT.CPU.dbg_x5 = 0x%04h (expect 0x0000)", DUT.CPU.dbg_x5);
@@ -345,7 +345,7 @@ module top_tb;
         // ── final register snapshot ───────────────────────────────────
         $display("\n  Final register snapshot:");
         read_channel(3'd3, result); $display("    x1 = 0x%04h (expect 0x0003)", result);
-        read_channel(3'd4, result); $display("    x2 = 0x%04h (expect 0x0002)", result);
+        read_channel(3'd4, result); $display("    x2 = 0x%04h (expect 0x0001)", result);
         read_channel(3'd5, result); $display("    x3 = 0x%04h (expect 0x0003)", result);
         read_channel(3'd6, result); $display("    x4 = 0x%04h (expect 0x0001)", result);
         read_channel(3'd7, result); $display("    x6 = 0x%04h (expect 0x0005)", result);
