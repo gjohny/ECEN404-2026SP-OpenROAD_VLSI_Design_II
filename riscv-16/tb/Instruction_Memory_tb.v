@@ -157,7 +157,7 @@ module Instruction_memory_tb;
     task check;
         input [15:0] actual;
         input [15:0] expected;
-        input [127:0] test_name;
+        input [1000:0] test_name;
         begin
             if (actual === expected) begin
                 $display("   PASS | %-40s | got 0x%04h", test_name, actual);
@@ -173,7 +173,7 @@ module Instruction_memory_tb;
     task check_bit;
         input actual;
         input expected;
-        input [127:0] test_name;
+        input [1000:0] test_name;
         begin
             if (actual === expected) begin
                 $display("   PASS | %-40s | got %0b", test_name, actual);

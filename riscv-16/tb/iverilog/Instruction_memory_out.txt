@@ -3,186 +3,186 @@ VCD info: dumpfile ./tb/waveform/Instruction_memory.vcd opened for output.
 ═══════════════════════════════════════════════
 TEST 1: RAM initialised to zero
 ═══════════════════════════════════════════════
-   PASS | AM init = 0x0000                         | got 0x0000
-   PASS | AM init = 0x0000                         | got 0x0000
-   PASS | AM init = 0x0000                         | got 0x0000
-   PASS | AM init = 0x0000                         | got 0x0000
-   PASS | AM init = 0x0000                         | got 0x0000
-   PASS | AM init = 0x0000                         | got 0x0000
-   PASS | AM init = 0x0000                         | got 0x0000
-   PASS | AM init = 0x0000                         | got 0x0000
+   PASS | RAM init = 0x0000                        | got 0x0000
+   PASS | RAM init = 0x0000                        | got 0x0000
+   PASS | RAM init = 0x0000                        | got 0x0000
+   PASS | RAM init = 0x0000                        | got 0x0000
+   PASS | RAM init = 0x0000                        | got 0x0000
+   PASS | RAM init = 0x0000                        | got 0x0000
+   PASS | RAM init = 0x0000                        | got 0x0000
+   PASS | RAM init = 0x0000                        | got 0x0000
 
 ═══════════════════════════════════════════════
 TEST 2: FSM stays IDLE without load_mode
 ═══════════════════════════════════════════════
-   PASS | tays low in IDLE                         | got 0
-   PASS | ys in IDLE state                         | got 0x0000
+   PASS | load_ack stays low in IDLE               | got 0
+   PASS | FSM stays in IDLE state                  | got 0x0000
 
 ═══════════════════════════════════════════════
 TEST 3: Load single instruction at address 0
 ═══════════════════════════════════════════════
-   PASS | lsed after write                         | got 1
-   PASS | t addr 0 correct                         | got 0x91a3
+   PASS | load_ack pulsed after write              | got 1
+   PASS | instr at addr 0 correct                  | got 0x91a3
 
 ═══════════════════════════════════════════════
 TEST 4: Load instruction at address 1
 ═══════════════════════════════════════════════
-   PASS | lsed after write                         | got 1
-   PASS | t addr 1 correct                         | got 0xfe05
+   PASS | load_ack pulsed after write              | got 1
+   PASS | instr at addr 1 correct                  | got 0xfe05
 
 ═══════════════════════════════════════════════
 TEST 5: Load 5 instructions back to back
 ═══════════════════════════════════════════════
-   PASS | lsed after write                         | got 1
-   PASS | lsed after write                         | got 1
-   PASS | lsed after write                         | got 1
-   PASS | lsed after write                         | got 1
-   PASS | lsed after write                         | got 1
-   PASS | al instr correct                         | got 0x0000
-   PASS | al instr correct                         | got 0x0055
-   PASS | al instr correct                         | got 0x00aa
-   PASS | al instr correct                         | got 0x0123
-   PASS | al instr correct                         | got 0x1234
+   PASS | load_ack pulsed after write              | got 1
+   PASS | load_ack pulsed after write              | got 1
+   PASS | load_ack pulsed after write              | got 1
+   PASS | load_ack pulsed after write              | got 1
+   PASS | load_ack pulsed after write              | got 1
+   PASS | sequential instr correct                 | got 0x0000
+   PASS | sequential instr correct                 | got 0x0055
+   PASS | sequential instr correct                 | got 0x00aa
+   PASS | sequential instr correct                 | got 0x0123
+   PASS | sequential instr correct                 | got 0x1234
 
 ═══════════════════════════════════════════════
 TEST 6: load_mode drops mid-transfer
 ═══════════════════════════════════════════════
-   PASS | r load_mode drop                         | got 0x0000
-   PASS |  low after abort                         | got 0
-   PASS | te not committed                         | got 0x0000
+   PASS | FSM reset to IDLE after load_mode drop   | got 0x0000
+   PASS | load_ack low after abort                 | got 0
+   PASS | incomplete write not committed           | got 0x0000
 
 ═══════════════════════════════════════════════
 TEST 7: ACK pulses for exactly one cycle
 ═══════════════════════════════════════════════
-   PASS | low before pulse                         | got 0
-   PASS | during ACK state                         | got 1
-   PASS |  after ACK state                         | got 0
-   PASS | lsed after write                         | got 1
-   PASS | lsed after write                         | got 1
-   PASS | lsed after write                         | got 1
-   PASS | lsed after write                         | got 1
-   PASS | lsed after write                         | got 1
+   PASS | ACK low before pulse                     | got 0
+   PASS | ACK high during ACK state                | got 1
+   PASS | ACK low after ACK state                  | got 0
+   PASS | load_ack pulsed after write              | got 1
+   PASS | load_ack pulsed after write              | got 1
+   PASS | load_ack pulsed after write              | got 1
+   PASS | load_ack pulsed after write              | got 1
+   PASS | load_ack pulsed after write              | got 1
 
 ═══════════════════════════════════════════════
 TEST 8: RUN mode reads loaded instructions
 ═══════════════════════════════════════════════
-   PASS | ds correct instr                         | got 0x0000
-   PASS | ds correct instr                         | got 0x0055
-   PASS | ds correct instr                         | got 0x00aa
-   PASS | ds correct instr                         | got 0x0123
-   PASS | ds correct instr                         | got 0x1234
+   PASS | RUN mode reads correct instr             | got 0x0000
+   PASS | RUN mode reads correct instr             | got 0x0055
+   PASS | RUN mode reads correct instr             | got 0x00aa
+   PASS | RUN mode reads correct instr             | got 0x0123
+   PASS | RUN mode reads correct instr             | got 0x1234
 
 ═══════════════════════════════════════════════
 TEST 9: Address counter reset
 ═══════════════════════════════════════════════
-   PASS | lsed after write                         | got 1
-   PASS | tten after reset                         | got 0xcafe
+   PASS | load_ack pulsed after write              | got 1
+   PASS | addr 0 overwritten after reset           | got 0xcafe
 
 ═══════════════════════════════════════════════
 TEST 10: Transfer 2 delayed by 10 cycles
 ═══════════════════════════════════════════════
-   PASS |  GOT_T1 after T1                         | got 0x0001
-   PASS | r 10 cycle delay                         | got 0x0001
-   PASS | ACK during delay                         | got 0
-   PASS | after delayed T2                         | got 1
+   PASS | FSM in GOT_T1 after T1                   | got 0x0001
+   PASS | FSM still in GOT_T1 after 10 cycle delay | got 0x0001
+   PASS | no spurious ACK during delay             | got 0
+   PASS | ACK received after delayed T2            | got 1
   DEBUG: write_addr before go_idle = 0
 
 ═══════════════════════════════════════════════
 TEST 11: T2 never arrives, load_mode drops
 ═══════════════════════════════════════════════
-   PASS |  GOT_T1 after T1                         | got 0x0001
-   PASS | T_T1 as expected                         | got 0x0001
-   PASS | r load_mode drop                         | got 0x0000
-   PASS |  ACK after abort                         | got 0
-   PASS | _addr reset to 0                         | got 0x0000
-   PASS | lsed after write                         | got 1
-   PASS | ered after abort                         | got 0xbeef
+   PASS | FSM in GOT_T1 after T1                   | got 0x0001
+   PASS | FSM stuck in GOT_T1 as expected          | got 0x0001
+   PASS | FSM reset to IDLE after load_mode drop   | got 0x0000
+   PASS | no ACK after abort                       | got 0
+   PASS | write_addr reset to 0                    | got 0x0000
+   PASS | load_ack pulsed after write              | got 1
+   PASS | FSM recovered after abort                | got 0xbeef
 
 ═══════════════════════════════════════════════
 TEST 12: T2 sent before T1 (wrong order)
 ═══════════════════════════════════════════════
-   PASS | T2 arrives first                         | got 0x0000
-   PASS |  out-of-order T2                         | got 0
-   PASS | after correct T1                         | got 0x0001
-   PASS | rrect T1 then T2                         | got 1
+   PASS | FSM stays IDLE when T2 arrives first     | got 0x0000
+   PASS | no ACK for out-of-order T2               | got 0
+   PASS | FSM moves to GOT_T1 after correct T1     | got 0x0001
+   PASS | ACK received after correct T1 then T2    | got 1
 
 ═══════════════════════════════════════════════
 TEST 13: Reset mid-transfer (load_mode toggle)
 ═══════════════════════════════════════════════
-   PASS | lsed after write                         | got 1
-   PASS | efore reset test                         | got 0xaaaa
+   PASS | load_ack pulsed after write              | got 1
+   PASS | known instr at addr 0 before reset test  | got 0xaaaa
    PASS | FSM in GOT_T1                            | got 0x0001
-   PASS | DLE after glitch                         | got 0x0000
-   PASS | o 0 after glitch                         | got 0x0000
-   PASS | lsed after write                         | got 1
-   PASS | tten after reset                         | got 0xdead
+   PASS | FSM reset to IDLE after glitch           | got 0x0000
+   PASS | write_addr reset to 0 after glitch       | got 0x0000
+   PASS | load_ack pulsed after write              | got 1
+   PASS | fresh instr written after reset          | got 0xdead
 
 ═══════════════════════════════════════════════
 TEST 14: Noise on pins between T1 and T2
 ═══════════════════════════════════════════════
-   PASS |  GOT_T1 after T1                         | got 0x0001
-   PASS | e T1=0 in GOT_T1                         | got 0x0001
-   PASS | T_T1 after noise                         | got 0x0001
-   PASS | r noisy transfer                         | got 1
+   PASS | FSM in GOT_T1 after T1                   | got 0x0001
+   PASS | FSM ignores noise T1=0 in GOT_T1         | got 0x0001
+   PASS | FSM still in GOT_T1 after noise          | got 0x0001
+   PASS | ACK received after noisy transfer        | got 1
 
 ═══════════════════════════════════════════════
 TEST 15: All-zeros instruction loads correctly
 ═══════════════════════════════════════════════
-   PASS | lsed after write                         | got 1
-   PASS | loaded correctly                         | got 0x0000
+   PASS | load_ack pulsed after write              | got 1
+   PASS | NOP 0x0000 loaded correctly              | got 0x0000
 
 ═══════════════════════════════════════════════
 TEST 16: All-ones instruction loads correctly
 ═══════════════════════════════════════════════
-   PASS | lsed after write                         | got 1
-   PASS | loaded correctly                         | got 0xffff
+   PASS | load_ack pulsed after write              | got 1
+   PASS | 0xFFFF loaded correctly                  | got 0xffff
 
 ═══════════════════════════════════════════════
 TEST 17: Out of bounds read returns 0x0000
 ═══════════════════════════════════════════════
-   PASS |  bounds = 0x0000                         | got 0x0000
-   PASS |  bounds = 0x0000                         | got 0x0000
-   PASS |  bounds = 0x0000                         | got 0x0000
-   PASS | id addr = 0x0000                         | got 0x0000
+   PASS | PC=0x0200 out of bounds = 0x0000         | got 0x0000
+   PASS | PC=0x0400 out of bounds = 0x0000         | got 0x0000
+   PASS | PC=0xFFFF out of bounds = 0x0000         | got 0x0000
+   PASS | PC=0x01FE last valid addr = 0x0000       | got 0x0000
 
 ═══════════════════════════════════════════════
 TEST 18: T1 sent twice without T2 between them
 ═══════════════════════════════════════════════
-   PASS | 1 after first T1                         | got 0x0001
-   PASS |  after second T1                         | got 0x0001
-   PASS |  after double T1                         | got 1
-   PASS | econd T1 ignored                         | got 0x6aaa
+   PASS | FSM in GOT_T1 after first T1             | got 0x0001
+   PASS | FSM stays in GOT_T1 after second T1      | got 0x0001
+   PASS | ACK received after double T1             | got 1
+   PASS | first T1 data kept, second T1 ignored    | got 0x6aaa
 
 ═══════════════════════════════════════════════
 TEST 19: load_mode drops during WRITE state
 ═══════════════════════════════════════════════
-   PASS | de drop in WRITE                         | got 0x0000
-   PASS | e drops in WRITE                         | got 0
-   PASS | lsed after write                         | got 1
-   PASS | RITE state abort                         | got 0x1234
+   PASS | FSM reset after load_mode drop in WRITE  | got 0x0000
+   PASS | no ACK when load_mode drops in WRITE     | got 0
+   PASS | load_ack pulsed after write              | got 1
+   PASS | FSM recovered after WRITE state abort    | got 0x1234
 
 ═══════════════════════════════════════════════
 TEST 20: load_mode drops during ACK state
 ═══════════════════════════════════════════════
-   PASS | mode drop in ACK                         | got 0x0000
-   PASS | r load_mode drop                         | got 0
-   PASS | lsed after write                         | got 1
-   PASS |  ACK state abort                         | got 0x5678
+   PASS | FSM reset after load_mode drop in ACK    | got 0x0000
+   PASS | ACK cleared after load_mode drop         | got 0
+   PASS | load_ack pulsed after write              | got 1
+   PASS | FSM recovered after ACK state abort      | got 0x5678
 
 ═══════════════════════════════════════════════
 TEST 21: Rapid load_mode toggling
 ═══════════════════════════════════════════════
-   PASS | r rapid toggling                         | got 0x0000
-   PASS | r rapid toggling                         | got 0x0000
-   PASS | r rapid toggling                         | got 0
-   PASS | lsed after write                         | got 1
-   PASS | r rapid toggling                         | got 0xabcd
+   PASS | FSM in IDLE after rapid toggling         | got 0x0000
+   PASS | write_addr=0 after rapid toggling        | got 0x0000
+   PASS | no ACK after rapid toggling              | got 0
+   PASS | load_ack pulsed after write              | got 1
+   PASS | FSM works after rapid toggling           | got 0xabcd
 
 ═══════════════════════════════════════════════
 TEST 22: Load full memory (256 instructions)
 ═══════════════════════════════════════════════
    PASS | all 256 addresses correct
-   PASS |  after 256 loads                         | got 0x0000
+   PASS | write_addr wrapped to 0 after 256 loads  | got 0x0000
 
 ═══════════════════════════════════════════════
 FINAL REPORT
