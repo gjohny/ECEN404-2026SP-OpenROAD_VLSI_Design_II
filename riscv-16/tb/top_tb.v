@@ -311,8 +311,8 @@ module top_tb;
         $display("");
 
         chk("x0 = 0",                 dbg_x0, 16'h0000);
-        chk("LW x4 = -2",             dbg_x2, 16'h0003);
-        chk("LW x3 = 0",              dbg_x3, 16'h8000);
+        chk("LW x4 = 3",             dbg_x2, 16'h0003);
+        chk("LW x3 = -32768",              dbg_x3, 16'h8000);
         chk("LW x6 = -2",             dbg_x6, 16'hfffe);
 
         $display("\n\n");
@@ -337,27 +337,6 @@ module top_tb;
         chk("x2 = 2",              dbg_x2, 16'h0002);
 
         $display("\n\n");
-
-        // repeat(4) @(posedge clk);
-        // @(negedge clk);
-        // $display("\n");
-        // $display("=== -- Check JALR --  ===");
-        // $display("");
-
-        // chk("x1 = 0x00a4",              dbg_x1, 16'h00a4);
-        // chk("x2 = 2",              dbg_x2, 16'h0002);
-
-        // $display("\n\n");
-
-        // repeat(4) @(posedge clk);
-        // @(negedge clk);
-        // $display("\n");
-        // $display("=== -- Test U-type (Large Values) --  ===");
-        // $display("");
-
-        // chk("x3 = 38",         dbg_x1, 16'h0038);
-
-        // $display("");
        
        
 
