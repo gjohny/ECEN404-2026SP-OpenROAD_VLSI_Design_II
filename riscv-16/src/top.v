@@ -14,23 +14,6 @@ module top(
     output wire [15:0] dbg_x2,
     output wire [15:0] dbg_x3,
 
-
-    //Load ports (used for the pins)
-    input  wire        load_mode,
-    input  wire [6:0]  load_data,
-    input  wire        load_hibyte,
-    input  wire [6:0]  load_addr,
-    output wire        load_ack
-);
-
-    /* =====================
-       IF Stage
-    ====================== */
-    wire [15:0] PC, PC_next, PC_plus2, PC_target;
-    wire [15:0] instruction;
-
-    assign PC_plus2 = PC + 16'd2;
-
     input  wire        load_mode,
     input  wire [6:0]  load_data,
     input  wire        load_hibyte,
@@ -81,16 +64,23 @@ module top(
     wire [2:0] EX_rs1_r = IFEX_instr[15:13];
     wire [2:0] EX_rs2_r = IFEX_instr[12:10];
     wire [2:0] EX_rd_r  = IFEX_instr[9:7];
-    wire [2:0] EX_rs1_i = IFEX_instr[9:7];
+
+    wire [2:0] EX_rs1_i = IFEX_instr[12:10];
     wire [2:0] EX_rd_i  = IFEX_instr[9:7];
+
     wire [2:0] EX_rs1_s = IFEX_instr[8:6];
     wire [2:0] EX_rs2_s = IFEX_instr[5:3];
+
     wire [2:0] EX_rs1_l = IFEX_instr[8:6];
     wire [2:0] EX_rd_l  = IFEX_instr[5:3];
+
     wire [2:0] EX_rs1_b = IFEX_instr[10:8];
     wire [2:0] EX_rs2_b = IFEX_instr[7:5];
+
     wire [2:0] EX_rd_u  = IFEX_instr[5:3];
+
     wire [2:0] EX_rd_j  = IFEX_instr[5:3];
+
     wire [2:0] EX_rs1_jr = IFEX_instr[7:5];
     wire [2:0] EX_rd_jr  = IFEX_instr[5:3];
 
@@ -118,64 +108,11 @@ module top(
         (EX_opcode == OPC_JR) ? EX_rd_jr :
         3'b000;
 
-
-    /* =====================
-    Immediate Construction
-    ===================== */
-
-    // Sign-extend immediates to 16 bits
-
-    wire [15:0] imm_i = {{13{imm_i_raw[2]}}, imm_i_raw};              // 3-bit signed
-    wire [15:0] imm_s = {{9{imm_s_raw[6]}}, imm_s_raw};               // 7-bit signed
-    wire [15:0] imm_b = {{11{imm_b_raw[4]}}, imm_b_raw};              // 5-bit signed
-    wire [15:0] imm_u = {imm_u_raw, 6'b000000};                       // upper immediate
-    wire [15:0] imm_j = {{6{imm_j_raw[9]}}, imm_j_raw};               // 10-bit signed
-
-
-    /* =====================
-    Unified Immediate Output
-    ===================== */
-
-    wire [15:0] imm =
-        (opcode == OPC_I) ? imm_i :
-        (opcode == OPC_S) ? imm_s :
-        (opcode == OPC_B) ? imm_b :
-        (opcode == OPC_U) ? imm_u :
-        (opcode == OPC_J) ? imm_j :
-        16'h0000;
-
-    wire [15:0] branch_target = PC + imm_b;
-    wire [15:0] jal_target    = PC + (imm_j << 1);
-    wire [15:0] jalr_sum = RD1 + imm_ext;
-    wire [15:0] jalr_target = {jalr_sum[15:1], 1'b0};
-
-    /* =====================
-       PC Update Logic
-    ====================== */
-    // Keep these signals for naming consistency with your skeleton,
-    // but they are not currently feeding pc_counter_16 (see note above).
-    assign PC_target = PC + imm_ext;
-    assign PC_next = jalr_taken  ? jalr_target  :
-                     jal_taken   ? jal_target   :
-                     PCSrc       ? branch_target:
-                     PC_plus2;
-        
-
-    pc_counter_16 PC_REG (
-    .clk(clk),
-    .reset(reset),
-    .pc_en(1'b1),
-    .pc_next(PC_next),
-    .pc(PC)
-    );
-
-    Instruction_memory #(
-        .IMEM_WORDS(256),
-        .MEMFILE("src/program16.mem")
-    ) IMEM (
-        .clk(clk),
-        .pc(PC),
-        .instruction(instruction)
+    wire [15:0] EX_imm_ext;
+    Sign_Extender SE (
+        .instr  (IFEX_instr),
+        .ImmSrc (EX_ImmSrc),
+        .ImmExt (EX_imm_ext)
     );
 
     wire        EX_PCSrc;

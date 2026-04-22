@@ -28,8 +28,7 @@ HEX  - Imm | Rs2 | RD | FUNC  | OP
 HEX  - Rs1 | Rs2 | RD | FUNC  | OP
 2980 - 001 | 010 | 011 | 0000 | 000 - ADD x3, x1, x2
 4900 - 010 | 010 | 010 | 0000 | 000 - ADD x2, x2, x2
-2980 - 011 | 010 | 001 | 0000 | 000 - ADD x1, x2, x3
-
+2980 - 011 | 010 | 001 | 0000 | 000 - ADD x1, x2, x2
 
 ----------------------U Type Testing------------------------
 
@@ -46,10 +45,10 @@ HEX  - Imm | Rs2 | RD | FUNC  | OP
 6481 - 011 | 001 | 001 | 0000 | 001 - ADDI x1, x1, 3
 
 
-HEX  - imm     | Rs1 |  Rs2 | OP
+HEX  - imm     | Rs1 | Rd   | OP
 0653 - 0000011 | 001 | 010  | 011 - SB x2, 3(x1) //store val of x2 into mem addr (3 + x1)
 
-----------------------L Type Testing------------------------
+----------------------L-Type Testing------------------------
 HEX  - imm     | Rs1 |  Rd | OP
 065a - 0000011 | 001 | 011 | 010 - LW x3, 3(x1) //load val at (3 + x1) into x3
 
@@ -63,12 +62,50 @@ HEX  - imm   | Rs1 | Rs2 | func | OP
 
 
 ----------------------J-Type Testing------------------------
-HEX  - imm        | Rs2 | OP
-041D - 0000010000 | 011 | 101 - JAL x3, 16
+HEX  - imm        | Rd | OP
+040D - 0000010000 | 001 | 101 - JAL x1, 16
 
 
 ----------------------JR-Type Testing------------------------
 HEX  - imm     | Rs1 | Rd  | OP
 204f - 0010000 | 010 | 001 | 111 - JALR x1, x2, 16
 
-//NEED ENSURE JALR PCNEXT IS RESULT OF ALU ->DONE
+
+
+6081	ADDI x1, x0, 3  x1 = 3
+4101	ADDI x2, x0, 2  x2 = 2
+2800	ADD x0, x1, x2  x0 = 5 ( x0 stays 0)
+2A08	SUB x4, x1, x2  x4 = 1
+2A80	ADD x5, x1, x2  x5 = 5
+2B18	OR x6, x1, x2   x6 = 3
+2B90	XOR x7, x1, x2  x7 = 1
+6199	ANDI x3, x0, 3  x3 = 0
+4191	ORI x3, x0, 2   x3 = 2
+2189	XORI x3, x0, 1  x3 = 1
+0013	SB x2, 0(x0)    0(x0) = mem(0 + 0) = 2
+002A	LW x5, 0(x0)    x5 = 2
+12A4	BEQ x2, x5, 2   2 == 2, branch ahead 2 
+E001	ADDI x0, x0, 7  SKIPPED --add to register and check if val changed--
+314C	BNE x1, x2, 6   3 != 2, branch ahead 6 
+E081	ADDI x1, x0, 7  SKIPPED --check if val changed--
+008D	JAL x1, 2       x1=nextPC, jump ahead 2
+0000	ADD x0, x0, x0  SKIPPED
+040D	JAL x1, 16      x1=nextPC, jump ahead 16
+0000	ADD x0, x0, x0
+0000	ADD x0, x0, x0
+2901	ADDI x2, x2, 1 x2=3
+6881	ADDI x1, x2, 3 x1=6
+2980	ADD x0, x1, x2 x0=9 (x0 stays 0)
+2B90	XOR x3, x1, x2 x3=9
+2481	ADDI x1, x1, 1 x1=7
+2481	ADDI x1, x1, 1 x1=8
+2A08	SUB x1, x1, x2 x1=5
+f901	ADDI x2, x6, -1 x2=2
+f881	ADDI x1, x6, -1 x1=2
+0653	SB x2, 3(x1)   3(x1) = mem(3 + 10) = 2
+065a	LW x3, 3(x1)   x3=2
+4144	BEQ x1, x2, 8  2 == 2, branch ahead 8
+2481	ADDI x1, x1, 1  SKIPPED
+414c	BNE x1, x2, 8   x1 != x2, branch ahead 8
+2481	ADDI x1, x1, 1  SKIPPED
+10cf	JALR x1, x3, 8  (SKIPPED) x1=NextPC, jump ahead to x3 + 8 

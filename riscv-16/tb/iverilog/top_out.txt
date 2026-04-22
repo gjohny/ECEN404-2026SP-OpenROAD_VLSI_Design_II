@@ -1,124 +1,173 @@
 WARNING: ./src/Instruction_memory.v:19: $readmemh(src/program16.mem): Not enough words in the file for the requested range [0:255].
 VCD info: dumpfile ./tb/waveform/top.vcd opened for output.
-  RISC-V16 Pipeline - Full Instruction Type Coverage
 
---- I-type: ADDI ---
-  [PASS] ADDI x1 = 3                             got=0x0003
-  [PASS] ADDI x2 = 2                             got=0x0002
-
---- R-type: ADD / SUB / AND / OR / XOR ---
-  [FAIL] ADD  x3 = 5  (3+2)                      got=0x0000  exp=0x0005
-  [PASS] SUB  x4 = 1  (3-2)                      got=0x0001
-  [PASS] AND  x5 = 2  (3&2)                      got=0x0002
-  [PASS] XOR  x7 = 1  (3^2)                      got=0x0001
-
---- I-type: ANDI/ORI/XORI then JALR link stored in x3 ---
-  [PASS] JALR link x3 = 0x0026                   got=0x0026
-
---- S-type: SW  /  L-type: LW  (load-use stall) ---
-  [PASS] LW x5 = 2  (mem[0])                     got=0x0002
-
---- B-type: BEQ taken (flush kills ADDI x1,-1) ---
-  [PASS] BEQ flush: x1 still 3                   got=0x0003
-
---- B-type: BNE taken (flush kills ADDI x2,-1) ---
-  [PASS] BNE flush: x2 still 2                   got=0x0002
-
---- J-type: JAL ---
-  [PASS] JAL link x6 = 0x0022                    got=0x0022
-  [PASS] JAL flush: x1 still 3                   got=0x0003
-
---- JR-type: JALR x3, x6, 0 ---
-  [PASS] JALR link x3 = 0x0026                   got=0x0026
-
-  Results: 12 PASSED,  1 FAILED
-
-FAILURES DETECTED
-
-./tb/top_tb.v:188: $finish called at 390000 (1ps)
-WARNING: ./src/Instruction_memory.v:19: $readmemh(src/program16.mem): Not enough words in the file for the requested range [0:255].
---- Starting Execution ---
-Time=26000 | PC=0x0002 | Instr=0x2901 | ALU=0x0001 | x1=0x0000 | x2=0x0000 | x3=0x0000 | zero=0
-STORE: addr=0001 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
+=== Reset released ===
 
 
-Time=36000 | PC=0x0004 | Instr=0x6881 | ALU=0x0003 | x1=0x0000 | x2=0x0001 | x3=0x0000 | zero=0
-STORE: addr=0003 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
+=============================================================
+  RISC-V16 Pipeline - FULL INSTRUCTION TYPE COVERAGE 
+=============================================================
+35000 | PC=0000 instr=0000 ALU=0000 | x0=0000 x1=0000 x2=0000 x3=0000 x4=0000 x5=0000 x6=0000 x7=0000 | zero=1
+45000 | PC=0000 instr=2001 ALU=0001 | x0=0000 x1=0000 x2=0000 x3=0000 x4=0000 x5=0000 x6=0000 x7=0000 | zero=0
+55000 | PC=0002 instr=4401 ALU=0002 | x0=0000 x1=0000 x2=0000 x3=0000 x4=0000 x5=0000 x6=0000 x7=0000 | zero=0
+65000 | PC=0004 instr=6809 ALU=0003 | x0=0000 x1=0000 x2=0000 x3=0000 x4=0000 x5=0000 x6=0000 x7=0000 | zero=0
+75000 | PC=0006 instr=8c09 ALU=fffc | x0=0000 x1=0000 x2=0000 x3=0000 x4=0000 x5=0000 x6=0000 x7=0000 | zero=0
+85000 | PC=0008 instr=b011 ALU=fffd | x0=0000 x1=0000 x2=0000 x3=0000 x4=0000 x5=0000 x6=0000 x7=0000 | zero=0
+95000 | PC=000a instr=d411 ALU=fffe | x0=0000 x1=0000 x2=0000 x3=0000 x4=0000 x5=0000 x6=0000 x7=0000 | zero=0
+105000 | PC=000c instr=f819 ALU=0000 | x0=0000 x1=0000 x2=0000 x3=0000 x4=0000 x5=0000 x6=0000 x7=0000 | zero=1
+115000 | PC=000e instr=fc19 ALU=0000 | x0=0000 x1=0000 x2=0000 x3=0000 x4=0000 x5=0000 x6=0000 x7=0000 | zero=1
+125000 | PC=0010 instr=0000 ALU=0000 | x0=0000 x1=0000 x2=0000 x3=0000 x4=0000 x5=0000 x6=0000 x7=0000 | zero=1
+135000 | PC=0012 instr=0000 ALU=0000 | x0=0000 x1=0000 x2=0000 x3=0000 x4=0000 x5=0000 x6=0000 x7=0000 | zero=1
+145000 | PC=0014 instr=0000 ALU=0000 | x0=0000 x1=0000 x2=0000 x3=0000 x4=0000 x5=0000 x6=0000 x7=0000 | zero=1
+
+=== -- x0 remain 0 --  ===
+
+     [32mPASS[0m | x0 = 0                                  got=0x0000
 
 
-Time=46000 | PC=0x0006 | Instr=0x3101 | ALU=0x0002 | x1=0x0003 | x2=0x0001 | x3=0x0000 | zero=0
-STORE: addr=0002 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
+
+155000 | PC=0016 instr=0000 ALU=0000 | x0=0000 x1=0000 x2=0000 x3=0000 x4=0000 x5=0000 x6=0000 x7=0000 | zero=1
+165000 | PC=0018 instr=4081 ALU=0002 | x0=0000 x1=0000 x2=0000 x3=0000 x4=0000 x5=0000 x6=0000 x7=0000 | zero=0
+175000 | PC=001a instr=6101 ALU=0003 | x0=0000 x1=0000 x2=0000 x3=0000 x4=0000 x5=0000 x6=0000 x7=0000 | zero=0
+185000 | PC=001c instr=2189 ALU=0001 | x0=0000 x1=0000 x2=0000 x3=0000 x4=0000 x5=0000 x6=0000 x7=0000 | zero=0
+195000 | PC=001e instr=4209 ALU=0002 | x0=0000 x1=0002 x2=0000 x3=0000 x4=0000 x5=0000 x6=0000 x7=0000 | zero=0
+205000 | PC=0020 instr=2291 ALU=0001 | x0=0000 x1=0002 x2=0003 x3=0000 x4=0000 x5=0000 x6=0000 x7=0000 | zero=0
+215000 | PC=0022 instr=6311 ALU=0003 | x0=0000 x1=0002 x2=0003 x3=0001 x4=0000 x5=0000 x6=0000 x7=0000 | zero=0
+225000 | PC=0024 instr=4399 ALU=0000 | x0=0000 x1=0002 x2=0003 x3=0001 x4=0002 x5=0000 x6=0000 x7=0000 | zero=1
+235000 | PC=0026 instr=0000 ALU=0000 | x0=0000 x1=0002 x2=0003 x3=0001 x4=0002 x5=0001 x6=0000 x7=0000 | zero=1
+245000 | PC=0028 instr=0000 ALU=0000 | x0=0000 x1=0002 x2=0003 x3=0001 x4=0002 x5=0001 x6=0003 x7=0000 | zero=1
+255000 | PC=002a instr=0000 ALU=0000 | x0=0000 x1=0002 x2=0003 x3=0001 x4=0002 x5=0001 x6=0003 x7=0000 | zero=1
+265000 | PC=002c instr=0000 ALU=0000 | x0=0000 x1=0002 x2=0003 x3=0001 x4=0002 x5=0001 x6=0003 x7=0000 | zero=1
+
+=== -- Check I-types (Positive)--  ===
+
+     [32mPASS[0m | x0 = 0                                  got=0x0000
+     [32mPASS[0m | ADDI x1 = 2                             got=0x0002
+     [32mPASS[0m | ADDI x2 = 3                             got=0x0003
+     [32mPASS[0m | XORI x3 = 1                             got=0x0001
+     [32mPASS[0m | XORI x4 = 2                             got=0x0002
+     [32mPASS[0m | ORI x5 = 1                              got=0x0001
+     [32mPASS[0m | ORI x6 = 3                              got=0x0003
+     [32mPASS[0m | ANDI x7 = 0                             got=0x0000
 
 
-Time=56000 | PC=0x0008 | Instr=0x3101 | ALU=0x0003 | x1=0x0003 | x2=0x0002 | x3=0x0000 | zero=0
-STORE: addr=0003 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
+
+275000 | PC=002e instr=e081 ALU=ffff | x0=0000 x1=0002 x2=0003 x3=0001 x4=0002 x5=0001 x6=0003 x7=0000 | zero=0
+285000 | PC=0030 instr=8101 ALU=fffc | x0=0000 x1=0002 x2=0003 x3=0001 x4=0002 x5=0001 x6=0003 x7=0000 | zero=0
+295000 | PC=0032 instr=c189 ALU=fffe | x0=0000 x1=0002 x2=0003 x3=0001 x4=0002 x5=0001 x6=0003 x7=0000 | zero=0
+305000 | PC=0034 instr=a209 ALU=fffd | x0=0000 x1=ffff x2=0003 x3=0001 x4=0002 x5=0001 x6=0003 x7=0000 | zero=0
+315000 | PC=0036 instr=e291 ALU=ffff | x0=0000 x1=ffff x2=fffc x3=0001 x4=0002 x5=0001 x6=0003 x7=0000 | zero=0
+325000 | PC=0038 instr=c311 ALU=fffe | x0=0000 x1=ffff x2=fffc x3=fffe x4=0002 x5=0001 x6=0003 x7=0000 | zero=0
+335000 | PC=003a instr=a399 ALU=0000 | x0=0000 x1=ffff x2=fffc x3=fffe x4=fffd x5=0001 x6=0003 x7=0000 | zero=1
+345000 | PC=003c instr=0000 ALU=0000 | x0=0000 x1=ffff x2=fffc x3=fffe x4=fffd x5=ffff x6=0003 x7=0000 | zero=1
+355000 | PC=003e instr=0000 ALU=0000 | x0=0000 x1=ffff x2=fffc x3=fffe x4=fffd x5=ffff x6=fffe x7=0000 | zero=1
+365000 | PC=0040 instr=0000 ALU=0000 | x0=0000 x1=ffff x2=fffc x3=fffe x4=fffd x5=ffff x6=fffe x7=0000 | zero=1
+375000 | PC=0042 instr=0000 ALU=0000 | x0=0000 x1=ffff x2=fffc x3=fffe x4=fffd x5=ffff x6=fffe x7=0000 | zero=1
+385000 | PC=0044 instr=3480 ALU=fffe | x0=0000 x1=ffff x2=fffc x3=fffe x4=fffd x5=ffff x6=fffe x7=0000 | zero=0
 
 
-Time=66000 | PC=0x000a | Instr=0x3101 | ALU=0x0004 | x1=0x0003 | x2=0x0003 | x3=0x0000 | zero=0
-STORE: addr=0004 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
+=== -- Check I-types (Negative) --  ===
+
+     [32mPASS[0m | x0 = 0                                  got=0x0000
+     [32mPASS[0m | ADDI x1 = -1                            got=0xffff
+     [32mPASS[0m | ADDI x2 = -4                            got=0xfffc
+     [32mPASS[0m | XORI x3 = -2                            got=0xfffe
+     [32mPASS[0m | XORI x4 = -3                            got=0xfffd
+     [32mPASS[0m | ORI x5 = -1                             got=0xffff
+     [32mPASS[0m | ORI x6 = -2                             got=0xfffe
+     [32mPASS[0m | ANDI x7 = 0                             got=0x0000
 
 
-Time=76000 | PC=0x000c | Instr=0x3101 | ALU=0x0005 | x1=0x0003 | x2=0x0004 | x3=0x0000 | zero=0
-STORE: addr=0005 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
+
+395000 | PC=0046 instr=5b08 ALU=fffe | x0=0000 x1=ffff x2=fffc x3=fffe x4=fffd x5=ffff x6=fffe x7=0000 | zero=0
+405000 | PC=0048 instr=6e18 ALU=fffe | x0=0000 x1=ffff x2=fffc x3=fffe x4=fffd x5=ffff x6=fffe x7=0000 | zero=0
+415000 | PC=004a instr=e510 ALU=fffe | x0=0000 x1=fffe x2=fffc x3=fffe x4=fffd x5=ffff x6=fffe x7=0000 | zero=0
+425000 | PC=004c instr=b9a0 ALU=fffe | x0=0000 x1=fffe x2=fffc x3=fffe x4=fffd x5=ffff x6=fffe x7=0000 | zero=0
+435000 | PC=004e instr=d2a8 ALU=8000 | x0=0000 x1=fffe x2=fffc x3=fffe x4=fffe x5=ffff x6=fffe x7=0000 | zero=0
+445000 | PC=0050 instr=6bb0 ALU=0003 | x0=0000 x1=fffe x2=fffe x3=fffe x4=fffe x5=ffff x6=fffe x7=0000 | zero=0
+455000 | PC=0052 instr=8d40 ALU=0000 | x0=0000 x1=fffe x2=fffe x3=fffe x4=fffe x5=ffff x6=fffe x7=0000 | zero=1
+465000 | PC=0054 instr=bdc8 ALU=0000 | x0=0000 x1=fffe x2=fffe x3=fffe x4=fffe x5=8000 x6=fffe x7=0000 | zero=1
+475000 | PC=0056 instr=0000 ALU=0000 | x0=0000 x1=fffe x2=fffe x3=fffe x4=fffe x5=8000 x6=fffe x7=0003 | zero=1
+485000 | PC=0058 instr=0000 ALU=0000 | x0=0000 x1=fffe x2=0000 x3=fffe x4=fffe x5=8000 x6=fffe x7=0003 | zero=1
+495000 | PC=005a instr=0000 ALU=0000 | x0=0000 x1=fffe x2=0000 x3=0000 x4=fffe x5=8000 x6=fffe x7=0003 | zero=1
 
 
-Time=86000 | PC=0x000e | Instr=0x3101 | ALU=0x0006 | x1=0x0003 | x2=0x0005 | x3=0x0000 | zero=0
-STORE: addr=0006 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
+=== -- Check R-type Arithmetic (use of forwarding)--  ===
+
+     [32mPASS[0m | x0 = 0                                  got=0x0000
+     [32mPASS[0m | ADD x1 = -2                             got=0xfffe
+     [32mPASS[0m | SLT x2 = 0                              got=0x0000
+     [32mPASS[0m | SLTU x3 = 0                             got=0x0000
+     [32mPASS[0m | OR x4 = -2                              got=0xfffe
+     [32mPASS[0m | SLL x5 = -32768                         got=0x8000
+     [32mPASS[0m | SUB x6 = -2                             got=0xfffe
+     [32mPASS[0m | SRL x7 = 3                              got=0x0003
 
 
-Time=96000 | PC=0x0010 | Instr=0x3101 | ALU=0x0007 | x1=0x0003 | x2=0x0006 | x3=0x0000 | zero=0
-STORE: addr=0007 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
+
+505000 | PC=005c instr=0000 ALU=0000 | x0=0000 x1=fffe x2=0000 x3=0000 x4=fffe x5=8000 x6=fffe x7=0003 | zero=1
+515000 | PC=005e instr=003b ALU=0000 | x0=0000 x1=fffe x2=0000 x3=0000 x4=fffe x5=8000 x6=fffe x7=0003 | zero=1
+525000 | PC=0060 instr=042b ALU=0002 | x0=0000 x1=fffe x2=0000 x3=0000 x4=fffe x5=8000 x6=fffe x7=0003 | zero=0
+535000 | PC=0062 instr=080b ALU=0004 | x0=0000 x1=fffe x2=0000 x3=0000 x4=fffe x5=8000 x6=fffe x7=0003 | zero=0
+545000 | PC=0064 instr=0012 ALU=0000 | x0=0000 x1=fffe x2=0000 x3=0000 x4=fffe x5=8000 x6=fffe x7=0003 | zero=1
+555000 | PC=0066 instr=041a ALU=0002 | x0=0000 x1=fffe x2=0000 x3=0000 x4=fffe x5=8000 x6=fffe x7=0003 | zero=0
+565000 | PC=0068 instr=0832 ALU=0004 | x0=0000 x1=fffe x2=0000 x3=0000 x4=fffe x5=8000 x6=fffe x7=0003 | zero=0
+575000 | PC=006a instr=0000 ALU=0000 | x0=0000 x1=fffe x2=0003 x3=0000 x4=fffe x5=8000 x6=fffe x7=0003 | zero=1
+585000 | PC=006c instr=0000 ALU=0000 | x0=0000 x1=fffe x2=0003 x3=8000 x4=fffe x5=8000 x6=fffe x7=0003 | zero=1
+595000 | PC=006e instr=0000 ALU=0000 | x0=0000 x1=fffe x2=0003 x3=8000 x4=fffe x5=8000 x6=fffe x7=0003 | zero=1
+605000 | PC=0070 instr=0000 ALU=0000 | x0=0000 x1=fffe x2=0003 x3=8000 x4=fffe x5=8000 x6=fffe x7=0003 | zero=1
 
 
-Time=106000 | PC=0x0012 | Instr=0x4154 | ALU=0xfffc | x1=0x0003 | x2=0x0007 | x3=0x0000 | zero=0
-STORE: addr=fffc data=0007 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
+=== -- Check Store/Load (use of stalling) --  ===
+
+     [32mPASS[0m | x0 = 0                                  got=0x0000
+     [32mPASS[0m | LW x4 = -2                              got=0x0003
+     [32mPASS[0m | LW x3 = 0                               got=0x8000
+     [32mPASS[0m | LW x6 = -2                              got=0xfffe
 
 
-Time=116000 | PC=0x001a | Instr=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0007 | x3=0x0000 | zero=1
-STORE: addr=0000 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
+
+615000 | PC=0072 instr=4081 ALU=0002 | x0=0000 x1=fffe x2=0003 x3=8000 x4=fffe x5=8000 x6=fffe x7=0003 | zero=0
+625000 | PC=0074 instr=4101 ALU=0002 | x0=0000 x1=fffe x2=0003 x3=8000 x4=fffe x5=8000 x6=fffe x7=0003 | zero=0
+635000 | PC=0076 instr=6181 ALU=0003 | x0=0000 x1=fffe x2=0003 x3=8000 x4=fffe x5=8000 x6=fffe x7=0003 | zero=0
+645000 | PC=0078 instr=1124 ALU=0000 | x0=0000 x1=0002 x2=0003 x3=8000 x4=fffe x5=8000 x6=fffe x7=0003 | zero=1
+655000 | PC=0000 instr=0000 ALU=0000 | x0=0000 x1=0002 x2=0002 x3=8000 x4=fffe x5=8000 x6=fffe x7=0003 | zero=1
+665000 | PC=007c instr=126c ALU=ffff | x0=0000 x1=0002 x2=0002 x3=0003 x4=fffe x5=8000 x6=fffe x7=0003 | zero=0
+675000 | PC=0000 instr=0000 ALU=0000 | x0=0000 x1=0002 x2=0002 x3=0003 x4=fffe x5=8000 x6=fffe x7=0003 | zero=1
+685000 | PC=0080 instr=1274 ALU=ffff | x0=0000 x1=0002 x2=0002 x3=0003 x4=fffe x5=8000 x6=fffe x7=0003 | zero=0
+695000 | PC=0000 instr=0000 ALU=0000 | x0=0000 x1=0002 x2=0002 x3=0003 x4=fffe x5=8000 x6=fffe x7=0003 | zero=1
+705000 | PC=0084 instr=135c ALU=0001 | x0=0000 x1=0002 x2=0002 x3=0003 x4=fffe x5=8000 x6=fffe x7=0003 | zero=0
+715000 | PC=0000 instr=0000 ALU=0000 | x0=0000 x1=0002 x2=0002 x3=0003 x4=fffe x5=8000 x6=fffe x7=0003 | zero=1
+725000 | PC=0088 instr=0000 ALU=0000 | x0=0000 x1=0002 x2=0002 x3=0003 x4=fffe x5=8000 x6=fffe x7=0003 | zero=1
+735000 | PC=008a instr=0000 ALU=0000 | x0=0000 x1=0002 x2=0002 x3=0003 x4=fffe x5=8000 x6=fffe x7=0003 | zero=1
+745000 | PC=008c instr=0000 ALU=0000 | x0=0000 x1=0002 x2=0002 x3=0003 x4=fffe x5=8000 x6=fffe x7=0003 | zero=1
+755000 | PC=008e instr=0000 ALU=0000 | x0=0000 x1=0002 x2=0002 x3=0003 x4=fffe x5=8000 x6=fffe x7=0003 | zero=1
 
 
-Time=126000 | PC=0x001c | Instr=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0007 | x3=0x0000 | zero=1
-STORE: addr=0000 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
+=== -- Check Branch --  ===
+
+     [32mPASS[0m | x1 = 2, (flushes proceeding ADD -1)     got=0x0002
 
 
-Time=136000 | PC=0x001e | Instr=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0007 | x3=0x0000 | zero=1
-STORE: addr=0000 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
+
+765000 | PC=0090 instr=020d ALU=0008 | x0=0000 x1=0002 x2=0002 x3=0003 x4=fffe x5=8000 x6=fffe x7=0003 | zero=0
+775000 | PC=0000 instr=0000 ALU=0000 | x0=0000 x1=0002 x2=0002 x3=0003 x4=fffe x5=8000 x6=fffe x7=0003 | zero=1
+785000 | PC=00a0 instr=0000 ALU=0000 | x0=0000 x1=0002 x2=0002 x3=0003 x4=fffe x5=8000 x6=fffe x7=0003 | zero=1
+795000 | PC=00a2 instr=008f ALU=fffe | x0=0000 x1=0092 x2=0002 x3=0003 x4=fffe x5=8000 x6=fffe x7=0003 | zero=0
 
 
-Time=146000 | PC=0x0020 | Instr=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0007 | x3=0x0000 | zero=1
-STORE: addr=0000 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
+=== -- Check JAL --  ===
+
+     [32mPASS[0m | x1 = 0x0092                             got=0x0092
+     [32mPASS[0m | x2 = 2                                  got=0x0002
 
 
-Time=156000 | PC=0x0022 | Instr=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0007 | x3=0x0000 | zero=1
-STORE: addr=0000 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
 
 
-Time=166000 | PC=0x0024 | Instr=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0007 | x3=0x0000 | zero=1
-STORE: addr=0000 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
+=============================================================
+  Results: 32 PASSED,  0 FAILED
+=============================================================
 
+ALL TESTS PASSED
 
-Time=176000 | PC=0x0026 | Instr=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0007 | x3=0x0000 | zero=1
-STORE: addr=0000 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
-
-
-Time=186000 | PC=0x0028 | Instr=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0007 | x3=0x0000 | zero=1
-STORE: addr=0000 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
-
-
-Time=196000 | PC=0x002a | Instr=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0007 | x3=0x0000 | zero=1
-STORE: addr=0000 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
-
-
-Time=206000 | PC=0x002c | Instr=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0007 | x3=0x0000 | zero=1
-STORE: addr=0000 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
-
-
-Time=216000 | PC=0x002e | Instr=0x0000 | ALU=0x0000 | x1=0x0003 | x2=0x0007 | x3=0x0000 | zero=1
-STORE: addr=0000 data=0000 | MEM snapshot: [0]=xxxx [1]=xxxx [2]=xxxx 
-
-
---- Simulation Finished ---
-
-
-./tb/top_tb.v:125: $finish called at 216000 (1ps)
+./tb/top_tb.v:461: $finish called at 800000 (1ps)
