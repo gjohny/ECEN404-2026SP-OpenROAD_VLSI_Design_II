@@ -22,6 +22,110 @@ The goal is to explore the use of **automated, AI-assisted open-source tools** t
 - **Target Platform:** Tiny Tapeout (2 tiles)  
 
 ---
+
+## 🧩 Instruction Encoding Formats (16-bit)
+
+### 🔹 R-Type (Register)
+_ _ _ _ _ _ _ _ _ _ _ _ _ | _ _ _
+15                      3   2   0
+
+Rs1[2:0] | Rs2[2:0] | Rd[2:0] | Func[3:0] | Op[2:0]
+
+- Rs1: source register 1  
+- Rs2: source register 2  
+- Rd: destination register  
+- Func: ALU operation  
+- Op = 000  
+
+
+### 🔹 I-Type (Immediate ALU)
+_ _ _ _ _ _ _ _ _ _ _ _ _ | _ _ _
+15                      3   2   0
+
+Imm[2:0] | Rs1[2:0] | Rd[2:0] | Func[3:0] | Op[2:0]
+
+- Imm: 3-bit signed immediate  
+- Rs1: source register (encoded in Rs2 field position)  
+- Rd: destination register  
+- Func: operation  
+- Op = 001  
+
+
+### 🔹 Load (LW)
+_ _ _ _ _ _ _ _ _ _ _ _ _ | _ _ _
+15                      3   2   0
+
+Imm[6:0] | Rs1[2:0] | Rd[2:0] | Op[2:0]
+
+- Imm: 7-bit offset  
+- Rs1: base address  
+- Rd: destination register  
+- Op = 010  
+
+
+### 🔹 Store (SB)
+_ _ _ _ _ _ _ _ _ _ _ _ _ | _ _ _
+15                      3   2   0
+
+Imm[6:0] | Rs1[2:0] | Rs2[2:0] | Op[2:0]
+
+- Imm: 7-bit offset  
+- Rs1: base address  
+- Rs2: data to store  
+- Op = 011  
+
+
+### 🔹 Branch (B-Type)
+_ _ _ _ _ _ _ _ _ _ _ _ _ | _ _ _
+15                      3   2   0
+
+Imm[4:0] | Rs1[2:0] | Rs2[2:0] | Func[1:0] | Op[2:0]
+
+- Imm: branch offset  
+- Rs1, Rs2: compare registers  
+- Func:
+  - 00 = BEQ  
+  - 01 = BNE  
+  - 10 = BLT  
+  - 11 = BGT  
+- Op = 100  
+
+
+### 🔹 Jump (JAL)
+_ _ _ _ _ _ _ _ _ _ _ _ _ | _ _ _
+15                      3   2   0
+
+Imm[12:0] | Rd[2:0] | Op[2:0]
+
+- Imm: jump offset  
+- Rd: link register  
+- Op = 101  
+
+
+### 🔹 Upper Immediate (LUI)
+_ _ _ _ _ _ _ _ _ _ _ _ _ | _ _ _
+15                      3   2   0
+
+Imm[12:0] | Rd[2:0] | Op[2:0]
+
+- Imm: upper immediate  
+- Rd: destination register  
+- Op = 110  
+
+
+### 🔹 Jump Register (JALR)
+_ _ _ _ _ _ _ _ _ _ _ _ _ | _ _ _
+15                      3   2   0
+
+Imm[2:0] | Rs1[2:0] | Rd[2:0] | Op[2:0]
+
+- Imm: offset  
+- Rs1: base register  
+- Rd: link register  
+- Op = 111  
+
+
+---
 ---
 
 | **Instruction** | **Name**               | **Format** | **Opcode** | **Func** | **Description**               |
