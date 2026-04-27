@@ -26,10 +26,10 @@ The goal is to explore the use of **automated, AI-assisted open-source tools** t
 ## 🧩 Instruction Encoding Formats (16-bit)
 
 ### 🔹 R-Type (Register)
-_ _ _ _ _ _ _ _ _ _ _ _ _ | _ _ _
-15                      3   2   0
+_ _ _ | _ _ _ | _ _ _ | _ _ _ _ | _ _ _
+15  13 12    10 9    7 6      3 2    0
 
-Rs1[2:0] | Rs2[2:0] | Rd[2:0] | Func[3:0] | Op[2:0]
+Rs1[15:13] | Rs2[12:10] | Rd[9:7] | Func[6:3] | Op[2:0]
 
 - Rs1: source register 1  
 - Rs2: source register 2  
@@ -39,10 +39,10 @@ Rs1[2:0] | Rs2[2:0] | Rd[2:0] | Func[3:0] | Op[2:0]
 
 
 ### 🔹 I-Type (Immediate ALU)
-_ _ _ _ _ _ _ _ _ _ _ _ _ | _ _ _
-15                      3   2   0
+_ _ _ | _ _ _ | _ _ _ | _ _ _ _ | _ _ _
+15   13 12   10 9    7 6       3 2    0
 
-Imm[2:0] | Rs1[2:0] | Rd[2:0] | Func[3:0] | Op[2:0]
+Imm[15:13] | Rs1[12:10] | Rd[9:7] | Func[6:3] | Op[2:0]
 
 - Imm: 3-bit signed immediate  
 - Rs1: source register (encoded in Rs2 field position)  
@@ -52,10 +52,10 @@ Imm[2:0] | Rs1[2:0] | Rd[2:0] | Func[3:0] | Op[2:0]
 
 
 ### 🔹 Load (LW)
-_ _ _ _ _ _ _ _ _ _ _ _ _ | _ _ _
-15                      3   2   0
+_ _ _ _ _ _ _ | _ _ _ | _ _ _ | _ _ _
+15           9 8     6 5     3 2    0
 
-Imm[6:0] | Rs1[2:0] | Rd[2:0] | Op[2:0]
+Imm[15:9] | Rs1[8:6] | Rd[5:3] | Op[2:0]
 
 - Imm: 7-bit offset  
 - Rs1: base address  
@@ -64,10 +64,10 @@ Imm[6:0] | Rs1[2:0] | Rd[2:0] | Op[2:0]
 
 
 ### 🔹 Store (SB)
-_ _ _ _ _ _ _ _ _ _ _ _ _ | _ _ _
-15                      3   2   0
+_ _ _ _ _ _ _ | _ _ _ | _ _ _ | _ _ _
+15           9 8     6 5     3 2    0
 
-Imm[6:0] | Rs1[2:0] | Rs2[2:0] | Op[2:0]
+Imm[15:9] | Rs1[8:6] | Rs2[5:3] | Op[2:0]
 
 - Imm: 7-bit offset  
 - Rs1: base address  
@@ -76,12 +76,12 @@ Imm[6:0] | Rs1[2:0] | Rs2[2:0] | Op[2:0]
 
 
 ### 🔹 Branch (B-Type)
-_ _ _ _ _ _ _ _ _ _ _ _ _ | _ _ _
-15                      3   2   0
+_ _ _ _ _ | _ _ _ | _ _ _ | _ _ | _ _ _
+15      11 10     8 7     5 4    3 2    0
 
-Imm[4:0] | Rs1[2:0] | Rs2[2:0] | Func[1:0] | Op[2:0]
+Imm[15:11] | Rs1[10:8] | Rs2[7:5] | Func[4:3] | Op[2:0]
 
-- Imm: branch offset  
+- Imm: 5-bit branch offset  
 - Rs1, Rs2: compare registers  
 - Func:
   - 00 = BEQ  
@@ -92,10 +92,10 @@ Imm[4:0] | Rs1[2:0] | Rs2[2:0] | Func[1:0] | Op[2:0]
 
 
 ### 🔹 Jump (JAL)
-_ _ _ _ _ _ _ _ _ _ _ _ _ | _ _ _
-15                      3   2   0
+_ _ _ _ _ _ _ _ _ _ | _ _ _ | _ _ _
+15                 6 5     3 2    0
 
-Imm[12:0] | Rd[2:0] | Op[2:0]
+Imm[15:6] | Rd[5:3] | Op[2:0]
 
 - Imm: jump offset  
 - Rd: link register  
@@ -103,10 +103,10 @@ Imm[12:0] | Rd[2:0] | Op[2:0]
 
 
 ### 🔹 Upper Immediate (LUI)
-_ _ _ _ _ _ _ _ _ _ _ _ _ | _ _ _
-15                      3   2   0
+_ _ _ _ _ _ _ _ _ _ | _ _ _ | _ _ _
+15                 6 5     3 2    0
 
-Imm[12:0] | Rd[2:0] | Op[2:0]
+Imm[15:6] | Rd[5:3] | Op[2:0]
 
 - Imm: upper immediate  
 - Rd: destination register  
@@ -114,15 +114,24 @@ Imm[12:0] | Rd[2:0] | Op[2:0]
 
 
 ### 🔹 Jump Register (JALR)
-_ _ _ _ _ _ _ _ _ _ _ _ _ | _ _ _
-15                      3   2   0
+_ _ _ | _ _ _ | _ _ _ | _ _ _ | _ _ _ 
+15  13 12   10 9     7 6     3 2    0
 
-Imm[2:0] | Rs1[2:0] | Rd[2:0] | Op[2:0]
+Imm[15:13] | Rs1[12:10] | Rd[9:7] | Op[2:0]
 
 - Imm: offset  
 - Rs1: base register  
 - Rd: link register  
 - Op = 111  
+
+
+---
+
+### ⚠️ Notes
+- Bit indices now align exactly with field widths per format  
+- Field reuse is intentional across formats  
+- Immediate size varies: 3b (I-type), 5b (B-type), 7b (mem), 10b (J/U)  
+- PC increments by 2 (16-bit ISA)
 
 
 ---
