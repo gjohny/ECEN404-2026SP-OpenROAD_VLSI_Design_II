@@ -26,7 +26,8 @@ The goal is to explore the use of **automated, AI-assisted open-source tools** t
 ## 🧩 Instruction Encoding Formats (16-bit)
 
 ### 🔹 R-Type (Register)
-_ _ _ | _ _ _ | _ _ _ | _ _ _ _ | _ _ _
+_ _ _ | _ _ _ | _ _ _ | _ _ _ _ | _ _ _  
+
 15  13 12    10 9    7 6      3 2    0
 
 Rs1[15:13] | Rs2[12:10] | Rd[9:7] | Func[6:3] | Op[2:0]
