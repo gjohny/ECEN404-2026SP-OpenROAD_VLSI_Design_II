@@ -118,17 +118,10 @@ Imm[15:13] | Rs1[12:10] | Rd[9:7] | Op[2:0]
 
 
 ---
-
-### ⚠️ Notes
-- Bit indices now align exactly with field widths per format  
-- Field reuse is intentional across formats  
-- Immediate size varies: 3b (I-type), 5b (B-type), 7b (mem), 10b (J/U)  
-- PC increments by 2 (16-bit ISA)
-
-
----
 ---
 
+
+### Instruction Set Summary
 | **Instruction** | **Name**               | **Format** | **Opcode** | **Func** | **Description**               |
 | :-------------- | :--------------------- | :--------- | :--------- | :------- | :---------------------------- |
 | **add**         | ADD                    | R          | 000        | 0000     | `Rd = Rs1 + Rs2`              |
@@ -159,6 +152,8 @@ Imm[15:13] | Rs1[12:10] | Rd[9:7] | Op[2:0]
 | -               |                        |            |            |          |                               |
 | **lui**         | Load Upper Immediate   | U          | 110        | —        | `Rd = imm << k`               |
 
+
+## 📌 ALU Control Logic Table
 | **ALUOp** | **Opcode** | **Func** | **ALU Operation** | **Instruction / Usage** |
 | :-------- | :--------- | :------- | :---------------- | :---------------------- |
 | 000       | 000        | 0000     | ADD               | ADD                     |
