@@ -148,7 +148,7 @@ Imm[15:13] | Rs1[12:10] | Rd[9:7] | Op[2:0]
 | **bgt**         | Branch Greater Than    | B          | 100        | 0011     | `if (Rs1 > Rs2) PC += imm`    |
 | -               |                        |            |            |          |                               |
 | **jal**         | Jump and Link          | J          | 101        | —        | `Rd = PC + 2; PC += imm`      |
-| **jalr**        | Jump and Link Reg      | I          | 111        | —        | `Rd = PC + 2; PC = Rs1 + imm` |
+| **jalr**        | Jump and Link Reg      | JR         | 111        | —        | `Rd = PC + 2; PC = Rs1 + imm` |
 | -               |                        |            |            |          |                               |
 | **lui**         | Load Upper Immediate   | U          | 110        | —        | `Rd = imm << k`               |
 
